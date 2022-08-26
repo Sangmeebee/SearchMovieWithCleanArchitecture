@@ -1,3 +1,7 @@
+const val okhttpVersion = "4.10.0"
+const val coroutineVersion = "1.6.4"
+const val junit5Version = "5.9.0"
+
 object GradleConfig {
     const val GRADLE = "com.android.tools.build:gradle:7.2.2"
     const val KTLINT = "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
@@ -12,7 +16,7 @@ object KotlinConfig {
 }
 
 object CoroutinesConfig {
-    const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 }
 
 object AndroidConfig {
@@ -23,6 +27,22 @@ object AndroidConfig {
     const val APPCOMPAT = "androidx.appcompat:appcompat:1.5.0"
     const val MATERIAL = "com.google.android.material:material:1.6.1"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
+}
+
+object NetworkConfig {
+    private const val retrofitVersion = "2.9.0"
+
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    const val RETROFIT_CONVERTER = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    const val OKHTTP_BOM = "com.squareup.okhttp3:okhttp-bom:$okhttpVersion"
+    const val OKHTTP = "com.squareup.okhttp3:okhttp"
+    const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor"
+}
+
+object ConverterConfig {
+    private const val gsonVersion = "2.9.1"
+    const val GSON = "com.google.code.gson:gson:$gsonVersion"
+
 }
 
 object HiltConfig {
@@ -39,18 +59,16 @@ object HiltConfig {
  * */
 
 object UnitTestConfig {
-
-    private const val junit5Version = "5.9.0"
-
     const val JUNIT = "junit:junit:4.13.2"
     const val JUNIT_JUPITER = "org.junit.jupiter:junit-jupiter:$junit5Version"
     const val JUNIT_VINTAGE_ENGINE = "org.junit.vintage:junit-vintage-engine:$junit5Version"
     const val TRUTH = "com.google.truth:truth:1.1.3"
-    const val COROUTINE_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    const val COROUTINE_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
+    const val MOCKK = "io.mockk:mockk:1.12.2"
+    const val MOCK_WEBSERVER = "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
 }
 
 object UITestConfig {
-    private const val junit5Version = "5.9.0"
     private const val junit5AndroidTestVersion = "1.2.2"
 
     const val JUNIT_JUPITER_API = "org.junit.jupiter:junit-jupiter-api:$junit5Version"
