@@ -48,6 +48,9 @@ android {
 
 dependencies {
 
+    implementation(project(":data"))
+    implementation(project(":domain"))
+
     AndroidConfig.run {
         implementation(CORE_KTX)
         implementation(APPCOMPAT)

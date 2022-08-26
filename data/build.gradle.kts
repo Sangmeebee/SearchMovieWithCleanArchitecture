@@ -9,6 +9,9 @@ java {
 }
 
 dependencies {
+
+    implementation(project(":domain"))
+
     implementation(CoroutinesConfig.CORE)
 
     NetworkConfig.run {
