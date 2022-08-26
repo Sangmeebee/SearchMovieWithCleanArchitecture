@@ -1,9 +1,25 @@
 plugins {
-    id("java-library")
-    id("org.jetbrains.kotlin.jvm")
+    id("kotlin")
+    id("kotlin-kapt")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    HiltConfig.run {
+        implementation(CORE)
+        implementation(COMPILER)
+    }
+
+    UnitTestConfig.run {
+        testImplementation(JUNIT)
+        testImplementation(JUNIT_JUPITER)
+        testImplementation(JUNIT_VINTAGE_ENGINE)
+        testImplementation(TRUTH)
+        testImplementation(COROUTINE_TEST)
+        testImplementation(MOCKK)
+    }
 }
