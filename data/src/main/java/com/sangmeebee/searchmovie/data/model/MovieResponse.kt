@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 internal data class MovieResponse(
     @SerializedName("lastBuildDate")
-    val lookupDate: String,
+    val offsetTime: String,
     @SerializedName("total")
     val totalCount: Long,
     @SerializedName("start")

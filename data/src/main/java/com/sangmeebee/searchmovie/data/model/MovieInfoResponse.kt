@@ -7,7 +7,7 @@ internal data class MovieInfoResponse(
     val link: String,
     @SerializedName("image")
     val imageUrl: String?,
-    @SerializedName("pubData")
+    @SerializedName("pubDate")
     val releaseDate: String,
     val director: String,
     val actor: String,
