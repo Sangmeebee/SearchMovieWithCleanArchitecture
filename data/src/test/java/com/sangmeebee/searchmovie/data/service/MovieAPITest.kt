@@ -3,6 +3,7 @@ package com.sangmeebee.searchmovie.data.service
 import com.google.common.truth.Truth.assertThat
 import com.sangmeebee.searchmovie.data.model.MovieInfoResponse
 import com.sangmeebee.searchmovie.data.model.MovieResponse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -29,6 +30,7 @@ class MovieAPITest {
             .create(MovieAPI::class.java)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `해당 쿼리의 데이터가 없으면 비어있는 아이템을_반환한다`() = runTest {
         // given
@@ -49,9 +51,11 @@ class MovieAPITest {
             pageStart = 1,
             pageSize = 0,
             items = emptyList())
+
         assertThat(actual).isEqualTo(expected)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun 해당_쿼리의_데이터가_존재하면_영화_리스트를_반환한다() = runTest {
         //given
