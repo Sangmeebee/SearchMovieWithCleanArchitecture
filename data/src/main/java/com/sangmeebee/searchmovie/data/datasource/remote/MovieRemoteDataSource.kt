@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.data.datasource
+package com.sangmeebee.searchmovie.data.datasource.remote
 
 import com.sangmeebee.searchmovie.domain.model.Movie
 
