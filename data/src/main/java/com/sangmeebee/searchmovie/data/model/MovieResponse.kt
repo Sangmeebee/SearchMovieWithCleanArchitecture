@@ -3,13 +3,14 @@ package com.sangmeebee.searchmovie.data.model
 import com.google.gson.annotations.SerializedName
 
 internal data class MovieResponse(
-    val title: String,
-    val link: String,
-    @SerializedName("image")
-    val imageUrl: String?,
-    @SerializedName("pubData")
-    val releaseDate: String,
-    val director: String,
-    val actor: String,
-    val userRating: String,
+    @SerializedName("lastBuildDate")
+    val lookupDate: String,
+    @SerializedName("total")
+    val totalCount: Long,
+    @SerializedName("start")
+    val pageStart: Long,
+    @SerializedName("display")
+    val pageSize: Int,
+    @SerializedName("items")
+    val items: List<MovieInfoResponse>,
 )
