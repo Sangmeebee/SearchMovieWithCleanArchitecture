@@ -18,6 +18,7 @@ internal fun Movie.toPresentation() =
 internal fun MovieInfo.toPresentation() =
     MovieInfoModel(
         title = title,
+        subtitle = subtitle,
         link = link,
         imageUrl = imageUrl,
         releaseDate = releaseDate,
