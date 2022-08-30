@@ -6,6 +6,7 @@ import com.sangmeebee.searchmovie.domain.model.MovieInfo
 
 internal data class MovieInfoResponse(
     val title: String,
+    val subtitle: String? = null,
     val link: String,
     @SerializedName("image")
     val imageUrl: String?,
@@ -17,6 +18,7 @@ internal data class MovieInfoResponse(
 ) : DataToDomainMapper<MovieInfo> {
     override fun toDomain(): MovieInfo = MovieInfo(
         title = title,
+        subtitle = subtitle,
         link = link,
         imageUrl = imageUrl,
         releaseDate = releaseDate,

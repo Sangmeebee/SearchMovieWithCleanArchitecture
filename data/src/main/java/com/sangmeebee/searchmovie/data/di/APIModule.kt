@@ -4,11 +4,12 @@ import com.sangmeebee.searchmovie.data.service.MovieAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-@InstallIn(Singleton::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object APIModule {
 
     @Singleton

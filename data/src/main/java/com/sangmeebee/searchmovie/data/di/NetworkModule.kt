@@ -12,11 +12,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 internal object NetworkModule {
 
-    private const val SEARCH_MOVIE_BASE_URL = "https://openapi.naver.com/v1/search/movie.json"
+    private const val SEARCH_MOVIE_BASE_URL = "https://openapi.naver.com/"
 
     @Singleton
     @Provides
@@ -33,7 +33,8 @@ internal object NetworkModule {
         with(chain) {
             proceed(
                 request().newBuilder()
-                    .addHeader("(header Key)", "(header Value)")
+                    .addHeader("X-Naver-Client-Id", "gtKJPFNgyeGrlp2Ftz2F")
+                    .addHeader("X-Naver-Client-Secret", "2oAqr314Pl")
                     .build()
             )
         }

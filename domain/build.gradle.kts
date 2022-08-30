@@ -11,7 +11,7 @@ java {
 dependencies {
     HiltConfig.run {
         implementation(CORE)
-        implementation(COMPILER)
+        kapt(COMPILER)
     }
 
     UnitTestConfig.run {

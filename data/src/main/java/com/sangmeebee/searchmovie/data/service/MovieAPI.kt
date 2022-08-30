@@ -6,6 +6,6 @@ import retrofit2.http.Query
 
 internal interface MovieAPI {
 
-    @GET("/")
+    @GET("v1/search/movie.json")
     suspend fun getMovies(@Query("query") query: String): MovieResponse
 }
