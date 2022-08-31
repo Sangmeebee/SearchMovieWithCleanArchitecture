@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
 import com.sangmeebee.searchmovie.model.UIState
+import com.sangmeebee.searchmovie.ui.customException.EmptyQueryException
 import com.sangmeebee.searchmovie.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +21,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater).apply {
+            this.lifecycleOwner = this@MainActivity
+            this.viewModel = mainViewModel
+        }
         setContentView(binding.root)
 
         setRecyclerView()
@@ -39,7 +44,10 @@ class MainActivity : AppCompatActivity() {
                     movieAdapter.submitList(uiState.data.items)
                 }
                 is UIState.Error -> {
-                    showToast(uiState.throwable.message)
+                    when (uiState.throwable) {
+                        is EmptyQueryException -> showToast(resources.getString(R.string.movie_list_empty_query))
+                        else -> showToast(uiState.throwable.message)
+                    }
                 }
             }
         }
