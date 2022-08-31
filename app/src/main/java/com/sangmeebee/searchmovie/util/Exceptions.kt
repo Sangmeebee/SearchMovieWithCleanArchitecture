@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.ui.customException
+package com.sangmeebee.searchmovie.util
 
 open class InCorrectQueryException : IllegalStateException()
 class EmptyQueryException() : InCorrectQueryException()

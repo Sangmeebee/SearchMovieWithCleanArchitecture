@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
 import com.sangmeebee.searchmovie.model.UIState
-import com.sangmeebee.searchmovie.ui.customException.EmptyQueryException
+import com.sangmeebee.searchmovie.util.EmptyQueryException
 import com.sangmeebee.searchmovie.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 
