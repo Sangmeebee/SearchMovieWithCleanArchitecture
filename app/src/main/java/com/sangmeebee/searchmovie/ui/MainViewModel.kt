@@ -3,10 +3,10 @@ package com.sangmeebee.searchmovie.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sangmeebee.searchmovie.domain.usecase.GetMovieUseCase
+import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
 import com.sangmeebee.searchmovie.model.MovieModel
 import com.sangmeebee.searchmovie.model.UIState
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
-import com.sangmeebee.searchmovie.util.EmptyQueryException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,12 +21,12 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UIState<MovieModel>>(UIState.Empty)
     val uiState = _uiState.asStateFlow()
 
-    fun getMovie(query: String) = viewModelScope.launch {
-        if (query.isEmpty()) {
+    fun getMovie(query: String?) = viewModelScope.launch {
+        _uiState.value = UIState.Loading
+        if (query?.isEmpty() == true) {
             _uiState.value = UIState.Error(EmptyQueryException())
             return@launch
         }
-        _uiState.value = UIState.Loading
         _uiState.value = getMovieUseCase(query).fold(
             onSuccess = { (UIState.Success(it.toPresentation())) },
             onFailure = { UIState.Error(it) }

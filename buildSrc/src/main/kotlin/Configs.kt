@@ -27,6 +27,7 @@ object AndroidConfig {
     const val APPCOMPAT = "androidx.appcompat:appcompat:1.5.0"
     const val MATERIAL = "com.google.android.material:material:1.6.1"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
+    const val SWIPE_REFRESH_LAYOUT = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }
 
 object CoilConfig {

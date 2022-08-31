@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
 import com.sangmeebee.searchmovie.model.UIState
-import com.sangmeebee.searchmovie.util.EmptyQueryException
+import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
 import com.sangmeebee.searchmovie.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,15 +35,17 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.uiState.collect { uiState ->
             when (uiState) {
                 is UIState.Empty -> {
-
+                    binding.srlLoading.isRefreshing = false
                 }
                 is UIState.Loading -> {
-
+                    binding.srlLoading.isRefreshing = true
                 }
                 is UIState.Success -> {
+                    binding.srlLoading.isRefreshing = false
                     movieAdapter.submitList(uiState.data.items)
                 }
                 is UIState.Error -> {
+                    binding.srlLoading.isRefreshing = false
                     when (uiState.throwable) {
                         is EmptyQueryException -> showToast(resources.getString(R.string.movie_list_empty_query))
                         else -> showToast(uiState.throwable.message)

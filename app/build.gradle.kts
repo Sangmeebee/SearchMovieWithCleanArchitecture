@@ -56,6 +56,7 @@ dependencies {
         implementation(APPCOMPAT)
         implementation(MATERIAL)
         implementation(CONSTRAINT_LAYOUT)
+        implementation(SWIPE_REFRESH_LAYOUT)
         implementation(FRAGMENT_KTX)
     }
 
