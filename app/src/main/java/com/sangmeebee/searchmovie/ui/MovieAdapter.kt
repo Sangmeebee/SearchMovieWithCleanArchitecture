@@ -1,11 +1,13 @@
-package com.sangmeebee.searchmovie
+package com.sangmeebee.searchmovie.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ItemMovieBinding
 import com.sangmeebee.searchmovie.model.MovieInfoModel
 

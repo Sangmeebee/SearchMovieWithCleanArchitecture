@@ -17,14 +17,18 @@ internal fun Movie.toPresentation() =
 
 internal fun MovieInfo.toPresentation() =
     MovieInfoModel(
-        title = title,
+        title = "${title}(${releaseDate})",
         subtitle = subtitle,
         link = link,
         imageUrl = imageUrl,
-        releaseDate = releaseDate,
-        director = director,
-        actor = actor,
-        userRating = userRating
+        contributor = if (director.isEmpty()) {
+            actor.removeSuffix("|")
+        } else if (actor.isEmpty()) {
+            "<b>${director.removeSuffix("|")}</b>"
+        } else {
+            "<b>${director.removeSuffix("|")}</b>|${actor.removeSuffix("|")}"
+        },
+        userRating = userRating.toFloat() / 2
     )
 
 internal fun List<MovieInfo>.toPresentation() = map { it.toPresentation() }

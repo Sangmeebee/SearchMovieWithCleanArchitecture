@@ -29,6 +29,10 @@ object AndroidConfig {
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
 }
 
+object CoilConfig {
+    const val COIL = "io.coil-kt:coil:2.2.0"
+}
+
 object NetworkConfig {
     private const val retrofitVersion = "2.9.0"
 

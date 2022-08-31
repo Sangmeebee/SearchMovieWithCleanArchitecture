@@ -64,6 +64,8 @@ dependencies {
         kapt(COMPILER)
     }
 
+    implementation(CoilConfig.COIL)
+
     UnitTestConfig.run {
         testImplementation(JUNIT)
         testImplementation(JUNIT_JUPITER)
