@@ -6,11 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+    <LinearLayout
+        android:id="@+id/ll_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.sangmeebee.searchmovie.ui.customview.ClearFocusEditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:hint="@string/movie_list_query_hint"
+            android:inputType="text" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="2"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/all_search" />
+
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movie_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_query" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

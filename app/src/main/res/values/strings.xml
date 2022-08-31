@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SearchMovie</string>
+
+    <string name="all_search">검색</string>
+
+    <string name="movie_list_query_hint">검색어를 입력해주세요</string>
 </resources>
