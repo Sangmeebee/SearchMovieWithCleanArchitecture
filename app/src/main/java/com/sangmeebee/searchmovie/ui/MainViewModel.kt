@@ -28,7 +28,13 @@ class MainViewModel @Inject constructor(
             return@launch
         }
         _uiState.value = getMovieUseCase(query).fold(
-            onSuccess = { (UIState.Success(it.toPresentation())) },
+            onSuccess = {
+                val movie = it.toPresentation()
+                if (movie.totalCount == 0L) {
+                    return@fold UIState.Empty
+                }
+                UIState.Success(movie)
+            },
             onFailure = { UIState.Error(it) }
         )
     }
