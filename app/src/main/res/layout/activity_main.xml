@@ -36,7 +36,7 @@
                 android:layout_weight="2"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:onClick="@{()-> viewModel.getMovie(etQuery.getText().toString())}"
+                android:onClick="@{()-> viewModel.fetchMovie(etQuery.getText().toString(), 20, 1)}"
                 android:text="@string/all_search" />
 
 
@@ -48,7 +48,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_query"
-            app:onRefreshListener="@{()-> viewModel.getMovie((String)null)}">
+            app:onRefreshListener="@{()-> viewModel.fetchMovie((String)null, 20, 1)}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movie_list"

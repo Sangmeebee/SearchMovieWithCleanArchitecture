@@ -29,6 +29,18 @@ class MainActivity : AppCompatActivity() {
 
         setRecyclerView()
         observeUIState()
+        observeQuery()
+    }
+
+    private fun observeQuery() = repeatOnStarted {
+        mainViewModel.query.collect { query ->
+            query?.let {
+                binding.etQuery.apply {
+                    setText(it)
+                    setSelection(it.length)
+                }
+            }
+        }
     }
 
     private fun observeUIState() = repeatOnStarted {
@@ -36,13 +48,14 @@ class MainActivity : AppCompatActivity() {
             when (uiState) {
                 is UIState.Empty -> {
                     binding.srlLoading.isRefreshing = false
+                    movieAdapter.submitList(emptyList())
                 }
                 is UIState.Loading -> {
                     binding.srlLoading.isRefreshing = true
                 }
                 is UIState.Success -> {
                     binding.srlLoading.isRefreshing = false
-                    movieAdapter.submitList(uiState.data.items)
+                    movieAdapter.submitList(uiState.data)
                 }
                 is UIState.Error -> {
                     binding.srlLoading.isRefreshing = false

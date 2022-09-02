@@ -10,9 +10,13 @@ internal class MovieRemoteDataSourceImpl @Inject constructor(
     private val movieAPI: MovieAPI,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : MovieRemoteDataSource {
-    override suspend fun getMovies(query: String) = runCatching {
+    override suspend fun getMovies(
+        query: String,
+        display: Int,
+        start: Int,
+    ) = runCatching {
         withContext(ioDispatcher) {
-            movieAPI.getMovies(query).toDomain()
+            movieAPI.getMovies(query, display, start).toDomain()
         }
     }
 }

@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="movieInfo"
-            type="com.sangmeebee.searchmovie.model.MovieInfoModel" />
+            name="movie"
+            type="com.sangmeebee.searchmovie.model.MovieUIState" />
     </data>
 
     <LinearLayout
@@ -24,7 +24,7 @@
                 android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{movieInfo.imageUrl}"
+                app:imageUrl="@{movie.imageUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:htmlText="@{movieInfo.title}"
+                app:htmlText="@{movie.title}"
                 app:layout_constraintEnd_toStartOf="@id/iv_bookmark"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/iv_profile"
@@ -54,7 +54,7 @@
                 android:maxLines="1"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
-                app:htmlText="@{movieInfo.subtitle}"
+                app:htmlText="@{movie.subtitle}"
                 app:layout_constraintEnd_toStartOf="@id/iv_bookmark"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/iv_profile"
@@ -71,7 +71,7 @@
                 android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                app:htmlText="@{movieInfo.contributor}"
+                app:htmlText="@{movie.contributor}"
                 app:layout_constraintBottom_toTopOf="@id/rb_evaluation"
                 app:layout_constraintEnd_toStartOf="@id/iv_bookmark"
                 app:layout_constraintHorizontal_bias="0"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="8dp"
-                android:rating="@{movieInfo.userRating}"
+                android:rating="@{movie.userRating}"
                 android:stepSize="0.5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/iv_bookmark"

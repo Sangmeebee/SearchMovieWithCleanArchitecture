@@ -8,6 +8,9 @@ import javax.inject.Inject
 internal class MovieRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
 ) : MovieRepository {
-    override suspend fun getMovies(query: String): Result<Movie> =
-        movieRemoteDataSource.getMovies(query)
+    override suspend fun getMovies(
+        query: String,
+        display: Int,
+        start: Int,
+    ): Result<Movie> = movieRemoteDataSource.getMovies(query, display, start)
 }
