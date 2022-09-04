@@ -22,7 +22,7 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.sangmeebee.searchmovie.ui.customview.ClearFocusEditText
+            <com.sangmeebee.searchmovie.customview.ClearFocusEditText
                 android:id="@+id/et_query"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
