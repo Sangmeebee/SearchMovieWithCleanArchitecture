@@ -8,6 +8,7 @@ import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
 import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
+import com.sangmeebee.searchmovie.util.SoftInputUtil
 import com.sangmeebee.searchmovie.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,7 +40,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerView() {
-        binding.rvMovieList.adapter = movieAdapter
+        binding.rvMovieList.adapter = movieAdapter.apply {
+            addLoadStateListener { loadState ->
+                if (loadState.source.refresh is LoadState.NotLoading && movieAdapter.itemCount != 0) {
+                    SoftInputUtil(this@MainActivity).hideKeyboard(binding.etQuery)
+                }
+            }
+        }
     }
 
     private fun setRefreshListener() {
@@ -87,10 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkErrorState(throwable: Throwable) {
         when (throwable) {
-            is EmptyQueryException -> {
-                movieAdapter.retry()
-                showToast(resources.getString(R.string.movie_list_empty_query))
-            }
+            is EmptyQueryException -> showToast(resources.getString(R.string.movie_list_empty_query))
             is IOException -> showToast(resources.getString(R.string.all_network_disconnect))
             else -> showToast(throwable.message)
         }

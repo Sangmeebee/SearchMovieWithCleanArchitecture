@@ -11,7 +11,10 @@ import com.sangmeebee.searchmovie.model.MovieUIState
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,8 +23,7 @@ class MainViewModel @Inject constructor(
     private val getMovieUseCase: GetMovieUseCase,
 ) : ViewModel() {
 
-    private val _query = MutableSharedFlow<String>()
-    val query = _query.asSharedFlow()
+    private val query = MutableSharedFlow<String>()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val movies: Flow<PagingData<MovieUIState>> = query.flatMapLatest {
@@ -33,7 +35,7 @@ class MainViewModel @Inject constructor(
     }.cachedIn(viewModelScope)
 
     fun handleQuery(newQuery: String) = viewModelScope.launch {
-        _query.emit(newQuery)
+        query.emit(newQuery)
     }
 
     fun fetchMovie(query: String): Flow<PagingData<MovieInfo>> {
