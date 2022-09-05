@@ -11,7 +11,7 @@ internal data class MovieResponse(
     @SerializedName("total")
     val totalCount: Long,
     @SerializedName("start")
-    val pageStart: Long,
+    val pageStart: Int,
     @SerializedName("display")
     val pageSize: Int,
     @SerializedName("items")

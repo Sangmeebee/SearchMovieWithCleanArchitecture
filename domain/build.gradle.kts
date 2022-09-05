@@ -14,6 +14,9 @@ dependencies {
         kapt(COMPILER)
     }
 
+    implementation(CoroutineConfig.CORE)
+    implementation(PagingConfig.PAGING_COMMON)
+
     UnitTestConfig.run {
         testImplementation(JUNIT)
         testImplementation(JUNIT_JUPITER)

@@ -15,7 +15,7 @@ object KotlinConfig {
     const val KOTLIN_GRADLE_PLUGIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 }
 
-object CoroutinesConfig {
+object CoroutineConfig {
     const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 }
 
@@ -28,6 +28,12 @@ object AndroidConfig {
     const val MATERIAL = "com.google.android.material:material:1.6.1"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.4"
     const val SWIPE_REFRESH_LAYOUT = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+}
+
+object PagingConfig {
+    private const val pagingVersion = "3.1.1"
+    const val PAGING_RUNTIME = "androidx.paging:paging-runtime:$pagingVersion"
+    const val PAGING_COMMON = "androidx.paging:paging-common:$pagingVersion"
 }
 
 object CoilConfig {

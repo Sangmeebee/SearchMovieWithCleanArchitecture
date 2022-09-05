@@ -10,7 +10,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "camp.nextstep.edu.github"
+        applicationId = "com.sangmeebee.searchmovie"
         minSdk = 21
         targetSdk = 33
         versionCode = 1
@@ -67,11 +67,14 @@ dependencies {
 
     implementation(CoilConfig.COIL)
 
+    implementation(PagingConfig.PAGING_RUNTIME)
+
     UnitTestConfig.run {
         testImplementation(JUNIT)
         testImplementation(JUNIT_JUPITER)
         testImplementation(JUNIT_VINTAGE_ENGINE)
         testImplementation(TRUTH)
+        testImplementation(MOCKK)
         testImplementation(COROUTINE_TEST)
     }
 

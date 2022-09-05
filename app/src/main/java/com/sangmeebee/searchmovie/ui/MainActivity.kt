@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
 import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
-import com.sangmeebee.searchmovie.model.UIState
 import com.sangmeebee.searchmovie.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
+import java.io.IOException
 
 
 @AndroidEntryPoint
@@ -26,50 +30,70 @@ class MainActivity : AppCompatActivity() {
             this.viewModel = mainViewModel
         }
         setContentView(binding.root)
-
         setRecyclerView()
-        observeUIState()
-        observeQuery()
-    }
+        setRefreshListener()
 
-    private fun observeQuery() = repeatOnStarted {
-        mainViewModel.query.collect { query ->
-            query?.let {
-                binding.etQuery.apply {
-                    setText(it)
-                    setSelection(it.length)
-                }
-            }
-        }
-    }
-
-    private fun observeUIState() = repeatOnStarted {
-        mainViewModel.uiState.collect { uiState ->
-            when (uiState) {
-                is UIState.Empty -> {
-                    binding.srlLoading.isRefreshing = false
-                    movieAdapter.submitList(emptyList())
-                }
-                is UIState.Loading -> {
-                    binding.srlLoading.isRefreshing = true
-                }
-                is UIState.Success -> {
-                    binding.srlLoading.isRefreshing = false
-                    movieAdapter.submitList(uiState.data)
-                }
-                is UIState.Error -> {
-                    binding.srlLoading.isRefreshing = false
-                    when (uiState.throwable) {
-                        is EmptyQueryException -> showToast(resources.getString(R.string.movie_list_empty_query))
-                        else -> showToast(uiState.throwable.message)
-                    }
-                }
-            }
-        }
+        observePagingRefresh()
+        observePagingAppend()
+        observeMovies()
     }
 
     private fun setRecyclerView() {
         binding.rvMovieList.adapter = movieAdapter
+    }
+
+    private fun setRefreshListener() {
+        binding.srlLoading.setOnRefreshListener {
+            movieAdapter.refresh()
+        }
+    }
+
+    private fun observeMovies() = repeatOnStarted {
+        mainViewModel.movies.collectLatest {
+            movieAdapter.submitData(it)
+        }
+    }
+
+    private fun observePagingRefresh() = repeatOnStarted {
+        movieAdapter.loadStateFlow
+            .distinctUntilChangedBy { it.refresh }
+            .collectLatest { loadStates ->
+                checkPagingRefreshLoadState(loadStates.refresh)
+            }
+    }
+
+    private fun checkPagingRefreshLoadState(refreshLoadState: LoadState) {
+        when (refreshLoadState) {
+            is LoadState.Loading -> binding.srlLoading.isRefreshing = true
+            is LoadState.Error -> {
+                binding.srlLoading.isRefreshing = false
+                checkErrorState(refreshLoadState.error)
+            }
+            is LoadState.NotLoading -> {
+                binding.rvMovieList.scrollToPosition(0)
+                binding.srlLoading.isRefreshing = false
+            }
+        }
+    }
+
+    private fun observePagingAppend() = repeatOnStarted {
+        movieAdapter.loadStateFlow
+            .distinctUntilChangedBy { it.append }
+            .filter { it.append is LoadState.Error }
+            .collectLatest {
+                checkErrorState((it.append as LoadState.Error).error)
+            }
+    }
+
+    private fun checkErrorState(throwable: Throwable) {
+        when (throwable) {
+            is EmptyQueryException -> {
+                movieAdapter.retry()
+                showToast(resources.getString(R.string.movie_list_empty_query))
+            }
+            is IOException -> showToast(resources.getString(R.string.all_network_disconnect))
+            else -> showToast(throwable.message)
+        }
     }
 
     private fun showToast(message: String?) {
