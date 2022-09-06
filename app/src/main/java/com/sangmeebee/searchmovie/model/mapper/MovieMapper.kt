@@ -5,6 +5,7 @@ import com.sangmeebee.searchmovie.model.MovieModel
 
 internal fun MovieInfo.toPresentation() =
     MovieModel(
+        id = "$title$releaseDate$subtitle$director$actor",
         title = "${title}(${releaseDate})",
         subtitle = subtitle,
         link = link,
