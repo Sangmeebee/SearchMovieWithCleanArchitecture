@@ -10,6 +10,7 @@ class SoftInputUtil(context: Context) {
         context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
     fun hideKeyboard(view: View?) {
+        view?.clearFocus()
         imm.hideSoftInputFromWindow(view?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
@@ -14,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 
@@ -40,13 +42,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerView() {
+        binding.rvMovieList.setHasFixedSize(true)
         binding.rvMovieList.adapter = movieAdapter.apply {
             addLoadStateListener { loadState ->
                 if (loadState.source.refresh is LoadState.NotLoading && movieAdapter.itemCount != 0) {
                     SoftInputUtil(this@MainActivity).hideKeyboard(binding.etQuery)
                 }
             }
-        }
+        }.withLoadStateFooter(MovieLoadStateAdapter(movieAdapter::retry))
     }
 
     private fun setRefreshListener() {
@@ -61,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observePagingRefresh() = repeatOnStarted {
+    private fun observePagingRefresh() = lifecycleScope.launch {
         movieAdapter.loadStateFlow
             .distinctUntilChangedBy { it.refresh }
             .collectLatest { loadStates ->
@@ -83,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observePagingAppend() = repeatOnStarted {
+    private fun observePagingAppend() = lifecycleScope.launch {
         movieAdapter.loadStateFlow
             .distinctUntilChangedBy { it.append }
             .filter { it.append is LoadState.Error }

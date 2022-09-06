@@ -3,6 +3,7 @@
 
     <string name="all_search">검색</string>
     <string name="all_network_disconnect">네트워크 연결상태를 확인해주세요</string>
+    <string name="all_reload">다시 시도하려면 누르세요</string>
 
     <string name="movie_list_query_hint">검색어를 입력해주세요</string>
     <string name="movie_list_empty_query">검색어를 입력해주세요</string>

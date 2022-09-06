@@ -7,7 +7,7 @@
 
         <variable
             name="movie"
-            type="com.sangmeebee.searchmovie.model.MovieUIState" />
+            type="com.sangmeebee.searchmovie.model.MovieModel" />
     </data>
 
     <LinearLayout

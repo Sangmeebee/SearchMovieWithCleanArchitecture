@@ -1,10 +1,10 @@
 package com.sangmeebee.searchmovie.model.mapper
 
 import com.sangmeebee.searchmovie.domain.model.MovieInfo
-import com.sangmeebee.searchmovie.model.MovieUIState
+import com.sangmeebee.searchmovie.model.MovieModel
 
 internal fun MovieInfo.toPresentation() =
-    MovieUIState(
+    MovieModel(
         title = "${title}(${releaseDate})",
         subtitle = subtitle,
         link = link,
