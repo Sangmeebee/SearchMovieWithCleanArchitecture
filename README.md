@@ -6,4 +6,12 @@
 ### 2. 기능
 
 ### 3. 라이브러리
+- coroutine
+- retrofit
+- okhttp
+- gson
+- paging
+- coil
+- room
+- hilt
 
