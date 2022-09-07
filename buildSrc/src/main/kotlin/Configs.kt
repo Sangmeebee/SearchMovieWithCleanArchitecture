@@ -40,6 +40,14 @@ object CoilConfig {
     const val COIL = "io.coil-kt:coil:2.2.0"
 }
 
+object RoomConfig {
+    private const val roomVersion = "2.4.3"
+    const val ROOM_RUNTIME = "androidx.room:room-runtime:$roomVersion"
+    const val ROOM_COMMON = "androidx.room:room-common:$roomVersion"
+    const val ROOM_COMPILER = "androidx.room:room-compiler:$roomVersion"
+    const val ROOM_KTX = "androidx.room:room-ktx:$roomVersion"
+}
+
 object NetworkConfig {
     private const val retrofitVersion = "2.9.0"
 
