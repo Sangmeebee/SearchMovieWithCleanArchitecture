@@ -71,10 +71,6 @@ dependencies {
         kapt(COMPILER)
     }
 
-    implementation(CoilConfig.COIL)
-
-    implementation(PagingConfig.PAGING_RUNTIME)
-
     UnitTestConfig.run {
         testImplementation(JUNIT)
         testImplementation(JUNIT_JUPITER)
