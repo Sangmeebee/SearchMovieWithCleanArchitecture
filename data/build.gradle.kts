@@ -11,6 +11,10 @@ dependencies {
 
     implementation(PagingConfig.PAGING_COMMON)
 
+    RoomConfig.run {
+        implementation(ROOM_COMMON)
+    }
+
     NetworkConfig.run {
         implementation(RETROFIT)
         implementation(RETROFIT_CONVERTER)

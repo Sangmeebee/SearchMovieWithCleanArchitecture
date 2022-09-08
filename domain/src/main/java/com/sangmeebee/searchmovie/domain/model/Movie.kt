@@ -1,9 +1,12 @@
 package com.sangmeebee.searchmovie.domain.model
 
-data class Movie(
-    val offsetTime: String,
-    val totalCount: Long,
-    val pageStart: Int,
-    val pageSize: Int,
-    val items: List<MovieInfo>,
+data class Movie (
+    val title: String,
+    val subtitle: String? = null,
+    val link: String,
+    val imageUrl: String?,
+    val releaseDate: String,
+    val director: String,
+    val actor: String,
+    val userRating: String,
 )

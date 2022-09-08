@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sangmeebee.searchmovie.data.model.mapper.toDomain
 import com.sangmeebee.searchmovie.data.service.MovieAPI
-import com.sangmeebee.searchmovie.domain.model.MovieInfo
+import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
 import retrofit2.HttpException
 import java.io.IOException
@@ -12,9 +12,9 @@ import java.io.IOException
 internal class MoviePagingDataSource(
     private val movieAPI: MovieAPI,
     private val query: String,
-) : PagingSource<Int, MovieInfo>() {
+) : PagingSource<Int, Movie>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieInfo> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         try {
             if (query.isEmpty()) {
                 throw EmptyQueryException()
@@ -41,7 +41,7 @@ internal class MoviePagingDataSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, MovieInfo>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(PAGE_DISPLAY_SIZE)

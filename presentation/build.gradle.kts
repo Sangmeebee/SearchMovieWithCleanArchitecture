@@ -1,20 +1,18 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("de.mannodermaus.android-junit5")
 }
-
 android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.sangmeebee.searchmovie"
         minSdk = 21
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["runnerBuilder"] =
             "de.mannodermaus.junit5.AndroidJUnit5Builder"
@@ -47,24 +45,16 @@ android {
 
 dependencies {
 
-    implementation(project(":presentation"))
-    implementation(project(":data"))
     implementation(project(":domain"))
 
     AndroidConfig.run {
+        implementation(CORE_KTX)
         implementation(APPCOMPAT)
         implementation(MATERIAL)
+        implementation(CONSTRAINT_LAYOUT)
+        implementation(SWIPE_REFRESH_LAYOUT)
+        implementation(FRAGMENT_KTX)
     }
-
-    NetworkConfig.run {
-        implementation(RETROFIT)
-        implementation(RETROFIT_CONVERTER)
-        implementation(platform(OKHTTP_BOM))
-        implementation(OKHTTP)
-        implementation(OKHTTP_LOGGING_INTERCEPTOR)
-    }
-
-    implementation(ConverterConfig.GSON)
 
     HiltConfig.run {
         implementation(ANDROID)
@@ -79,11 +69,17 @@ dependencies {
         testImplementation(JUNIT)
         testImplementation(JUNIT_JUPITER)
         testImplementation(JUNIT_VINTAGE_ENGINE)
+        testImplementation(TRUTH)
+        testImplementation(MOCKK)
+        testImplementation(COROUTINE_TEST)
     }
 
     UITestConfig.run {
         androidTestImplementation(JUNIT_JUPITER_API)
         androidTestImplementation(JUNIT)
         androidTestImplementation(ESPRESSO_CORE)
+        androidTestImplementation(JUNIT5_CORE)
+        androidTestRuntimeOnly(JUNIT5_RUNNER)
     }
+
 }

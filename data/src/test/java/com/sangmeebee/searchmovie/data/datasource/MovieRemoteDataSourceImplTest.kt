@@ -5,7 +5,6 @@ import com.sangmeebee.searchmovie.data.MainDispatcherRule
 import com.sangmeebee.searchmovie.data.datasource.remote.MovieRemoteDataSource
 import com.sangmeebee.searchmovie.data.datasource.remote.MovieRemoteDataSourceImpl
 import com.sangmeebee.searchmovie.data.service.MovieAPI
-import com.sangmeebee.searchmovie.domain.model.Movie
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
