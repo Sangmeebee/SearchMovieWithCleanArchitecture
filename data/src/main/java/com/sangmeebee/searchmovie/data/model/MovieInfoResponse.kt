@@ -1,11 +1,9 @@
 package com.sangmeebee.searchmovie.data.model
 
-import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import com.sangmeebee.searchmovie.data.model.mapper.DataToDomainMapper
 import com.sangmeebee.searchmovie.domain.model.Movie
 
-@Entity
 data class MovieInfoResponse(
     val title: String,
     val subtitle: String? = null,

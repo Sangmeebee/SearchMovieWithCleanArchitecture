@@ -14,6 +14,10 @@ dependencies {
         kapt(COMPILER)
     }
 
+    RoomConfig.run {
+        implementation(ROOM_COMMON)
+    }
+
     implementation(CoroutineConfig.CORE)
     implementation(PagingConfig.PAGING_COMMON)
 

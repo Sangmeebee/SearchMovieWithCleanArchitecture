@@ -46,6 +46,7 @@ object RoomConfig {
     const val ROOM_COMMON = "androidx.room:room-common:$roomVersion"
     const val ROOM_COMPILER = "androidx.room:room-compiler:$roomVersion"
     const val ROOM_KTX = "androidx.room:room-ktx:$roomVersion"
+    const val ROOM_PAGING = "androidx.room:room-paging:$roomVersion"
 }
 
 object NetworkConfig {

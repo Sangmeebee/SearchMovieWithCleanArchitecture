@@ -8,7 +8,7 @@ import androidx.paging.map
 import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.domain.usecase.GetMovieUseCase
 import com.sangmeebee.searchmovie.presentation.model.MovieModel
-import com.sangmeebee.searchmovie.presentation.toPresentation
+import com.sangmeebee.searchmovie.presentation.model.mapper.toPresentation
 import com.sangmeebee.searchmovie.presentation.util.MutableEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

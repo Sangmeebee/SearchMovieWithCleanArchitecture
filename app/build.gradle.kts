@@ -56,6 +56,12 @@ dependencies {
         implementation(MATERIAL)
     }
 
+    RoomConfig.run {
+        implementation(ROOM_RUNTIME)
+        kapt(ROOM_COMPILER)
+        implementation(ROOM_KTX)
+    }
+
     NetworkConfig.run {
         implementation(RETROFIT)
         implementation(RETROFIT_CONVERTER)

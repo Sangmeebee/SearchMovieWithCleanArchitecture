@@ -1,11 +1,10 @@
-package com.sangmeebee.searchmovie.presentation
+package com.sangmeebee.searchmovie.presentation.model.mapper
 
 import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.presentation.model.MovieModel
 
 internal fun Movie.toPresentation() =
     MovieModel(
-        id = "$title$releaseDate$subtitle$director$actor",
         title = "${title}(${releaseDate})",
         subtitle = subtitle,
         link = link,
