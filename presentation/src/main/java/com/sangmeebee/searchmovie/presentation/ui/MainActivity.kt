@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
         setRecyclerView()
-        setRefreshListener()
+        setSwipeRefreshLayout()
 
         observePagingRefresh()
         observePagingAppend()
@@ -42,19 +42,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerView() {
-        binding.rvMovieList.setHasFixedSize(true)
-        binding.rvMovieList.adapter = movieAdapter.apply {
-            addLoadStateListener { loadState ->
-                if (loadState.source.refresh is LoadState.NotLoading && movieAdapter.itemCount != 0) {
-                    SoftInputUtil(this@MainActivity).hideKeyboard(binding.etQuery)
+
+        binding.rvMovieList.apply {
+            setHasFixedSize(true)
+
+            adapter = movieAdapter.apply {
+                addLoadStateListener { loadState ->
+                    if (loadState.source.refresh is LoadState.NotLoading && movieAdapter.itemCount != 0) {
+                        SoftInputUtil(this@MainActivity).hideKeyboard(binding.etQuery)
+                    }
                 }
-            }
-        }.withLoadStateFooter(MovieLoadStateAdapter(movieAdapter::retry))
+            }.withLoadStateFooter(MovieLoadStateAdapter(movieAdapter::retry))
+        }
     }
 
-    private fun setRefreshListener() {
-        binding.srlLoading.setOnRefreshListener {
-            movieAdapter.refresh()
+    private fun setSwipeRefreshLayout() {
+        binding.srlLoading.apply {
+            isEnabled = false
+            setOnRefreshListener {
+                movieAdapter.refresh()
+            }
         }
     }
 
@@ -81,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             }
             is LoadState.NotLoading -> {
                 binding.rvMovieList.scrollToPosition(0)
+                binding.srlLoading.isEnabled = true
                 binding.srlLoading.isRefreshing = false
             }
         }
