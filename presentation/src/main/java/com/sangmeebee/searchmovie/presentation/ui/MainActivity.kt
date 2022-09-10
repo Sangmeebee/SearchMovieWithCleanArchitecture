@@ -43,10 +43,8 @@ class MainActivity : AppCompatActivity() {
         observeMovies()
     }
 
-    private fun setOnBackPressedDispatcher() {
-        onBackPressedDispatcher.addCallback(this) {
-            finish()
-        }
+    private fun setOnBackPressedDispatcher() = onBackPressedDispatcher.addCallback(this) {
+        finish()
     }
 
     private fun setRecyclerView() {
