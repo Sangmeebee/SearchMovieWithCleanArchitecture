@@ -2,6 +2,7 @@ package com.sangmeebee.searchmovie.presentation.ui
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -35,14 +36,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setRecyclerView()
         setSwipeRefreshLayout()
+        setOnBackPressedDispatcher()
 
         observePagingRefresh()
         observePagingAppend()
         observeMovies()
     }
 
-    private fun setRecyclerView() {
+    private fun setOnBackPressedDispatcher() {
+        onBackPressedDispatcher.addCallback(this) {
+            finish()
+        }
+    }
 
+    private fun setRecyclerView() {
         binding.rvMovieList.apply {
             setHasFixedSize(true)
 
