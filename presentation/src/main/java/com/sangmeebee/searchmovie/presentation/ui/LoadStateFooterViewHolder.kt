@@ -1,6 +1,5 @@
 package com.sangmeebee.searchmovie.presentation.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -20,7 +19,6 @@ class LoadStateFooterViewHolder(
     }
 
     fun bind(loadState: LoadState) {
-        Log.d("Sangmeebee", "hihi")
         binding.pbLoad.isVisible = loadState is LoadState.Loading
         binding.llReload.isVisible = loadState is LoadState.Error
     }

@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.ui
+package com.sangmeebee.searchmovie.presentation.util
 
 import android.widget.ImageView
 import android.widget.TextView

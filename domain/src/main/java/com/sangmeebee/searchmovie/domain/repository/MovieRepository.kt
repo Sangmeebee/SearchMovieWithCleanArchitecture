@@ -6,4 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
     fun getMovies(query: String): Flow<PagingData<Movie>>
+    suspend fun bookmark(movieId: String)
+    suspend fun getAllBookmarked(): List<String>
+    suspend fun unbookmark(movieId: String)
 }

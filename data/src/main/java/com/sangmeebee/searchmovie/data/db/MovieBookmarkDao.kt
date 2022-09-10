@@ -16,22 +16,18 @@
 
 package com.sangmeebee.searchmovie.data.db
 
-import androidx.paging.PagingSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.sangmeebee.searchmovie.domain.model.Movie
+import androidx.room.*
+import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
 
 @Dao
-interface MovieDao {
+interface MovieBookmarkDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(movies: List<Movie>)
+    suspend fun insert(movie: MovieBookmarkEntity)
 
-    @Query("SELECT * FROM movies WHERE title LIKE :queryString OR subtitle LIKE :queryString ORDER BY releaseDate DESC, title ASC")
-    fun moviesByTitle(queryString: String): PagingSource<Int, Movie>
+    @Query("SELECT * FROM movie_bookmark")
+    suspend fun getMovies(): List<MovieBookmarkEntity>
 
-    @Query("DELETE FROM movies")
-    suspend fun clearRepos()
+    @Delete
+    suspend fun deleteMovieBookmark(movie: MovieBookmarkEntity)
 }

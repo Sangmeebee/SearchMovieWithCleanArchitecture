@@ -3,7 +3,10 @@ package com.sangmeebee.searchmovie.presentation.model.mapper
 import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.presentation.model.MovieModel
 
-internal fun Movie.toPresentation() =
+internal fun Movie.toPresentation(
+    isBookmarked: Boolean,
+    bookmark: () -> Unit,
+) =
     MovieModel(
         title = "${title}(${releaseDate})",
         subtitle = subtitle,
@@ -16,5 +19,7 @@ internal fun Movie.toPresentation() =
         } else {
             "<b>${director.removeSuffix("|")}</b>|${actor.removeSuffix("|")}"
         },
-        userRating = userRating.toFloat() / 2
+        userRating = userRating.toFloat() / 2,
+        isBookmarked = isBookmarked,
+        bookmark = bookmark,
     )

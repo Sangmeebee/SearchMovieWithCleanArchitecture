@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.di
+package com.sangmeebee.searchmovie.data.di
 
 import dagger.Module
 import dagger.Provides

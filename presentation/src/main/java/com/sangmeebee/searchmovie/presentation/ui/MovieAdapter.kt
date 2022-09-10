@@ -10,8 +10,22 @@ import com.sangmeebee.searchmovie.presentation.model.MovieModel
 
 class MovieAdapter : PagingDataAdapter<MovieModel, MovieAdapter.ViewHolder>(MovieDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding =
+            ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
+
+            }
+        return ViewHolder(binding).apply {
+            binding.ivBookmark.setOnClickListener {
+                snapshot()[bindingAdapterPosition]?.let { movie ->
+                    movie.bookmark()
+                    movie.isBookmarked = !movie.isBookmarked
+                }
+                notifyItemChanged(bindingAdapterPosition)
+            }
+        }
+    }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(getItem(position))

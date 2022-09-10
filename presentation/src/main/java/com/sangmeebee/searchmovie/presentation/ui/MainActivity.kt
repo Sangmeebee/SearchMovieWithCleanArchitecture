@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         binding.srlLoading.apply {
             isEnabled = false
             setOnRefreshListener {
+                mainViewModel.fetchBookmarkedMovies()
                 movieAdapter.refresh()
             }
         }
