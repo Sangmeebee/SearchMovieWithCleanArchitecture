@@ -3,6 +3,8 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -50,10 +52,15 @@ dependencies {
     implementation(project(":presentation"))
     implementation(project(":data"))
     implementation(project(":domain"))
+//
+//    AndroidConfig.run {
+//        implementation(APPCOMPAT)
+//        implementation(MATERIAL)
+//    }
 
-    AndroidConfig.run {
-        implementation(APPCOMPAT)
-        implementation(MATERIAL)
+    NavigationConfig.run {
+        implementation(FRAGMENT_KTX)
+        implementation(UI_KTX)
     }
 
     RoomConfig.run {
@@ -70,22 +77,9 @@ dependencies {
         implementation(OKHTTP_LOGGING_INTERCEPTOR)
     }
 
-    implementation(ConverterConfig.GSON)
 
     HiltConfig.run {
         implementation(ANDROID)
         kapt(COMPILER)
-    }
-
-    UnitTestConfig.run {
-        testImplementation(JUNIT)
-        testImplementation(JUNIT_JUPITER)
-        testImplementation(JUNIT_VINTAGE_ENGINE)
-    }
-
-    UITestConfig.run {
-        androidTestImplementation(JUNIT_JUPITER_API)
-        androidTestImplementation(JUNIT)
-        androidTestImplementation(ESPRESSO_CORE)
     }
 }

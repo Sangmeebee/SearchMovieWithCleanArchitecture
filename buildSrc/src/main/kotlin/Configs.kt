@@ -30,6 +30,14 @@ object AndroidConfig {
     const val SWIPE_REFRESH_LAYOUT = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }
 
+object NavigationConfig {
+    private const val navVersion = "2.5.2"
+    const val FRAGMENT_KTX = "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    const val UI_KTX = "androidx.navigation:navigation-ui-ktx:$navVersion"
+    const val NAVIGATION_SAFE_ARGS_GRADLE_PLUGIN =
+        "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
+}
+
 object PagingConfig {
     private const val pagingVersion = "3.1.1"
     const val PAGING_RUNTIME = "androidx.paging:paging-runtime:$pagingVersion"
