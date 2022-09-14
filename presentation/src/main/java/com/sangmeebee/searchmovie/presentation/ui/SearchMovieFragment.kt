@@ -1,15 +1,16 @@
 package com.sangmeebee.searchmovie.presentation.ui
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
 import com.sangmeebee.searchmovie.presentation.R
-import com.sangmeebee.searchmovie.presentation.databinding.ActivityMainBinding
+import com.sangmeebee.searchmovie.presentation.databinding.FragmentSearchMovieBinding
+import com.sangmeebee.searchmovie.presentation.ui.base.BaseFragment
 import com.sangmeebee.searchmovie.presentation.util.SoftInputUtil
 import com.sangmeebee.searchmovie.presentation.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,21 +20,15 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class SearchMovieFragment :
+    BaseFragment<FragmentSearchMovieBinding>(R.layout.fragment_search_movie) {
 
-    private lateinit var binding: ActivityMainBinding
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val searchMovieViewModel by viewModels<SearchMovieViewModel>()
     private val movieAdapter: MovieAdapter = MovieAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater).apply {
-            this.lifecycleOwner = this@MainActivity
-            this.viewModel = mainViewModel
-        }
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         setSwipeRefreshLayout()
         setOnBackPressedDispatcher()
@@ -43,9 +38,15 @@ class MainActivity : AppCompatActivity() {
         observeMovies()
     }
 
-    private fun setOnBackPressedDispatcher() = onBackPressedDispatcher.addCallback(this) {
-        finish()
+    override fun FragmentSearchMovieBinding.setBinding() {
+        lifecycleOwner = this@SearchMovieFragment.viewLifecycleOwner
+        viewModel = searchMovieViewModel
     }
+
+    private fun setOnBackPressedDispatcher() =
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            requireActivity().finish()
+        }
 
     private fun setRecyclerView() {
         binding.rvMovieList.apply {
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             adapter = movieAdapter.apply {
                 addLoadStateListener { loadState ->
                     if (loadState.source.refresh is LoadState.NotLoading && movieAdapter.itemCount != 0) {
-                        SoftInputUtil(this@MainActivity).hideKeyboard(binding.etQuery)
+                        SoftInputUtil(requireContext()).hideKeyboard(binding.etQuery)
                     }
                 }
             }.withLoadStateFooter(MovieLoadStateAdapter(movieAdapter::retry))
@@ -65,14 +66,14 @@ class MainActivity : AppCompatActivity() {
         binding.srlLoading.apply {
             isEnabled = false
             setOnRefreshListener {
-                mainViewModel.fetchBookmarkedMovies()
+                searchMovieViewModel.fetchBookmarkedMovies()
                 movieAdapter.refresh()
             }
         }
     }
 
     private fun observeMovies() = repeatOnStarted {
-        mainViewModel.movies.collectLatest {
+        searchMovieViewModel.movies.collectLatest {
             movieAdapter.submitData(it)
         }
     }
@@ -119,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showToast(message: String?) {
         if (message != null) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="com.sangmeebee.searchmovie.presentation.ui.MainViewModel" />
+            type="com.sangmeebee.searchmovie.presentation.ui.SearchMovieViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.MainActivity">
+        tools:context=".presentation.ui.SearchMovieFragment">
 
         <LinearLayout
             android:id="@+id/ll_query"

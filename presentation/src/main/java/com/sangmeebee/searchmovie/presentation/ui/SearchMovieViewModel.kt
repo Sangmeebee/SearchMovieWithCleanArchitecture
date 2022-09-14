@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class SearchMovieViewModel @Inject constructor(
     private val getMovieUseCase: GetMovieUseCase,
     private val getAllBookmarkedMovieUseCase: GetAllBookmarkedMovieUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
