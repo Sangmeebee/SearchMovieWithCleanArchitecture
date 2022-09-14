@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/searchMovieFragment"
         android:name="com.sangmeebee.searchmovie.ui.searchmovie.SearchMovieFragment"
-        android:label="SearchMovieFragment"
+        android:label="@string/search_movie"
         tools:layout="@layout/fragment_search_movie" />
 </navigation>

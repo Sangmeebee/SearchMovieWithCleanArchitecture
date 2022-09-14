@@ -31,7 +31,6 @@ class SearchMovieFragment :
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         setSwipeRefreshLayout()
-        setOnBackPressedDispatcher()
 
         observePagingRefresh()
         observePagingAppend()
@@ -42,11 +41,6 @@ class SearchMovieFragment :
         lifecycleOwner = this@SearchMovieFragment.viewLifecycleOwner
         viewModel = searchMovieViewModel
     }
-
-    private fun setOnBackPressedDispatcher() =
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            requireActivity().finish()
-        }
 
     private fun setRecyclerView() {
         binding.rvMovieList.apply {

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">SearchMovie</string>
 
+    <!-- Menu strings -->
+    <string name="search_movie">SearchMovie</string>
+    <string name="bookmark_movie">BookmarkMovie</string>
+
+    <!-- Screen strings -->
     <string name="all_search">검색</string>
     <string name="all_network_disconnect">네트워크 연결상태를 확인해주세요</string>
     <string name="all_reload">다시 시도하려면 누르세요</string>
