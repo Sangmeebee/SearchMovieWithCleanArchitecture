@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.presentation.ui
+package com.sangmeebee.searchmovie.presentation.ui.searchmovie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.presentation.ui
+package com.sangmeebee.searchmovie.presentation.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,9 +12,7 @@ class MovieAdapter : PagingDataAdapter<MovieModel, MovieAdapter.ViewHolder>(Movi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-
-            }
+            ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding).apply {
             binding.ivBookmark.setOnClickListener {
                 snapshot()[bindingAdapterPosition]?.let { movie ->

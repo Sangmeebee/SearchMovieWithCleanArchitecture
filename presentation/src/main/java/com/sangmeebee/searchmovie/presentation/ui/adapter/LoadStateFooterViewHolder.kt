@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.presentation.ui
+package com.sangmeebee.searchmovie.presentation.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

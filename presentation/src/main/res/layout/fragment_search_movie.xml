@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.sangmeebee.searchmovie.presentation.ui.SearchMovieViewModel" />
+            type="com.sangmeebee.searchmovie.presentation.ui.searchmovie.SearchMovieViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

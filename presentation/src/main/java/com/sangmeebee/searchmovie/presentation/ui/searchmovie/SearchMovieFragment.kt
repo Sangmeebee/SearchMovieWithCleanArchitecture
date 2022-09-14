@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.presentation.ui
+package com.sangmeebee.searchmovie.presentation.ui.searchmovie
 
 import android.os.Bundle
 import android.view.View
@@ -10,6 +10,8 @@ import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
 import com.sangmeebee.searchmovie.presentation.R
 import com.sangmeebee.searchmovie.presentation.databinding.FragmentSearchMovieBinding
+import com.sangmeebee.searchmovie.presentation.ui.adapter.MovieAdapter
+import com.sangmeebee.searchmovie.presentation.ui.adapter.MovieLoadStateAdapter
 import com.sangmeebee.searchmovie.presentation.ui.base.BaseFragment
 import com.sangmeebee.searchmovie.presentation.util.SoftInputUtil
 import com.sangmeebee.searchmovie.presentation.util.repeatOnStarted
