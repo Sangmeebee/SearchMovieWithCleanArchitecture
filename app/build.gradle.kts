@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("de.mannodermaus.android-junit5")
     id("androidx.navigation.safeargs.kotlin")
 
 }
@@ -49,37 +50,48 @@ android {
 
 dependencies {
 
-    implementation(project(":presentation"))
     implementation(project(":data"))
     implementation(project(":domain"))
-//
-//    AndroidConfig.run {
-//        implementation(APPCOMPAT)
-//        implementation(MATERIAL)
-//    }
+
+    AndroidConfig.run {
+        implementation(CORE_KTX)
+        implementation(APPCOMPAT)
+        implementation(MATERIAL)
+        implementation(CONSTRAINT_LAYOUT)
+        implementation(SWIPE_REFRESH_LAYOUT)
+        implementation(FRAGMENT_KTX)
+    }
+
 
     NavigationConfig.run {
         implementation(FRAGMENT_KTX)
         implementation(UI_KTX)
     }
 
-    RoomConfig.run {
-        implementation(ROOM_RUNTIME)
-        kapt(ROOM_COMPILER)
-        implementation(ROOM_KTX)
-    }
-
-    NetworkConfig.run {
-        implementation(RETROFIT)
-        implementation(RETROFIT_CONVERTER)
-        implementation(platform(OKHTTP_BOM))
-        implementation(OKHTTP)
-        implementation(OKHTTP_LOGGING_INTERCEPTOR)
-    }
-
 
     HiltConfig.run {
         implementation(ANDROID)
         kapt(COMPILER)
+    }
+
+    implementation(CoilConfig.COIL)
+
+    implementation(PagingConfig.PAGING_RUNTIME)
+
+    UnitTestConfig.run {
+        testImplementation(JUNIT)
+        testImplementation(JUNIT_JUPITER)
+        testImplementation(JUNIT_VINTAGE_ENGINE)
+        testImplementation(TRUTH)
+        testImplementation(MOCKK)
+        testImplementation(COROUTINE_TEST)
+    }
+
+    UITestConfig.run {
+        androidTestImplementation(JUNIT_JUPITER_API)
+        androidTestImplementation(JUNIT)
+        androidTestImplementation(ESPRESSO_CORE)
+        androidTestImplementation(JUNIT5_CORE)
+        androidTestRuntimeOnly(JUNIT5_RUNNER)
     }
 }

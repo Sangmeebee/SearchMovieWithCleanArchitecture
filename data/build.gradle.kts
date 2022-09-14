@@ -50,12 +50,16 @@ dependencies {
 
     NetworkConfig.run {
         implementation(RETROFIT)
+        implementation(RETROFIT_CONVERTER)
+        implementation(platform(OKHTTP_BOM))
+        implementation(OKHTTP)
+        implementation(OKHTTP_LOGGING_INTERCEPTOR)
     }
 
     implementation(ConverterConfig.GSON)
 
     HiltConfig.run {
-        implementation(CORE)
+        implementation(ANDROID)
         kapt(COMPILER)
     }
 
