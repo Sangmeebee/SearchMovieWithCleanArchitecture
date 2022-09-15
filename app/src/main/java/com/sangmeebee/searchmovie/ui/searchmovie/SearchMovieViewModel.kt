@@ -10,7 +10,9 @@ import com.sangmeebee.searchmovie.domain.usecase.BookmarkMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetAllBookmarkedMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.UnbookmarkMovieUseCase
+import com.sangmeebee.searchmovie.model.MovieModel
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
+import com.sangmeebee.searchmovie.util.MutableEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -27,12 +29,12 @@ class SearchMovieViewModel @Inject constructor(
     private val unbookmarkMovieUseCase: UnbookmarkMovieUseCase,
 ) : ViewModel() {
 
-    private val query = com.sangmeebee.searchmovie.util.MutableEventFlow<String>()
+    private val query = MutableEventFlow<String>()
 
     private val bookmarkedMovies: MutableList<String> = mutableListOf()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val movies: Flow<PagingData<com.sangmeebee.searchmovie.model.MovieModel>> =
+    val movies: Flow<PagingData<MovieModel>> =
         query.flatMapLatest {
             fetchMovie(it).map { pagingData: PagingData<Movie> ->
                 pagingData.map { movieInfo ->

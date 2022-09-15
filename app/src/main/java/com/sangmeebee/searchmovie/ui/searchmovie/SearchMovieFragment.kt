@@ -3,14 +3,16 @@ package com.sangmeebee.searchmovie.ui.searchmovie
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.FragmentSearchMovieBinding
 import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
+import com.sangmeebee.searchmovie.ui.adapter.MovieAdapter
+import com.sangmeebee.searchmovie.ui.adapter.MovieLoadStateAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
+import com.sangmeebee.searchmovie.util.SoftInputUtil
 import com.sangmeebee.searchmovie.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -24,17 +26,20 @@ class SearchMovieFragment :
     BaseFragment<FragmentSearchMovieBinding>(R.layout.fragment_search_movie) {
 
     private val searchMovieViewModel by viewModels<SearchMovieViewModel>()
-    private val movieAdapter: com.sangmeebee.searchmovie.ui.adapter.MovieAdapter =
-        com.sangmeebee.searchmovie.ui.adapter.MovieAdapter()
+    private val movieAdapter: MovieAdapter = MovieAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        observePagingRefresh()
+        observePagingAppend()
+        observeMovies()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         setSwipeRefreshLayout()
-
-        observePagingRefresh()
-        observePagingAppend()
-        observeMovies()
     }
 
     override fun FragmentSearchMovieBinding.setBinding() {
@@ -45,17 +50,15 @@ class SearchMovieFragment :
     private fun setRecyclerView() {
         binding.rvMovieList.apply {
             setHasFixedSize(true)
-
             adapter = movieAdapter.apply {
                 addLoadStateListener { loadState ->
                     if (loadState.source.refresh is LoadState.NotLoading && movieAdapter.itemCount != 0) {
-                        com.sangmeebee.searchmovie.util.SoftInputUtil(requireContext())
-                            .hideKeyboard(binding.etQuery)
+                        SoftInputUtil(requireContext()).hideKeyboard(binding.etQuery)
                     }
                 }
-            }.withLoadStateFooter(com.sangmeebee.searchmovie.ui.adapter.MovieLoadStateAdapter(
-                movieAdapter::retry))
+            }.withLoadStateFooter(MovieLoadStateAdapter(movieAdapter::retry))
         }
+
     }
 
     private fun setSwipeRefreshLayout() {

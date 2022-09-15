@@ -6,14 +6,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmeebee.searchmovie.databinding.ItemMovieBinding
+import com.sangmeebee.searchmovie.model.MovieModel
 
 class MovieAdapter :
-    PagingDataAdapter<com.sangmeebee.searchmovie.model.MovieModel, MovieAdapter.ViewHolder>(
-        MovieDiffCallback()) {
+    PagingDataAdapter<MovieModel, MovieAdapter.ViewHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding).apply {
             binding.ivBookmark.setOnClickListener {
                 snapshot()[bindingAdapterPosition]?.let { movie ->
@@ -32,7 +31,7 @@ class MovieAdapter :
     class ViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(movie: com.sangmeebee.searchmovie.model.MovieModel?) {
+        fun bind(movie: MovieModel?) {
             if (movie != null) {
                 binding.movie = movie
             }
@@ -40,16 +39,16 @@ class MovieAdapter :
     }
 }
 
-class MovieDiffCallback : DiffUtil.ItemCallback<com.sangmeebee.searchmovie.model.MovieModel>() {
+class MovieDiffCallback : DiffUtil.ItemCallback<MovieModel>() {
     override fun areItemsTheSame(
-        oldItem: com.sangmeebee.searchmovie.model.MovieModel,
-        newItem: com.sangmeebee.searchmovie.model.MovieModel,
+        oldItem: MovieModel,
+        newItem: MovieModel,
     ): Boolean =
         oldItem.link == newItem.link
 
 
     override fun areContentsTheSame(
-        oldItem: com.sangmeebee.searchmovie.model.MovieModel,
-        newItem: com.sangmeebee.searchmovie.model.MovieModel,
+        oldItem: MovieModel,
+        newItem: MovieModel,
     ): Boolean = oldItem == newItem
 }
