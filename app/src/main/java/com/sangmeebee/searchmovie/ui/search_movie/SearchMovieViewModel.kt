@@ -6,11 +6,14 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.sangmeebee.searchmovie.domain.model.Movie
+import com.sangmeebee.searchmovie.domain.model.MovieBookmark
 import com.sangmeebee.searchmovie.domain.usecase.BookmarkMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetAllBookmarkedMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.UnbookmarkMovieUseCase
 import com.sangmeebee.searchmovie.model.MovieModel
+import com.sangmeebee.searchmovie.model.mapper.toMovieBookmark
+import com.sangmeebee.searchmovie.model.mapper.toMovieId
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
 import com.sangmeebee.searchmovie.util.MutableEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,7 +44,7 @@ class SearchMovieViewModel @Inject constructor(
                     val isBookmarked = bookmarkedMovies.contains(movieInfo.link)
                     movieInfo.toPresentation(
                         isBookmarked = isBookmarked,
-                        bookmark = { bookmarkMovie(isBookmarked, movieInfo.link) }
+                        bookmark = { bookmarkMovie(isBookmarked, movieInfo.toMovieBookmark()) }
                     )
                 }
             }
@@ -58,14 +61,14 @@ class SearchMovieViewModel @Inject constructor(
 
     fun fetchBookmarkedMovies() = viewModelScope.launch {
         bookmarkedMovies.clear()
-        bookmarkedMovies.addAll(getAllBookmarkedMovieUseCase())
+        bookmarkedMovies.addAll(getAllBookmarkedMovieUseCase().toMovieId())
     }
 
-    private fun bookmarkMovie(isBookmarked: Boolean, movieId: String) = viewModelScope.launch {
+    private fun bookmarkMovie(isBookmarked: Boolean, movie: MovieBookmark) = viewModelScope.launch {
         if (isBookmarked) {
-            unbookmarkMovieUseCase(movieId)
+            unbookmarkMovieUseCase(movie)
         } else {
-            bookmarkMovieUseCase(movieId)
+            bookmarkMovieUseCase(movie)
         }
     }
 }

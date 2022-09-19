@@ -8,6 +8,7 @@ import com.sangmeebee.searchmovie.data.datasource.remote.MoviePagingDataSource
 import com.sangmeebee.searchmovie.data.datasource.remote.MoviePagingDataSource.Companion.PAGE_DISPLAY_SIZE
 import com.sangmeebee.searchmovie.data.service.MovieAPI
 import com.sangmeebee.searchmovie.domain.model.Movie
+import com.sangmeebee.searchmovie.domain.model.MovieBookmark
 import com.sangmeebee.searchmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -25,13 +26,12 @@ class MovieRepositoryImpl @Inject constructor(
             pagingSourceFactory = { MoviePagingDataSource(movieAPI, query) }
         ).flow
 
-    override suspend fun bookmark(movieId: String) =
-        movieBookmarkLocalDataSource.bookmark(movieId)
+    override suspend fun bookmark(movie: MovieBookmark) =
+        movieBookmarkLocalDataSource.bookmark(movie)
 
-
-    override suspend fun getAllBookmarked(): List<String> =
+    override suspend fun getAllBookmarked(): List<MovieBookmark> =
         movieBookmarkLocalDataSource.getAllBookmarked()
 
-    override suspend fun unbookmark(movieId: String) =
-        movieBookmarkLocalDataSource.unbookmark(movieId)
+    override suspend fun unbookmark(movie: MovieBookmark) =
+        movieBookmarkLocalDataSource.unbookmark(movie)
 }

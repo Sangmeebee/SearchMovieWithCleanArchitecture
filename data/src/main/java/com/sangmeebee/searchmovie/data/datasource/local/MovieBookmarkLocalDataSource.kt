@@ -1,7 +1,9 @@
 package com.sangmeebee.searchmovie.data.datasource.local
 
+import com.sangmeebee.searchmovie.domain.model.MovieBookmark
+
 interface MovieBookmarkLocalDataSource {
-    suspend fun bookmark(movieId: String)
-    suspend fun getAllBookmarked(): List<String>
-    suspend fun unbookmark(movieId: String)
+    suspend fun bookmark(movie: MovieBookmark)
+    suspend fun getAllBookmarked(): List<MovieBookmark>
+    suspend fun unbookmark(movie: MovieBookmark)
 }

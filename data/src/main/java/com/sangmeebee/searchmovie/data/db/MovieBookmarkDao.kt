@@ -18,6 +18,7 @@ package com.sangmeebee.searchmovie.data.db
 
 import androidx.room.*
 import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
+import com.sangmeebee.searchmovie.domain.model.MovieBookmark
 
 @Dao
 interface MovieBookmarkDao {
