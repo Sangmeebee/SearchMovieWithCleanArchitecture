@@ -42,9 +42,4 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-    }
 }
