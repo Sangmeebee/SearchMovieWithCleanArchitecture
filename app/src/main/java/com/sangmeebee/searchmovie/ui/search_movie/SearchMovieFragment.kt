@@ -1,4 +1,4 @@
-package com.sangmeebee.searchmovie.ui.searchmovie
+package com.sangmeebee.searchmovie.ui.search_movie
 
 import android.os.Bundle
 import android.view.View
@@ -23,7 +23,7 @@ import java.io.IOException
 
 @AndroidEntryPoint
 class SearchMovieFragment :
-    BaseFragment<FragmentSearchMovieBinding>(R.layout.fragment_search_movie) {
+    BaseFragment<FragmentSearchMovieBinding>(FragmentSearchMovieBinding::inflate) {
 
     private val searchMovieViewModel by viewModels<SearchMovieViewModel>()
     private val movieAdapter: MovieAdapter = MovieAdapter()
