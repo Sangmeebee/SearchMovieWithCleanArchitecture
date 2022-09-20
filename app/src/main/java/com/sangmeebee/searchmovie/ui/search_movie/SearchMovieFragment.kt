@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.FragmentSearchMovieBinding
-import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
+import com.sangmeebee.searchmovie.domain.util.*
 import com.sangmeebee.searchmovie.ui.adapter.MovieAdapter
 import com.sangmeebee.searchmovie.ui.adapter.MovieLoadStateAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 @AndroidEntryPoint
 class SearchMovieFragment :
@@ -30,10 +29,10 @@ class SearchMovieFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        observePagingRefresh()
-        observePagingAppend()
         observeMovies()
+        observeErrorEvent()
+        observePagingAppend()
+        observePagingRefresh()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,14 +57,12 @@ class SearchMovieFragment :
                 }
             }.withLoadStateFooter(MovieLoadStateAdapter(movieAdapter::retry))
         }
-
     }
 
     private fun setSwipeRefreshLayout() {
         binding.srlLoading.apply {
             isEnabled = false
             setOnRefreshListener {
-                searchMovieViewModel.fetchBookmarkedMovies()
                 movieAdapter.refresh()
             }
         }
@@ -74,6 +71,16 @@ class SearchMovieFragment :
     private fun observeMovies() = repeatOnStarted {
         searchMovieViewModel.movies.collectLatest {
             movieAdapter.submitData(it)
+        }
+    }
+
+    private fun observeErrorEvent() = repeatOnStarted {
+        searchMovieViewModel.errorEvent.collectLatest { throwable ->
+            when (throwable) {
+                is GetBookmarkException -> showToast(resources.getString(R.string.search_movie_get_bookmark_error))
+                is BookmarkException -> showToast(resources.getString(R.string.search_movie_bookmark_error))
+                is UnBookmarkException -> showToast(resources.getString(R.string.search_movie_unbookmark_error))
+            }
         }
     }
 
@@ -111,8 +118,8 @@ class SearchMovieFragment :
 
     private fun checkErrorState(throwable: Throwable) {
         when (throwable) {
-            is EmptyQueryException -> showToast(resources.getString(R.string.movie_list_empty_query))
-            is IOException -> showToast(resources.getString(R.string.all_network_disconnect))
+            is EmptyQueryException -> showToast(resources.getString(R.string.search_movie_empty_query))
+            is HttpConnectionException -> showToast(resources.getString(R.string.all_network_disconnect))
             else -> showToast(throwable.message)
         }
     }

@@ -6,6 +6,7 @@ import com.sangmeebee.searchmovie.data.model.mapper.toDomain
 import com.sangmeebee.searchmovie.data.service.MovieAPI
 import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.domain.util.EmptyQueryException
+import com.sangmeebee.searchmovie.domain.util.HttpConnectionException
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -32,7 +33,7 @@ internal class MoviePagingDataSource(
             )
         } catch (e: IOException) {
             // IOException for network failures.
-            return LoadResult.Error(e)
+            return LoadResult.Error(HttpConnectionException())
         } catch (e: HttpException) {
             // HttpException for any non-2xx HTTP status codes.
             return LoadResult.Error(e)

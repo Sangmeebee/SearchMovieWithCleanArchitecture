@@ -26,12 +26,12 @@ class MovieRepositoryImpl @Inject constructor(
             pagingSourceFactory = { MoviePagingDataSource(movieAPI, query) }
         ).flow
 
-    override suspend fun bookmark(movie: MovieBookmark) =
+    override suspend fun bookmark(movie: MovieBookmark): Result<Unit> =
         movieBookmarkLocalDataSource.bookmark(movie)
 
-    override suspend fun getAllBookmarked(): List<MovieBookmark> =
+    override suspend fun getAllBookmarked(): Result<List<MovieBookmark>> =
         movieBookmarkLocalDataSource.getAllBookmarked()
 
-    override suspend fun unbookmark(movie: MovieBookmark) =
+    override suspend fun unbookmark(movie: MovieBookmark): Result<Unit> =
         movieBookmarkLocalDataSource.unbookmark(movie)
 }

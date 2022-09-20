@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetAllBookmarkedMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
 ) {
-    suspend operator fun invoke(): List<MovieBookmark> =
+    suspend operator fun invoke(): Result<List<MovieBookmark>> =
         movieRepository.getAllBookmarked()
 }
