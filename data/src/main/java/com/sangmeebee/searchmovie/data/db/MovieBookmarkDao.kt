@@ -16,9 +16,11 @@
 
 package com.sangmeebee.searchmovie.data.db
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
-import com.sangmeebee.searchmovie.domain.model.MovieBookmark
 
 @Dao
 interface MovieBookmarkDao {
@@ -29,6 +31,6 @@ interface MovieBookmarkDao {
     @Query("SELECT * FROM movie_bookmark")
     suspend fun getMovies(): List<MovieBookmarkEntity>
 
-    @Delete
-    suspend fun deleteMovieBookmark(movie: MovieBookmarkEntity)
+    @Query("DELETE FROM movie_bookmark WHERE movie_id = :movieId")
+    suspend fun deleteMovieBookmark(movieId: String)
 }

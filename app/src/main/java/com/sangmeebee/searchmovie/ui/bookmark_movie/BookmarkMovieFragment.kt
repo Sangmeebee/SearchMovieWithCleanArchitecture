@@ -36,7 +36,7 @@ class BookmarkMovieFragment :
     }
 
     private fun observeBookmarkedMovieState() = repeatOnStarted {
-        searchMovieViewModel.bookmarkedMovieState.collectLatest {
+        searchMovieViewModel.bookmarkedMovieState.collect {
             movieAdapter.submitList(it)
         }
     }

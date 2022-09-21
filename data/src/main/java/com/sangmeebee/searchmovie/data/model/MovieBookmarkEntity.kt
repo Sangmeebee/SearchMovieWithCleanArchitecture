@@ -11,6 +11,7 @@ data class MovieBookmarkEntity(
     val title: String,
     val subtitle: String? = null,
     @PrimaryKey
+    @ColumnInfo(name = "movie_id")
     val link: String,
     @ColumnInfo(name = "image_url")
     val imageUrl: String?,

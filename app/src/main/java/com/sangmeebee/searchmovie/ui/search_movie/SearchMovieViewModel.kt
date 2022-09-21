@@ -66,13 +66,13 @@ class SearchMovieViewModel @Inject constructor(
     }
 
     fun bookmarkMovie(movie: MovieModel) = viewModelScope.launch {
-        if (bookmarkedMovies.contains(movie)) {
-            unbookmarkMovieUseCase(movie.toMovieBookmark())
-                .onSuccess { bookmarkedMovies.removeIf { bookmarkedMovie -> bookmarkedMovie.link == movie.link } }
+        if (bookmarkedMovies.any { it.link == movie.link }) {
+            unbookmarkMovieUseCase(movie.link)
+                .onSuccess { bookmarkedMovies.remove(movie) }
                 .onFailure { _errorEvent.emit(UnBookmarkException()) }
         } else {
             bookmarkMovieUseCase(movie.toMovieBookmark())
-                .onSuccess { bookmarkedMovies.add(movie) }
+                .onSuccess { bookmarkedMovies.add(movie.copy(isBookmarked = true)) }
                 .onFailure { _errorEvent.emit(BookmarkException()) }
         }
         _bookmarkedMovieState.value = bookmarkedMovies.toList()

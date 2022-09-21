@@ -25,9 +25,9 @@ class MovieBookmarkLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun unbookmark(movie: MovieBookmark) = runCatching {
+    override suspend fun unbookmark(movieId: String) = runCatching {
         withContext(ioDispatcher) {
-            movieDao.deleteMovieBookmark(movie.toData())
+            movieDao.deleteMovieBookmark(movieId)
         }
     }
 }

@@ -9,5 +9,5 @@ interface MovieRepository {
     fun getMovies(query: String): Flow<PagingData<Movie>>
     suspend fun bookmark(movie: MovieBookmark): Result<Unit>
     suspend fun getAllBookmarked(): Result<List<MovieBookmark>>
-    suspend fun unbookmark(movie: MovieBookmark): Result<Unit>
+    suspend fun unbookmark(movieId: String): Result<Unit>
 }

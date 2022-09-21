@@ -32,6 +32,6 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getAllBookmarked(): Result<List<MovieBookmark>> =
         movieBookmarkLocalDataSource.getAllBookmarked()
 
-    override suspend fun unbookmark(movie: MovieBookmark): Result<Unit> =
-        movieBookmarkLocalDataSource.unbookmark(movie)
+    override suspend fun unbookmark(movieId: String): Result<Unit> =
+        movieBookmarkLocalDataSource.unbookmark(movieId)
 }
