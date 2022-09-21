@@ -3,14 +3,14 @@ package com.sangmeebee.searchmovie.ui.search_movie
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.FragmentSearchMovieBinding
 import com.sangmeebee.searchmovie.domain.util.*
-import com.sangmeebee.searchmovie.ui.adapter.MovieAdapter
 import com.sangmeebee.searchmovie.ui.adapter.MovieLoadStateAdapter
+import com.sangmeebee.searchmovie.ui.adapter.SearchMovieAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
 import com.sangmeebee.searchmovie.util.SoftInputUtil
 import com.sangmeebee.searchmovie.util.repeatOnStarted
@@ -24,8 +24,8 @@ import kotlinx.coroutines.launch
 class SearchMovieFragment :
     BaseFragment<FragmentSearchMovieBinding>(FragmentSearchMovieBinding::inflate) {
 
-    private val searchMovieViewModel by viewModels<SearchMovieViewModel>()
-    private val movieAdapter: MovieAdapter = MovieAdapter()
+    private val searchMovieViewModel by activityViewModels<SearchMovieViewModel>()
+    private val movieAdapter by lazy { SearchMovieAdapter(searchMovieViewModel::bookmarkMovie) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +33,7 @@ class SearchMovieFragment :
         observeErrorEvent()
         observePagingAppend()
         observePagingRefresh()
+        observeBookmarkEvent()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -127,6 +128,18 @@ class SearchMovieFragment :
     private fun showToast(message: String?) {
         if (message != null) {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun observeBookmarkEvent() = repeatOnStarted {
+        searchMovieViewModel.bookmarkEvent.collectLatest { bookmarkedMovie ->
+            val index = movieAdapter.snapshot().indexOf(bookmarkedMovie)
+            if (index != -1) {
+                movieAdapter.snapshot()[index]?.let { movie ->
+                    movie.isBookmarked = !movie.isBookmarked
+                }
+                movieAdapter.notifyItemChanged(index)
+            }
         }
     }
 }
