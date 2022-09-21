@@ -3,6 +3,7 @@ package com.sangmeebee.searchmovie.data.di
 import android.content.Context
 import androidx.room.Room
 import com.sangmeebee.searchmovie.data.db.AppDataBase
+import com.sangmeebee.searchmovie.data.db.MIGRATION_1_2
 import com.sangmeebee.searchmovie.data.db.MovieBookmarkDao
 import dagger.Module
 import dagger.Provides
@@ -19,7 +20,7 @@ object DBModule {
     @Provides
     fun provideAppDataBase(@ApplicationContext context: Context): AppDataBase = Room
         .databaseBuilder(context, AppDataBase::class.java, "SearchMovie.db")
-        .fallbackToDestructiveMigration()
+        .addMigrations(MIGRATION_1_2)
         .build()
 
     @Singleton

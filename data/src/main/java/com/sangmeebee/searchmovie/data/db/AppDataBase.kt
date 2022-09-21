@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
 
-@Database(entities = [MovieBookmarkEntity::class], version = 1)
+@Database(entities = [MovieBookmarkEntity::class], version = 2, exportSchema = true)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun movieBookmarkDao(): MovieBookmarkDao
 }
