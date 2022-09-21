@@ -8,5 +8,4 @@ data class MovieModel(
     val contributor: String,
     val userRating: Float,
     var isBookmarked: Boolean = false,
-    val bookmark: () -> Unit,
 )

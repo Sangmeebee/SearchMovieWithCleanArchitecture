@@ -6,7 +6,6 @@ import com.sangmeebee.searchmovie.model.MovieModel
 
 internal fun Movie.toPresentation(
     isBookmarked: Boolean,
-    bookmark: () -> Unit,
 ) = MovieModel(
     title = "${title}(${releaseDate})",
     subtitle = subtitle,
@@ -14,18 +13,29 @@ internal fun Movie.toPresentation(
     imageUrl = imageUrl,
     contributor = setMovieContributor(director, actor),
     userRating = setMovieRating(userRating),
-    isBookmarked = isBookmarked,
-    bookmark = bookmark,
+    isBookmarked = isBookmarked
 )
 
-internal fun Movie.toMovieBookmark() = MovieBookmark(
+internal fun MovieModel.toMovieBookmark() = MovieBookmark(
     title = title,
     subtitle = subtitle,
     link = link,
     imageUrl = imageUrl,
-    contributor = setMovieContributor(director, actor),
-    userRating = setMovieRating(userRating),
+    contributor = contributor,
+    userRating = userRating
 )
+
+internal fun MovieBookmark.toPresentation() = MovieModel(
+    title = title,
+    subtitle = subtitle,
+    link = link,
+    imageUrl = imageUrl,
+    contributor = contributor,
+    userRating = userRating,
+    isBookmarked = true
+)
+
+internal fun List<MovieBookmark>.toPresentation() = map { it.toPresentation() }
 
 internal fun setMovieContributor(director: String, actor: String): String =
     if (director.isEmpty()) {
