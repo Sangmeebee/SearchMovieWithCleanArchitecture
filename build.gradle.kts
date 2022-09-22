@@ -15,6 +15,7 @@ buildscript {
         classpath(KotlinConfig.KOTLIN_GRADLE_PLUGIN)
         classpath(HiltConfig.ANDROID_GRADLE_PLUGIN)
         classpath(NavigationConfig.NAVIGATION_SAFE_ARGS_GRADLE_PLUGIN)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
     }
 }
 

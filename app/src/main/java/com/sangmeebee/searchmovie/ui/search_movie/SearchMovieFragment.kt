@@ -7,8 +7,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
+import com.sangmeebee.searchmovie.cache.util.BookmarkException
+import com.sangmeebee.searchmovie.cache.util.GetBookmarkException
+import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.databinding.FragmentSearchMovieBinding
-import com.sangmeebee.searchmovie.domain.util.*
+import com.sangmeebee.searchmovie.remote.util.EmptyQueryException
+import com.sangmeebee.searchmovie.remote.util.HttpConnectionException
 import com.sangmeebee.searchmovie.ui.adapter.MovieLoadStateAdapter
 import com.sangmeebee.searchmovie.ui.adapter.SearchMovieAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment

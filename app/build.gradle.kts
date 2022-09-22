@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sangmeebee.searchmovie"
-        minSdk = 24
+        minSdk = 21
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -56,8 +56,10 @@ android {
 
 dependencies {
 
-    implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":remote"))
+    implementation(project(":cache"))
 
     AndroidConfig.run {
         implementation(CORE_KTX)

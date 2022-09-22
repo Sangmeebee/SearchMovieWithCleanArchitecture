@@ -1,8 +1,9 @@
 package com.sangmeebee.searchmovie.data.service
 
 import com.google.common.truth.Truth.assertThat
-import com.sangmeebee.searchmovie.data.model.MovieInfoResponse
-import com.sangmeebee.searchmovie.data.model.MovieResponse
+import com.sangmeebee.searchmovie.remote.model.MovieInfoResponse
+import com.sangmeebee.searchmovie.remote.model.MovieResponse
+import com.sangmeebee.searchmovie.remote.service.MovieAPI
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest

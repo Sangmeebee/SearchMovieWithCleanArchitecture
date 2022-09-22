@@ -1,36 +1,37 @@
 package com.sangmeebee.searchmovie.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import com.sangmeebee.searchmovie.data.datasource.local.MovieBookmarkLocalDataSource
-import com.sangmeebee.searchmovie.data.datasource.remote.MoviePagingDataSource
-import com.sangmeebee.searchmovie.data.datasource.remote.MoviePagingDataSource.Companion.PAGE_DISPLAY_SIZE
-import com.sangmeebee.searchmovie.data.service.MovieAPI
+import com.sangmeebee.searchmovie.data.datasource.remote.MovieRemoteDataSource
+import com.sangmeebee.searchmovie.data.model.MovieEntity
+import com.sangmeebee.searchmovie.data.model.mapper.toData
+import com.sangmeebee.searchmovie.data.model.mapper.toDomain
 import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.domain.model.MovieBookmark
 import com.sangmeebee.searchmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
-    private val movieAPI: MovieAPI,
+    private val movieRemoteDataSource: MovieRemoteDataSource,
     private val movieBookmarkLocalDataSource: MovieBookmarkLocalDataSource,
 ) : MovieRepository {
     override fun getMovies(query: String): Flow<PagingData<Movie>> =
-        Pager(
-            config = PagingConfig(
-                pageSize = PAGE_DISPLAY_SIZE,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { MoviePagingDataSource(movieAPI, query) }
-        ).flow
+        movieRemoteDataSource.getMovies(query).map { pagingData: PagingData<MovieEntity> ->
+            pagingData.map { movie ->
+                movie.toDomain()
+            }
+        }
 
     override suspend fun bookmark(movie: MovieBookmark): Result<Unit> =
-        movieBookmarkLocalDataSource.bookmark(movie)
+        movieBookmarkLocalDataSource.bookmark(movie.toData())
 
     override suspend fun getAllBookmarked(): Result<List<MovieBookmark>> =
-        movieBookmarkLocalDataSource.getAllBookmarked()
+        movieBookmarkLocalDataSource.getAllBookmarked().map { bookmarkedMovie ->
+            bookmarkedMovie.toDomain()
+        }
 
     override suspend fun unbookmark(movieId: String): Result<Unit> =
         movieBookmarkLocalDataSource.unbookmark(movieId)

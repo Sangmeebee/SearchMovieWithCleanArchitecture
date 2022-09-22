@@ -10,10 +10,10 @@ import com.sangmeebee.searchmovie.domain.usecase.BookmarkMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetAllBookmarkedMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.UnbookmarkMovieUseCase
-import com.sangmeebee.searchmovie.domain.util.BookmarkException
-import com.sangmeebee.searchmovie.domain.util.UnBookmarkException
+import com.sangmeebee.searchmovie.cache.util.BookmarkException
+import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.model.MovieModel
-import com.sangmeebee.searchmovie.model.mapper.toMovieBookmark
+import com.sangmeebee.searchmovie.model.mapper.toDomain
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
 import com.sangmeebee.searchmovie.util.MutableEventFlow
 import com.sangmeebee.searchmovie.util.asEventFlow
@@ -71,7 +71,7 @@ class SearchMovieViewModel @Inject constructor(
                 .onSuccess { bookmarkedMovies.remove(movie) }
                 .onFailure { _errorEvent.emit(UnBookmarkException()) }
         } else {
-            bookmarkMovieUseCase(movie.toMovieBookmark())
+            bookmarkMovieUseCase(movie.toDomain())
                 .onSuccess { bookmarkedMovies.add(movie.copy(isBookmarked = true)) }
                 .onFailure { _errorEvent.emit(BookmarkException()) }
         }
