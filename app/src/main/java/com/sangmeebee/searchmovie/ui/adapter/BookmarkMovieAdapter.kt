@@ -6,12 +6,17 @@ import androidx.recyclerview.widget.ListAdapter
 import com.sangmeebee.searchmovie.databinding.ItemMovieBinding
 import com.sangmeebee.searchmovie.model.MovieModel
 
-class BookmarkMovieAdapter :
-    ListAdapter<MovieModel, MovieViewHolder>(MovieDiffCallback()) {
+class BookmarkMovieAdapter(
+    private val bookmark: (MovieModel) -> Unit,
+) : ListAdapter<MovieModel, MovieViewHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
+        val viewHolder = MovieViewHolder(binding)
+        binding.ivBookmark.setOnClickListener {
+            getItem(viewHolder.bindingAdapterPosition)?.let { movie -> bookmark(movie) }
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) =

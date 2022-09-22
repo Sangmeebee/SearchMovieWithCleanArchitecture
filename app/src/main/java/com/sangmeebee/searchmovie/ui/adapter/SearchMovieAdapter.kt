@@ -14,13 +14,9 @@ class SearchMovieAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = MovieViewHolder(binding)
-
         binding.ivBookmark.setOnClickListener {
-            getItem(viewHolder.bindingAdapterPosition)?.let { movie ->
-                bookmark(movie)
-            }
+            getItem(viewHolder.bindingAdapterPosition)?.let { movie -> bookmark(movie) }
         }
-
         return viewHolder
     }
 

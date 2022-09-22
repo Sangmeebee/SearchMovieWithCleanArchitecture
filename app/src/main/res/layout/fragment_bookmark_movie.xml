@@ -4,17 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/srl_loading"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_movie_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_movie_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

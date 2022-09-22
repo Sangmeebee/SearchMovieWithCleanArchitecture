@@ -8,19 +8,18 @@ import com.sangmeebee.searchmovie.ui.adapter.BookmarkMovieAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
 import com.sangmeebee.searchmovie.ui.search_movie.SearchMovieViewModel
 import com.sangmeebee.searchmovie.util.repeatOnStarted
-import kotlinx.coroutines.flow.collectLatest
 
 class BookmarkMovieFragment :
     BaseFragment<FragmentBookmarkMovieBinding>(FragmentBookmarkMovieBinding::inflate) {
 
     private val searchMovieViewModel by activityViewModels<SearchMovieViewModel>()
-    private val movieAdapter: BookmarkMovieAdapter = BookmarkMovieAdapter()
+    private val movieAdapter: BookmarkMovieAdapter by lazy {
+        BookmarkMovieAdapter(searchMovieViewModel::bookmarkMovie)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
-        setSwipeRefreshLayout()
-
         observeBookmarkedMovieState()
     }
 
@@ -29,10 +28,6 @@ class BookmarkMovieFragment :
             setHasFixedSize(true)
             adapter = movieAdapter
         }
-    }
-
-    private fun setSwipeRefreshLayout() {
-        binding.srlLoading.isEnabled = false
     }
 
     private fun observeBookmarkedMovieState() = repeatOnStarted {
