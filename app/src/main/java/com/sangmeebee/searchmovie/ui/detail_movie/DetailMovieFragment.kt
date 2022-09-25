@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sangmeebee.searchmovie.databinding.FragmentDetailMovieBinding
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
+import com.sangmeebee.searchmovie.ui.detail_movie.DetailMovieWebViewClient.Companion.BASE_URL
 
 class DetailMovieFragment :
     BaseFragment<FragmentDetailMovieBinding>(FragmentDetailMovieBinding::inflate) {
@@ -28,11 +29,14 @@ class DetailMovieFragment :
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args.linkArg?.let {
-            binding.webview.apply {
-                settings.javaScriptEnabled = true
-                webViewClient = DetailMovieWebViewClient()
+
+        binding.webview.apply {
+            settings.javaScriptEnabled = true
+            webViewClient = DetailMovieWebViewClient()
+            args.linkArg?.let {
                 loadUrl(it)
+            } ?: run {
+                loadUrl(BASE_URL)
             }
         }
     }
