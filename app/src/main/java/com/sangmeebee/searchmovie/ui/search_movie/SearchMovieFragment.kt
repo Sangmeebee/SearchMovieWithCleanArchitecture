@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.cache.util.BookmarkException
@@ -29,7 +30,12 @@ class SearchMovieFragment :
     BaseFragment<FragmentSearchMovieBinding>(FragmentSearchMovieBinding::inflate) {
 
     private val searchMovieViewModel by activityViewModels<SearchMovieViewModel>()
-    private val movieAdapter by lazy { SearchMovieAdapter(searchMovieViewModel::bookmarkMovie) }
+    private val movieAdapter by lazy {
+        SearchMovieAdapter(
+            bookmark = searchMovieViewModel::bookmarkMovie,
+            navigateToDetailFragment = ::navigateToDetailFragment
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,5 +151,11 @@ class SearchMovieFragment :
                 movieAdapter.notifyItemChanged(index)
             }
         }
+    }
+
+    private fun navigateToDetailFragment(link: String) {
+        val action =
+            SearchMovieFragmentDirections.actionSearchMovieFragmentToDetailMovieFragment(link)
+        findNavController().navigate(action)
     }
 }

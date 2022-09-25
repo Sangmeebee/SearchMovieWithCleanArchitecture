@@ -3,6 +3,7 @@ package com.sangmeebee.searchmovie.ui.bookmark_movie
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.sangmeebee.searchmovie.databinding.FragmentBookmarkMovieBinding
 import com.sangmeebee.searchmovie.ui.adapter.BookmarkMovieAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
@@ -14,7 +15,10 @@ class BookmarkMovieFragment :
 
     private val searchMovieViewModel by activityViewModels<SearchMovieViewModel>()
     private val movieAdapter: BookmarkMovieAdapter by lazy {
-        BookmarkMovieAdapter(searchMovieViewModel::bookmarkMovie)
+        BookmarkMovieAdapter(
+            bookmark = searchMovieViewModel::bookmarkMovie,
+            navigateToDetailFragment = ::navigateToDetailFragment
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,5 +38,11 @@ class BookmarkMovieFragment :
         searchMovieViewModel.bookmarkedMovieState.collect {
             movieAdapter.submitList(it)
         }
+    }
+
+    private fun navigateToDetailFragment(link: String) {
+        val action =
+            BookmarkMovieFragmentDirections.actionBookmarkMovieFragmentToDetailMovieFragment(link)
+        findNavController().navigate(action)
     }
 }

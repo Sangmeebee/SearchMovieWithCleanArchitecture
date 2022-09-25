@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.SearchMovieFragment">
+        tools:context=".ui.search_movie.SearchMovieFragment">
 
         <LinearLayout
             android:id="@+id/ll_query"

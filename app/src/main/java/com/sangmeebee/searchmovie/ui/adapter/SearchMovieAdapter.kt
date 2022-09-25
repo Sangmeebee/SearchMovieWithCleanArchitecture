@@ -8,6 +8,7 @@ import com.sangmeebee.searchmovie.model.MovieModel
 
 class SearchMovieAdapter(
     private val bookmark: (MovieModel) -> Unit,
+    private val navigateToDetailFragment: (String) -> Unit,
 ) :
     PagingDataAdapter<MovieModel, MovieViewHolder>(MovieDiffCallback()) {
 
@@ -16,6 +17,11 @@ class SearchMovieAdapter(
         val viewHolder = MovieViewHolder(binding)
         binding.ivBookmark.setOnClickListener {
             getItem(viewHolder.bindingAdapterPosition)?.let { movie -> bookmark(movie) }
+        }
+        binding.clContainer.setOnClickListener {
+            getItem(viewHolder.bindingAdapterPosition)?.let { movie ->
+                navigateToDetailFragment(movie.link)
+            }
         }
         return viewHolder
     }

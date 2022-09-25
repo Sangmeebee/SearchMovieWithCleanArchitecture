@@ -9,11 +9,41 @@
         android:id="@+id/searchMovieFragment"
         android:name="com.sangmeebee.searchmovie.ui.search_movie.SearchMovieFragment"
         android:label="@string/search_movie"
-        tools:layout="@layout/fragment_search_movie" />
+        tools:layout="@layout/fragment_search_movie">
+        <argument
+            android:name="ShowAppBar"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_searchMovieFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment"
+            app:popUpToSaveState="true"
+            app:restoreState="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/bookmarkMovieFragment"
         android:name="com.sangmeebee.searchmovie.ui.bookmark_movie.BookmarkMovieFragment"
         android:label="BookmarkMovieFragment"
-        tools:layout="@layout/fragment_bookmark_movie" />
+        tools:layout="@layout/fragment_bookmark_movie">
+        <argument
+            android:name="ShowAppBar"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_bookmarkMovieFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment"
+            app:popUpToSaveState="true"
+            app:restoreState="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailMovieFragment"
+        android:name="com.sangmeebee.searchmovie.ui.detail_movie.DetailMovieFragment"
+        android:label="fragment_detail_movie"
+        tools:layout="@layout/fragment_detail_movie">
+        <argument
+            android:name="linkArg"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

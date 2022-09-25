@@ -8,6 +8,7 @@ import com.sangmeebee.searchmovie.model.MovieModel
 
 class BookmarkMovieAdapter(
     private val bookmark: (MovieModel) -> Unit,
+    private val navigateToDetailFragment: (String) -> Unit,
 ) : ListAdapter<MovieModel, MovieViewHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -15,6 +16,11 @@ class BookmarkMovieAdapter(
         val viewHolder = MovieViewHolder(binding)
         binding.ivBookmark.setOnClickListener {
             getItem(viewHolder.bindingAdapterPosition)?.let { movie -> bookmark(movie) }
+        }
+        binding.clContainer.setOnClickListener {
+            getItem(viewHolder.bindingAdapterPosition)?.let { movie ->
+                navigateToDetailFragment(movie.link)
+            }
         }
         return viewHolder
     }
