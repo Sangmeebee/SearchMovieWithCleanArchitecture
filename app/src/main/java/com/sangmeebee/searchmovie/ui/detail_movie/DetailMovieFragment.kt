@@ -17,6 +17,10 @@ class DetailMovieFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setOnBackPressedDispatcher()
+    }
+
+    private fun setOnBackPressedDispatcher() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (binding.webview.canGoBack()) {
                 binding.webview.goBack()
