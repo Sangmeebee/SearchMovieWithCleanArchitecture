@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MovieBookmarkLocalDataSourceImpl @Inject constructor(
+internal class MovieBookmarkLocalDataSourceImpl @Inject constructor(
     private val movieDao: MovieBookmarkDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : MovieBookmarkLocalDataSource {

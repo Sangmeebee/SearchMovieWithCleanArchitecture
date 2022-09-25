@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.sangmeebee.searchmovie.data.model.MovieEntity
 import com.sangmeebee.searchmovie.remote.model.mapper.RemoteToDataMapper
 
-data class MovieInfoResponse(
+internal data class MovieInfoResponse(
     val title: String,
     val subtitle: String? = null,
     val link: String,

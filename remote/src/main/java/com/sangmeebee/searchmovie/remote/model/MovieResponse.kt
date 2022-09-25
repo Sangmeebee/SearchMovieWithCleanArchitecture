@@ -2,7 +2,7 @@ package com.sangmeebee.searchmovie.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieResponse(
+internal data class MovieResponse(
     @SerializedName("lastBuildDate")
     val offsetTime: String,
     @SerializedName("total")

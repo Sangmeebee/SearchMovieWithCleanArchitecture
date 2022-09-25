@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.sangmeebee.searchmovie.cache.model.MovieBookmarkPref
 
 @Dao
-interface MovieBookmarkDao {
+internal interface MovieBookmarkDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movie: MovieBookmarkPref)

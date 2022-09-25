@@ -10,7 +10,7 @@ import com.sangmeebee.searchmovie.remote.service.MovieAPI
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MovieRemoteDataSourceImpl @Inject constructor(
+internal class MovieRemoteDataSourceImpl @Inject constructor(
     private val movieAPI: MovieAPI,
 ) : MovieRemoteDataSource {
     override fun getMovies(query: String): Flow<PagingData<MovieEntity>> =

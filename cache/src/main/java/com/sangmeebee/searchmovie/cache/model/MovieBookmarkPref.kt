@@ -7,7 +7,7 @@ import com.sangmeebee.searchmovie.cache.model.mapper.CacheToDataMapper
 import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
 
 @Entity(tableName = "movie_bookmark")
-data class MovieBookmarkPref(
+internal data class MovieBookmarkPref(
     val title: String,
     val subtitle: String? = null,
     @PrimaryKey

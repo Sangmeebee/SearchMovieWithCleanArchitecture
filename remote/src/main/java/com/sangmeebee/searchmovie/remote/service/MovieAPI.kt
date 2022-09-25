@@ -6,7 +6,7 @@ import com.sangmeebee.searchmovie.remote.model.MovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface MovieAPI {
+internal interface MovieAPI {
 
     @GET("v1/search/movie.json")
     suspend fun getMovies(
