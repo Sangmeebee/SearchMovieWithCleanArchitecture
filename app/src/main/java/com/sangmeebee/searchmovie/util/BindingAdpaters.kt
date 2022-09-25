@@ -20,12 +20,12 @@ fun TextView.setHtmlText(text: String) {
     setText(HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY))
 }
 
-@BindingAdapter("onActionDone")
-fun EditText.setOnActionDone(onActionDone: (String) -> Unit) {
+@BindingAdapter("onActionSearch")
+fun EditText.setOnActionDone(onActionSearch: (String) -> Unit) {
     setOnEditorActionListener { _, actionId, _ ->
         return@setOnEditorActionListener when (actionId) {
-            EditorInfo.IME_ACTION_DONE -> {
-                onActionDone(text.toString())
+            EditorInfo.IME_ACTION_SEARCH -> {
+                onActionSearch(text.toString())
                 true
             }
             else -> false

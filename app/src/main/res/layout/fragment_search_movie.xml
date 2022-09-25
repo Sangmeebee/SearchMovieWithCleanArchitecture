@@ -28,9 +28,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:hint="@string/search_movie_query_hint"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
-                app:onActionDone="@{()-> viewModel.handleQuery(etQuery.getText().toString())}" />
+                app:onActionSearch="@{()-> viewModel.handleQuery(etQuery.getText().toString())}" />
 
             <Button
                 android:layout_width="0dp"
