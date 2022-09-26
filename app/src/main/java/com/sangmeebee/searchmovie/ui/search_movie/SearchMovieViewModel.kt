@@ -5,13 +5,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.sangmeebee.searchmovie.cache.util.BookmarkException
+import com.sangmeebee.searchmovie.cache.util.GetBookmarkException
+import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.domain.usecase.BookmarkMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetAllBookmarkedMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.UnbookmarkMovieUseCase
-import com.sangmeebee.searchmovie.cache.util.BookmarkException
-import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.model.MovieModel
 import com.sangmeebee.searchmovie.model.mapper.toDomain
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
@@ -66,24 +67,31 @@ class SearchMovieViewModel @Inject constructor(
     }
 
     fun bookmarkMovie(movie: MovieModel) = viewModelScope.launch {
+        var bookmarkMovie: MovieModel? = null
         if (bookmarkedMovies.any { it.link == movie.link }) {
             unbookmarkMovieUseCase(movie.link)
-                .onSuccess { bookmarkedMovies.remove(movie) }
+                .onSuccess {
+                    bookmarkMovie = movie.copy(isBookmarked = false)
+                    bookmarkedMovies.remove(bookmarkedMovies.find { it.link == movie.link })
+                }
                 .onFailure { _errorEvent.emit(UnBookmarkException()) }
         } else {
             bookmarkMovieUseCase(movie.toDomain())
-                .onSuccess { bookmarkedMovies.add(movie.copy(isBookmarked = true)) }
+                .onSuccess {
+                    bookmarkMovie = movie.copy(isBookmarked = true)
+                    bookmarkedMovies.add(bookmarkMovie!!)
+                }
                 .onFailure { _errorEvent.emit(BookmarkException()) }
         }
         _bookmarkedMovieState.value = bookmarkedMovies.toList()
-        _bookmarkEvent.emit(movie)
+        bookmarkMovie?.let { _bookmarkEvent.emit(it) }
     }
 
     init {
         viewModelScope.launch {
             getAllBookmarkedMovieUseCase()
                 .onSuccess { bookmarkedMovies.addAll(it.toPresentation()) }
-                .onFailure { _errorEvent.emit(BookmarkException()) }
+                .onFailure { _errorEvent.emit(GetBookmarkException()) }
             _bookmarkedMovieState.value = bookmarkedMovies.toList()
         }
     }

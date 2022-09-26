@@ -2,7 +2,6 @@ package com.sangmeebee.searchmovie.ui.search_movie
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -137,10 +136,10 @@ class SearchMovieFragment :
 
     private fun observeBookmarkEvent() = repeatOnStarted {
         searchMovieViewModel.bookmarkEvent.collectLatest { bookmarkedMovie ->
-            val index = movieAdapter.snapshot().indexOf(bookmarkedMovie)
+            val index = movieAdapter.snapshot().indexOfFirst { it?.link == bookmarkedMovie.link }
             if (index != -1) {
                 movieAdapter.snapshot()[index]?.let { movie ->
-                    movie.isBookmarked = !movie.isBookmarked
+                    movie.isBookmarked = bookmarkedMovie.isBookmarked
                 }
                 movieAdapter.notifyItemChanged(index)
             }
