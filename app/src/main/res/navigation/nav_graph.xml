@@ -15,9 +15,7 @@
             android:defaultValue="true" />
         <action
             android:id="@+id/action_searchMovieFragment_to_detailMovieFragment"
-            app:destination="@id/detailMovieFragment"
-            app:popUpToSaveState="true"
-            app:restoreState="true" />
+            app:destination="@id/detailMovieFragment" />
     </fragment>
 
     <fragment
@@ -30,9 +28,7 @@
             android:defaultValue="true" />
         <action
             android:id="@+id/action_bookmarkMovieFragment_to_detailMovieFragment"
-            app:destination="@id/detailMovieFragment"
-            app:popUpToSaveState="true"
-            app:restoreState="true" />
+            app:destination="@id/detailMovieFragment" />
     </fragment>
 
     <fragment
