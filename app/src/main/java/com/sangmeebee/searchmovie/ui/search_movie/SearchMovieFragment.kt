@@ -135,12 +135,6 @@ class SearchMovieFragment :
         }
     }
 
-    private fun showToast(message: String?) {
-        if (message != null) {
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private fun observeBookmarkEvent() = repeatOnStarted {
         searchMovieViewModel.bookmarkEvent.collectLatest { bookmarkedMovie ->
             val index = movieAdapter.snapshot().indexOf(bookmarkedMovie)

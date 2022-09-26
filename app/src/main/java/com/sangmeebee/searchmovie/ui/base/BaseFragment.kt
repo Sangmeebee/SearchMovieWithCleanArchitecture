@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
@@ -31,5 +32,11 @@ open class BaseFragment<VB : ViewBinding>(
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    open fun showToast(message: String?) {
+        if (message != null) {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
     }
 }
