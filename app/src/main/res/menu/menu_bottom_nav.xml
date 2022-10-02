@@ -8,4 +8,8 @@
         android:id="@id/bookmarkMovieFragment"
         android:icon="@drawable/ic_bookmark_off"
         android:title="@string/bookmark_movie" />
+    <item
+        android:id="@id/myFragment"
+        android:icon="@drawable/selector_person"
+        android:title="@string/my" />
 </menu>

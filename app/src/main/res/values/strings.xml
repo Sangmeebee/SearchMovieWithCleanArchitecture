@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">SearchMovie</string>
+    <string name="app_name">영화검색</string>
 
     <!-- Menu strings -->
     <string name="search_movie">검색</string>
     <string name="bookmark_movie">찜 목록</string>
+    <string name="my">마이페이지</string>
 
     <!-- Screen strings -->
     <string name="all_search">검색</string>
@@ -15,4 +16,6 @@
     <string name="search_movie_get_bookmark_error">북마크된 영화를 가져오는데 실패했습니다</string>
     <string name="search_movie_bookmark_error">북마크를 하는데 실패했습니다</string>
     <string name="search_movie_unbookmark_error">북마크를 취소하는데 실패했습니다</string>
+
+    <string name="my_non_signin_title">로그인을 해주세요</string>
 </resources>
