@@ -4,19 +4,30 @@
 
 ### 1. 프로젝트 구조
 
-- presentation layer
-    - mvvm
+- presentation layer (mvvm)
     - ui elements
     - model
+    - mapper
     - stateholder(viewmodel)
 - domain layer
     - usecase
     - model
     - repository
 - data layer
-    - datasource, datasourceImpl
+    - datasource
     - repositoryImpl
     - model
+    - mapper
+- remote layer
+    - datasourceImpl
+    - service
+    - model
+    - mapper
+- cache layer
+    - datasourceImpl
+    - db
+    - model
+    - mapper
 
 ### 2. 기능
 - 영화 찾기
