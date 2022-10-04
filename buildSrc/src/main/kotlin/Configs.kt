@@ -82,6 +82,12 @@ object HiltConfig {
     const val CORE = "com.google.dagger:hilt-core:$hiltVersion"
 }
 
+object KakaoConfig {
+    private const val kakaoVersion = "2.11.2"
+
+    const val KAKAO_LOGIN = "com.kakao.sdk:v2-user:$kakaoVersion"
+}
+
 /**
  * gradle for test
  * */

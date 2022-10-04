@@ -8,6 +8,9 @@ plugins {
 
 }
 
+val properties = org.jetbrains.kotlin.konan.properties.Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
+
 android {
     compileSdk = 33
 
@@ -27,6 +30,15 @@ android {
                 arguments += mapOf("room.schemaLocation" to "$projectDir/schemas")
             }
         }
+
+        //add BuildConfig Field
+        buildConfigField("String", "KAKAO_API_KEY", properties["kakao_api_key"].toString())
+        buildConfigField("String",
+            "KAKAO_NATIVE_APP_KEY",
+            properties["kakao_native_app_key"].toString())
+
+        //set manifest placeholder
+        manifestPlaceholders["kakaoNativeAppKey"] = "kakao${properties["kakao_native_app_key"]}"
     }
 
     buildTypes {
@@ -85,6 +97,8 @@ dependencies {
     implementation(CoilConfig.COIL)
 
     implementation(PagingConfig.PAGING_RUNTIME)
+
+    implementation(KakaoConfig.KAKAO_LOGIN)
 
     UnitTestConfig.run {
         testImplementation(JUNIT)

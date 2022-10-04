@@ -23,6 +23,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 }

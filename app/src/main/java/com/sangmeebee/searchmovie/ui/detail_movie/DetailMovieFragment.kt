@@ -9,7 +9,9 @@ import androidx.navigation.fragment.navArgs
 import com.sangmeebee.searchmovie.databinding.FragmentDetailMovieBinding
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
 import com.sangmeebee.searchmovie.ui.detail_movie.DetailMovieWebViewClient.Companion.BASE_URL
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailMovieFragment :
     BaseFragment<FragmentDetailMovieBinding>(FragmentDetailMovieBinding::inflate) {
 
