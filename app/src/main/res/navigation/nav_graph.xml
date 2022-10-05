@@ -45,9 +45,9 @@
 
     <fragment
         android:id="@+id/myFragment"
-        android:name="com.sangmeebee.searchmovie.ui.my.NonSignInFragment"
+        android:name="com.sangmeebee.searchmovie.ui.my.SignInFragment"
         android:label="fragment_my"
-        tools:layout="@layout/fragment_non_signin">
+        tools:layout="@layout/fragment_signin">
         <argument
             android:name="ShowAppBar"
             android:defaultValue="true" />
