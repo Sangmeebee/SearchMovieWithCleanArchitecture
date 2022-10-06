@@ -26,15 +26,11 @@ class BookmarkMovieFragment :
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        observeErrorEvent()
-        observeBookmarkedMovieState()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
+        observeErrorEvent()
+        observeBookmarkedMovieState()
     }
 
     private fun setRecyclerView() {
