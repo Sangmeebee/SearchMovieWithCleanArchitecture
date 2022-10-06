@@ -3,7 +3,6 @@ package com.sangmeebee.searchmovie.ui
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnticipateInterpolator
@@ -18,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +43,13 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
+        setToolbar()
+        setBottomNavigation()
+        setOnBackPressedDispatcher()
+        setOnDestinationChangedListener(navController)
+    }
+
+    private fun setToolbar() {
         appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(R.id.searchMovieFragment,
                 R.id.bookmarkMovieFragment,
@@ -50,10 +57,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.signInFragment)
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-
-        setBottomNavigation()
-        setOnBackPressedDispatcher()
-        setOnDestinationChangedListener(navController)
     }
 
     private fun setBottomNavigation() {
@@ -69,7 +72,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setOnDestinationChangedListener(navController: NavController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            Log.d("Sangmeebee", destination.toString())
             binding.bottomNav.isVisible = arguments?.getBoolean("ShowAppBar", false) == true
         }
     }

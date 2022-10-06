@@ -28,11 +28,13 @@ class UserViewModel : ViewModel() {
 
     fun fetchUser() = viewModelScope.launch {
         if (UserApiClient.hasToken()) {
-            UserApiClient.getUserInfo().onSuccess { user ->
-                //TODO Room에 UserModel 정보 저장하는 로직 추가 , 저장 성공하면 myUiState의 user 업데이트
-                _signInUiState.update { it.copy(doLogin = false) }
-                _myUiState.update { it.copy(user = user) }
-            }
+            UserApiClient.getUserInfo()
+                .onSuccess { user ->
+                    //TODO Room에 UserModel 정보 저장하는 로직 추가 , 저장 성공하면 myUiState의 user 업데이트
+                    _signInUiState.update { it.copy(doLogin = false, isLogin = true) }
+                    _myUiState.update { it.copy(user = user) }
+                }
+                .onFailure {throwable -> _signInUiState.update {  it.copy(error = throwable) } }
         }
     }
 
@@ -41,6 +43,7 @@ class UserViewModel : ViewModel() {
         UserApiClient.logout()
             .onSuccess {
                 _myUiState.update { it.copy(user = null) }
+                _signInUiState.update { it.copy(isLogin = false) }
             }
             .onFailure { throwable -> _myUiState.update { it.copy(error = throwable) } }
         _myUiState.update { it.copy(isLoading = false) }
@@ -61,9 +64,11 @@ class UserViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
+            // TODO Room에서 데이터 가져와서 로그인 여부 확인하는 로직으로 변경
             if (UserApiClient.hasToken()) {
                 UserApiClient.getUserInfo().onSuccess { user ->
                     _myUiState.update { it.copy(user = user) }
+                    _signInUiState.update { it.copy(isLogin = true) }
                 }
             }
             isReady = true

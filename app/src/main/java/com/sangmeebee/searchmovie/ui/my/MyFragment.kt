@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.FragmentMyBinding
 import com.sangmeebee.searchmovie.ui.UserViewModel
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
@@ -19,14 +18,6 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
 
     private val userViewModel by activityViewModels<UserViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        observeUser()
-        observeError()
-        observeSignIn()
-        observeIsLoading()
-    }
-
     override fun FragmentMyBinding.setBinding() {
         lifecycleOwner = viewLifecycleOwner
         viewModel = userViewModel
@@ -34,22 +25,14 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeUser()
+        observeError()
+        observeIsLoading()
         setSwipeRefreshLayout()
     }
 
     private fun setSwipeRefreshLayout() {
         binding.srlLoading.isEnabled = false
-    }
-
-    private fun observeSignIn() = repeatOnStarted {
-        val currentBackStackEntry = findNavController().currentBackStackEntry!!
-        val savedStateHandle = currentBackStackEntry.savedStateHandle
-        savedStateHandle.getStateFlow(SignInFragment.SIGN_IN_SUCCESSFUL, true)
-            .collectLatest { success ->
-                if (!success) {
-                    findNavController().popBackStack()
-                }
-            }
     }
 
     private fun observeIsLoading() = repeatOnStarted {
@@ -61,7 +44,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
     private fun observeUser() = lifecycleScope.launch {
         userViewModel.myUiState.map { it.user }.distinctUntilChanged().collectLatest { user ->
             if (user == null) {
-                findNavController().navigate(R.id.signInFragment)
+                findNavController().popBackStack()
             }
         }
     }

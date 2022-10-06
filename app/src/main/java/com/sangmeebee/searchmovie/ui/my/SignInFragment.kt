@@ -1,10 +1,8 @@
 package com.sangmeebee.searchmovie.ui.my
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.kakao.sdk.user.UserApiClient
 import com.sangmeebee.searchmovie.databinding.FragmentSigninBinding
@@ -21,15 +19,7 @@ import kotlinx.coroutines.flow.map
 class SignInFragment :
     BaseFragment<FragmentSigninBinding>(FragmentSigninBinding::inflate) {
 
-    private lateinit var savedStateHandle: SavedStateHandle
     private val userViewModel by activityViewModels<UserViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        observeError()
-        observeDoLogin()
-        observeIsLoading()
-    }
 
     override fun FragmentSigninBinding.setBinding() {
         lifecycleOwner = viewLifecycleOwner
@@ -38,8 +28,9 @@ class SignInFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        savedStateHandle = findNavController().previousBackStackEntry!!.savedStateHandle
-        savedStateHandle[SIGN_IN_SUCCESSFUL] = false
+        observeError()
+        observeDoLogin()
+        observeIsLogin()
         setSwipeRefreshLayout()
     }
 
@@ -49,16 +40,13 @@ class SignInFragment :
 
 
     private fun observeDoLogin() = repeatOnStarted {
-        Log.d("Sangmeebee", "test1")
         userViewModel.signInUiState.map { it.doLogin }.distinctUntilChanged()
             .collectLatest { doLogin ->
-                Log.d("Sangmeebee", "test2")
+                binding.srlLoading.isRefreshing = doLogin
                 if (doLogin) {
                     UserApiClient.login(requireContext())
                         .onSuccess {
                             userViewModel.fetchUser()
-                            savedStateHandle[SIGN_IN_SUCCESSFUL] = true
-                            findNavController().popBackStack()
                         }
                         .onFailure { userViewModel.signInShowErrorMessage(it) }
                 }
@@ -66,9 +54,7 @@ class SignInFragment :
     }
 
     private fun observeError() = repeatOnStarted {
-        Log.d("Sangmeebee", "test3")
         userViewModel.signInUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
-            Log.d("Sangmeebee", "test4")
             error?.let {
                 showToast(error.message)
                 userViewModel.signInErrorMessageShown()
@@ -76,13 +62,18 @@ class SignInFragment :
         }
     }
 
-    private fun observeIsLoading() = repeatOnStarted {
-        userViewModel.signInUiState.map { it.doLogin }.distinctUntilChanged().collectLatest {
-            binding.srlLoading.isRefreshing = it
-        }
+    private fun observeIsLogin() = repeatOnStarted {
+        userViewModel.signInUiState.map { it.isLogin }.distinctUntilChanged()
+            .collectLatest { isLogin ->
+                if (isLogin) {
+                    navigateToMyFragment()
+                }
+            }
     }
 
-    companion object {
-        const val SIGN_IN_SUCCESSFUL: String = "SIGN_IN_SUCCESSFUL"
+    private fun navigateToMyFragment() {
+        val action =
+            SignInFragmentDirections.actionSignInFragmentToMyFragment()
+        findNavController().navigate(action)
     }
 }
