@@ -17,5 +17,10 @@
     <string name="search_movie_bookmark_error">북마크를 하는데 실패했습니다</string>
     <string name="search_movie_unbookmark_error">북마크를 취소하는데 실패했습니다</string>
 
-    <string name="my_non_signin_title">로그인을 해주세요</string>
+    <string name="detail_movie">영화 상세</string>
+
+    <string name="sign_in">로그인</string>
+    <string name="sign_in_title">로그인을 해주세요</string>
+
+    <string name="my_logout">로그아웃</string>
 </resources>

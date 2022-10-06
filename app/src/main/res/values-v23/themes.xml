@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
+
     <style name="Theme.SearchMovie" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/gray</item>
@@ -11,15 +12,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="Theme.SearchMovie.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/gray</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launch</item>
-        <item name="postSplashScreenTheme">@style/Theme.SearchMovie</item>
-
-        <item name="android:statusBarColor">@color/white</item>
-        <item name="android:navigationBarColor">@color/white</item>
     </style>
 </resources>

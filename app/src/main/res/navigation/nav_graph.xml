@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/bookmarkMovieFragment"
         android:name="com.sangmeebee.searchmovie.ui.bookmark_movie.BookmarkMovieFragment"
-        android:label="BookmarkMovieFragment"
+        android:label="@string/bookmark_movie"
         tools:layout="@layout/fragment_bookmark_movie">
         <argument
             android:name="ShowAppBar"
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/detailMovieFragment"
         android:name="com.sangmeebee.searchmovie.ui.detail_movie.DetailMovieFragment"
-        android:label="fragment_detail_movie"
+        android:label="@string/detail_movie"
         tools:layout="@layout/fragment_detail_movie">
         <argument
             android:name="linkArg"
@@ -45,8 +45,19 @@
 
     <fragment
         android:id="@+id/myFragment"
+        android:name="com.sangmeebee.searchmovie.ui.my.MyFragment"
+        android:label="@string/my"
+        tools:layout="@layout/fragment_my">
+        <argument
+            android:name="ShowAppBar"
+            android:defaultValue="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/signInFragment"
         android:name="com.sangmeebee.searchmovie.ui.my.SignInFragment"
-        android:label="fragment_my"
+        android:label="@string/sign_in"
         tools:layout="@layout/fragment_signin">
         <argument
             android:name="ShowAppBar"

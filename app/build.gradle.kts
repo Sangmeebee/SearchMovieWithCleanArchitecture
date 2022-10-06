@@ -76,6 +76,7 @@ dependencies {
     AndroidConfig.run {
         implementation(CORE_KTX)
         implementation(APPCOMPAT)
+        implementation(SPLASH_SCREEN)
         implementation(MATERIAL)
         implementation(CONSTRAINT_LAYOUT)
         implementation(SWIPE_REFRESH_LAYOUT)
