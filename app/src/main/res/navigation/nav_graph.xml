@@ -1,67 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchMovieFragment">
+    app:startDestination="@id/home">
 
-    <fragment
-        android:id="@+id/searchMovieFragment"
-        android:name="com.sangmeebee.searchmovie.ui.search_movie.SearchMovieFragment"
-        android:label="@string/search_movie"
-        tools:layout="@layout/fragment_search_movie">
-        <argument
-            android:name="ShowAppBar"
-            android:defaultValue="true" />
-        <action
-            android:id="@+id/action_searchMovieFragment_to_detailMovieFragment"
-            app:destination="@id/detailMovieFragment" />
-    </fragment>
+    <include app:graph="@navigation/home" />
+    <include app:graph="@navigation/bookmark" />
+    <include app:graph="@navigation/my" />
 
-    <fragment
-        android:id="@+id/bookmarkMovieFragment"
-        android:name="com.sangmeebee.searchmovie.ui.bookmark_movie.BookmarkMovieFragment"
-        android:label="@string/bookmark_movie"
-        tools:layout="@layout/fragment_bookmark_movie">
-        <argument
-            android:name="ShowAppBar"
-            android:defaultValue="true" />
-        <action
-            android:id="@+id/action_bookmarkMovieFragment_to_detailMovieFragment"
-            app:destination="@id/detailMovieFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/detailMovieFragment"
-        android:name="com.sangmeebee.searchmovie.ui.detail_movie.DetailMovieFragment"
-        android:label="@string/detail_movie"
-        tools:layout="@layout/fragment_detail_movie">
-        <argument
-            android:name="linkArg"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/myFragment"
-        android:name="com.sangmeebee.searchmovie.ui.my.MyFragment"
-        android:label="@string/my"
-        tools:layout="@layout/fragment_my">
-        <argument
-            android:name="ShowAppBar"
-            android:defaultValue="true" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.sangmeebee.searchmovie.ui.my.SignInFragment"
-        android:label="@string/sign_in"
-        tools:layout="@layout/fragment_signin">
-        <argument
-            android:name="ShowAppBar"
-            android:defaultValue="true" />
-
-    </fragment>
 </navigation>

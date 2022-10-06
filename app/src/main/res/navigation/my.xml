@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my"
+    app:startDestination="@id/myFragment">
+
+    <fragment
+        android:id="@+id/myFragment"
+        android:name="com.sangmeebee.searchmovie.ui.my.MyFragment"
+        android:label="@string/my"
+        tools:layout="@layout/fragment_my">
+        <argument
+            android:name="ShowAppBar"
+            android:defaultValue="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.sangmeebee.searchmovie.ui.my.SignInFragment"
+        android:label="@string/sign_in"
+        tools:layout="@layout/fragment_signin">
+        <argument
+            android:name="ShowAppBar"
+            android:defaultValue="true" />
+
+    </fragment>
+</navigation>

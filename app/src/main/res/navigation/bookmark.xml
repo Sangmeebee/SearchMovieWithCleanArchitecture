@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bookmark"
+    app:startDestination="@id/bookmarkMovieFragment">
+
+    <fragment
+        android:id="@+id/bookmarkMovieFragment"
+        android:name="com.sangmeebee.searchmovie.ui.bookmark_movie.BookmarkMovieFragment"
+        android:label="@string/bookmark_movie"
+        tools:layout="@layout/fragment_bookmark_movie">
+        <argument
+            android:name="ShowAppBar"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_bookmarkMovieFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailMovieFragment"
+        android:name="com.sangmeebee.searchmovie.ui.detail_movie.DetailMovieFragment"
+        android:label="@string/detail_movie"
+        tools:layout="@layout/fragment_detail_movie">
+        <argument
+            android:name="linkArg"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+</navigation>
