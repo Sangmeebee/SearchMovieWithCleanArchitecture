@@ -1,15 +1,15 @@
 package com.sangmeebee.searchmovie.util
 
 import android.content.Context
-import android.util.Log
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.suspendCancellableCoroutine
+import com.sangmeebee.searchmovie.model.UserModel
+import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 
 /**
@@ -37,16 +37,13 @@ suspend fun UserApiClient.Companion.login(context: Context): Result<OAuthToken> 
 }
 
 // 카카오톡으로 로그인 시도
-@OptIn(ExperimentalCoroutinesApi::class)
 private suspend fun UserApiClient.Companion.loginWithKakaoTalk(context: Context): OAuthToken =
-    suspendCancellableCoroutine { continuation ->
+    suspendCoroutine { continuation ->
         instance.loginWithKakaoTalk(context) { token, error ->
             if (error != null) {
                 continuation.resumeWithException(error)
             } else if (token != null) {
-                continuation.resume(token) {
-                    Log.e("SearchMovie", "카카오톡으로 로그인 실패", it)
-                }
+                continuation.resume(token)
             } else {
                 continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
             }
@@ -54,40 +51,63 @@ private suspend fun UserApiClient.Companion.loginWithKakaoTalk(context: Context)
     }
 
 // 카카오 계정으로 로그인 시도
-@OptIn(ExperimentalCoroutinesApi::class)
 private suspend fun UserApiClient.Companion.loginWithKakaoAccount(context: Context): OAuthToken =
-    suspendCancellableCoroutine { continuation ->
+    suspendCoroutine { continuation ->
         instance.loginWithKakaoAccount(context,
             callback = { token, error ->
                 if (error != null) {
                     continuation.resumeWithException(error)
                 } else if (token != null) {
-                    continuation.resume(token) {
-                        Log.e("SearchMovie", "카카오계정으로 로그인 실패", it)
-                    }
+                    continuation.resume(token)
                 }
             })
     }
 
-private suspend fun UserApiClient.Companion.hasToken(): Boolean =
+suspend fun UserApiClient.Companion.hasToken(): Boolean =
     if (AuthApiClient.instance.hasToken()) {
         getAccessTokenInfo()
     } else {
         false
     }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 private suspend fun UserApiClient.Companion.getAccessTokenInfo(): Boolean =
-    suspendCancellableCoroutine { continuation ->
+    suspendCoroutine { continuation ->
         instance.accessTokenInfo { _, error ->
             if (error != null) {
-                continuation.resume(false) {
-                    Log.e("SearchMovie", "토큰 가져오기 실패", it)
-                }
+                continuation.resume(false)
             } else {
-                continuation.resume(true) {
-                    Log.e("SearchMovie", "토큰 가져오기 실패", it)
-                }
+                continuation.resume(true)
             }
         }
     }
+
+suspend fun UserApiClient.Companion.logout(): Result<Boolean> = runCatching {
+    suspendCoroutine { continuation ->
+        instance.logout { error ->
+            if (error != null) {
+                continuation.resumeWithException(error)
+            } else {
+                continuation.resume(true)
+            }
+        }
+    }
+}
+
+suspend fun UserApiClient.Companion.getUserInfo(): Result<UserModel> = runCatching {
+    suspendCoroutine { continuation ->
+        instance.me { user, error ->
+            if (error != null) {
+                continuation.resumeWithException(error)
+            } else if (user != null) {
+                continuation.resume(UserModel(
+                    userId = user.id!!,
+                    nickname = user.kakaoAccount?.profile?.nickname,
+                    profileImageUrl = user.kakaoAccount?.profile?.thumbnailImageUrl,
+                    email = user.kakaoAccount?.email,
+                    gender = user.kakaoAccount?.gender,
+                    age = user.kakaoAccount?.ageRange
+                ))
+            }
+        }
+    }
+}
