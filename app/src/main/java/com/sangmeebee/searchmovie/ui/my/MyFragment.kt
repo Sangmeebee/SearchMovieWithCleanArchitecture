@@ -44,7 +44,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
     private fun observeUser() = lifecycleScope.launch {
         userViewModel.myUiState.map { it.user }.distinctUntilChanged().collectLatest { user ->
             if (user == null) {
-                findNavController().popBackStack()
+                findNavController().navigate(MyFragmentDirections.actionMyFragmentToSignInFragment())
             }
         }
     }

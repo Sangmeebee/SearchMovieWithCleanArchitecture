@@ -6,6 +6,21 @@
     app:startDestination="@id/signInFragment">
 
     <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.sangmeebee.searchmovie.ui.my.SignInFragment"
+        android:label="@string/sign_in"
+        tools:layout="@layout/fragment_signin">
+        <argument
+            android:name="ShowAppBar"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_myFragment"
+            app:destination="@id/myFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
         android:id="@+id/myFragment"
         android:name="com.sangmeebee.searchmovie.ui.my.MyFragment"
         android:label="@string/my"
@@ -21,18 +36,4 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.sangmeebee.searchmovie.ui.my.SignInFragment"
-        android:label="@string/sign_in"
-        tools:layout="@layout/fragment_signin">
-        <argument
-            android:name="ShowAppBar"
-            android:defaultValue="true" />
-        <action
-            android:id="@+id/action_signInFragment_to_myFragment"
-            app:destination="@id/myFragment"
-            app:popUpTo="@id/signInFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
 </navigation>
