@@ -28,9 +28,7 @@ class SignInFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeError()
-        observeDoLogin()
-        observeIsLogin()
+        setUpObserveUiState()
         setSwipeRefreshLayout()
     }
 
@@ -38,6 +36,20 @@ class SignInFragment :
         binding.srlLoading.isEnabled = false
     }
 
+    private fun setUpObserveUiState() {
+        observeError()
+        observeDoLogin()
+        observeIsLogin()
+    }
+
+    private fun observeError() = repeatOnStarted {
+        userViewModel.signInUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
+            error?.let {
+                showToast(error.message)
+                userViewModel.signInErrorMessageShown()
+            }
+        }
+    }
 
     private fun observeDoLogin() = repeatOnStarted {
         userViewModel.signInUiState.map { it.doLogin }.distinctUntilChanged()
@@ -49,15 +61,6 @@ class SignInFragment :
                         .onFailure { userViewModel.signInShowErrorMessage(it) }
                 }
             }
-    }
-
-    private fun observeError() = repeatOnStarted {
-        userViewModel.signInUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
-            error?.let {
-                showToast(error.message)
-                userViewModel.signInErrorMessageShown()
-            }
-        }
     }
 
     private fun observeIsLogin() = repeatOnStarted {

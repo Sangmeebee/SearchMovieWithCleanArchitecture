@@ -25,14 +25,18 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeUser()
-        observeError()
-        observeIsLoading()
+        setUpObserveUiState()
         setSwipeRefreshLayout()
     }
 
     private fun setSwipeRefreshLayout() {
         binding.srlLoading.isEnabled = false
+    }
+
+    private fun setUpObserveUiState() {
+        observeUser()
+        observeError()
+        observeIsLoading()
     }
 
     private fun observeIsLoading() = repeatOnStarted {
