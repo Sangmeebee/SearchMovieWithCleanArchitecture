@@ -53,14 +53,15 @@ private suspend fun UserApiClient.Companion.loginWithKakaoTalk(context: Context)
 // 카카오 계정으로 로그인 시도
 private suspend fun UserApiClient.Companion.loginWithKakaoAccount(context: Context): OAuthToken =
     suspendCoroutine { continuation ->
-        instance.loginWithKakaoAccount(context,
-            callback = { token, error ->
-                if (error != null) {
-                    continuation.resumeWithException(error)
-                } else if (token != null) {
-                    continuation.resume(token)
-                }
-            })
+        instance.loginWithKakaoAccount(context) { token, error ->
+            if (error != null) {
+                continuation.resumeWithException(error)
+            } else if (token != null) {
+                continuation.resume(token)
+            } else {
+                continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
+            }
+        }
     }
 
 suspend fun UserApiClient.Companion.hasToken(): Boolean =
