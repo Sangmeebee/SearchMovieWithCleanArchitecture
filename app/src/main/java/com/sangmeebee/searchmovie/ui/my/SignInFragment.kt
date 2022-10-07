@@ -45,9 +45,7 @@ class SignInFragment :
                 binding.srlLoading.isRefreshing = doLogin
                 if (doLogin) {
                     UserApiClient.login(requireContext())
-                        .onSuccess {
-                            userViewModel.fetchUser()
-                        }
+                        .onSuccess { userViewModel.fetchUser() }
                         .onFailure { userViewModel.signInShowErrorMessage(it) }
                 }
             }
@@ -66,14 +64,8 @@ class SignInFragment :
         userViewModel.signInUiState.map { it.isLogin }.distinctUntilChanged()
             .collectLatest { isLogin ->
                 if (isLogin) {
-                    navigateToMyFragment()
+                    findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMyFragment())
                 }
             }
-    }
-
-    private fun navigateToMyFragment() {
-        val action =
-            SignInFragmentDirections.actionSignInFragmentToMyFragment()
-        findNavController().navigate(action)
     }
 }

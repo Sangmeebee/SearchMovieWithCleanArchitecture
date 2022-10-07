@@ -34,7 +34,7 @@ class UserViewModel : ViewModel() {
                     _signInUiState.update { it.copy(doLogin = false, isLogin = true) }
                     _myUiState.update { it.copy(user = user) }
                 }
-                .onFailure {throwable -> _signInUiState.update {  it.copy(error = throwable) } }
+                .onFailure { throwable -> _signInUiState.update { it.copy(error = throwable) } }
         }
     }
 
@@ -42,16 +42,15 @@ class UserViewModel : ViewModel() {
         _myUiState.update { it.copy(isLoading = true) }
         UserApiClient.logout()
             .onSuccess {
-                _myUiState.update { it.copy(user = null) }
                 _signInUiState.update { it.copy(isLogin = false) }
+                _myUiState.update { it.copy(user = null) }
             }
             .onFailure { throwable -> _myUiState.update { it.copy(error = throwable) } }
         _myUiState.update { it.copy(isLoading = false) }
     }
 
-
     fun signInShowErrorMessage(throwable: Throwable) {
-        _signInUiState.update { it.copy(error = throwable) }
+        _signInUiState.update { it.copy(doLogin = false, error = throwable) }
     }
 
     fun signInErrorMessageShown() {
