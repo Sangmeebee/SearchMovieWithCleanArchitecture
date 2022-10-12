@@ -57,7 +57,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
         userViewModel.myUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
             if (error != null) {
                 showToast(error.message)
-                userViewModel.myErrorMessageShown()
+                userViewModel.errorMessageShownInMyFragment()
             }
         }
     }

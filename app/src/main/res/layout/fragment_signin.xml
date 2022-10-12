@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="com.sangmeebee.searchmovie.util.social_login.SocialType" />
+
         <variable
             name="viewModel"
             type="com.sangmeebee.searchmovie.ui.UserViewModel" />
@@ -34,11 +36,20 @@
                 android:id="@+id/btn_kakao_login"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="40dp"
-                android:onClick="@{() -> viewModel.login()}"
+                android:layout_marginTop="80dp"
+                android:onClick="@{() -> viewModel.login(SocialType.KAKAO)}"
                 android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_kakao_login" />
+                android:src="@drawable/btn_kakao_login" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_google_login"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="12dp"
+                android:paddingHorizontal="16dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/btn_google_login" />
 
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

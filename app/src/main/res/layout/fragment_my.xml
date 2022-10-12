@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height=" wrap_content"
             android:gravity="center"
-            android:onClick="@{() -> viewModel.logout()}"
+            android:onClick="@{() -> viewModel.logout(viewModel.myUiState.user.loginType)}"
             android:text="@string/my_logout" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

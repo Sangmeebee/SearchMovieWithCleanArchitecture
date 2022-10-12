@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.kakao.sdk.user.UserApiClient
 import com.sangmeebee.searchmovie.databinding.FragmentSigninBinding
 import com.sangmeebee.searchmovie.ui.UserViewModel
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
-import com.sangmeebee.searchmovie.util.login
 import com.sangmeebee.searchmovie.util.repeatOnStarted
+import com.sangmeebee.searchmovie.util.social_login.SocialLoginFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -46,7 +45,7 @@ class SignInFragment :
         userViewModel.signInUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
             error?.let {
                 showToast(error.message)
-                userViewModel.signInErrorMessageShown()
+                userViewModel.errorMessageShownInSignInFragment()
             }
         }
     }
@@ -54,11 +53,11 @@ class SignInFragment :
     private fun observeDoLogin() = repeatOnStarted {
         userViewModel.signInUiState.map { it.doLogin }.distinctUntilChanged()
             .collectLatest { doLogin ->
-                binding.srlLoading.isRefreshing = doLogin
-                if (doLogin) {
-                    UserApiClient.login(requireContext())
-                        .onSuccess { userViewModel.fetchUser() }
-                        .onFailure { userViewModel.signInShowErrorMessage(it) }
+                binding.srlLoading.isRefreshing = doLogin != null
+                if (doLogin != null) {
+                    SocialLoginFactory().create(doLogin).login(requireContext())
+                        .onSuccess { userViewModel.fetchUser(doLogin) }
+                        .onFailure { userViewModel.showErrorMessageInSignInFragment(it) }
                 }
             }
     }
