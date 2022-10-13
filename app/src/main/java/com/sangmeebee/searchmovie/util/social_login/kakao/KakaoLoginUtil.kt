@@ -46,7 +46,7 @@ class KakaoLoginUtil @Inject constructor() : SocialLoginUtil {
                 if (error != null) {
                     continuation.resumeWithException(error)
                 } else if (token != null) {
-                    continuation.resume(token.accessToken)
+                    continuation.resume(token.idToken!!)
                 } else {
                     continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
                 }
@@ -60,7 +60,7 @@ class KakaoLoginUtil @Inject constructor() : SocialLoginUtil {
                 if (error != null) {
                     continuation.resumeWithException(error)
                 } else if (token != null) {
-                    continuation.resume(token.accessToken)
+                    continuation.resume(token.idToken!!)
                 } else {
                     continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
                 }
