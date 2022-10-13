@@ -18,6 +18,7 @@ class UserViewModel @Inject constructor(
     private val socialLoginFactory: SocialLoginFactory,
 ) : ViewModel() {
     var isReady: Boolean = false
+        private set
 
     private val _myUiState = MutableStateFlow(MyUiState())
     val myUiState = _myUiState.asStateFlow()
