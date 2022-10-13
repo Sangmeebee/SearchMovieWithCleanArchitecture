@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
 
+        <!-- 카카오 로그인 -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -44,6 +45,14 @@
                     android:scheme="${kakaoNativeAppKey}" />
             </intent-filter>
         </activity>
+
+        <!-- 구글 로그인 -->
+        <activity
+            android:name=".util.social_login.google.GoogleProxyActivity"
+            android:configChanges="mcc|mnc|locale|keyboard|keyboardHidden|screenLayout|fontScale|uiMode|orientation|screenSize|layoutDirection"
+            android:exported="false"
+            android:screenOrientation="unspecified"
+            android:theme="@style/HiddenTitleTheme" />
 
     </application>
 

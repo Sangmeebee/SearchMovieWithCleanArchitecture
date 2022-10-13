@@ -6,7 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.sangmeebee.searchmovie.ui.UserViewModel" />
+            type="com.sangmeebee.searchmovie.ui.my.UserViewModel" />
+
+        <variable
+            name="myFragment"
+            type="com.sangmeebee.searchmovie.ui.my.MyFragment" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height=" wrap_content"
             android:gravity="center"
-            android:onClick="@{() -> viewModel.logout(viewModel.myUiState.user.loginType)}"
+            android:onClick="@{() -> myFragment.logout(viewModel.userUiState.user.loginType)}"
             android:text="@string/my_logout" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

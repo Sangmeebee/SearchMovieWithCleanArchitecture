@@ -90,6 +90,16 @@ object KakaoConfig {
     const val KAKAO_LOGIN = "com.kakao.sdk:v2-user:$kakaoVersion"
 }
 
+object GoogleConfig {
+    private const val googleAuthVersion = "20.3.0"
+    private const val firebaseVersion = "30.4.1"
+
+    const val PLAY_SERVICE_AUTH = "com.google.android.gms:play-services-auth:$googleAuthVersion"
+    const val GOOGLE_SERVICE_GRADLE_PLUGIN = "com.google.gms:google-services:4.3.13"
+    const val FIREBASE_BOM = "com.google.firebase:firebase-bom:$firebaseVersion"
+    const val FIREBASE_AUTH = "com.google.firebase:firebase-auth-ktx"
+}
+
 /**
  * gradle for test
  * */

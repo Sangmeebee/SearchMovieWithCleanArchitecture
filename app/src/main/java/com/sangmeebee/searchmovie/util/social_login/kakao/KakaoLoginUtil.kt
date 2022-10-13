@@ -8,6 +8,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.sangmeebee.searchmovie.model.UserModel
 import com.sangmeebee.searchmovie.util.social_login.SocialLoginUtil
 import com.sangmeebee.searchmovie.util.social_login.SocialType
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -19,7 +20,7 @@ import kotlin.coroutines.suspendCoroutine
  *
  * 카카오톡 로그인에 실패하면 사용자가 의도적으로 로그인 취소한 경우를 제외하고는 카카오 계정 로그인을 서브로 실행한다.
  */
-internal class KakaoLoginUtil : SocialLoginUtil {
+class KakaoLoginUtil @Inject constructor() : SocialLoginUtil {
     override suspend fun login(context: Context): Result<String> = runCatching {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             try {
@@ -80,7 +81,7 @@ internal class KakaoLoginUtil : SocialLoginUtil {
         false
     }
 
-    override suspend fun logout(): Result<Boolean> = runCatching {
+    override suspend fun logout(context: Context): Result<Boolean> = runCatching {
         suspendCoroutine { continuation ->
             UserApiClient.instance.logout { error ->
                 if (error != null) {

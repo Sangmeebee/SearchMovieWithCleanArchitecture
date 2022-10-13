@@ -8,7 +8,11 @@
 
         <variable
             name="viewModel"
-            type="com.sangmeebee.searchmovie.ui.UserViewModel" />
+            type="com.sangmeebee.searchmovie.ui.my.UserViewModel" />
+
+        <variable
+            name="signInFragment"
+            type="com.sangmeebee.searchmovie.ui.my.SignInFragment" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -20,6 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/light_gray"
             android:orientation="vertical">
 
             <TextView
@@ -37,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="80dp"
-                android:onClick="@{() -> viewModel.login(SocialType.KAKAO)}"
+                android:onClick="@{() -> signInFragment.login(SocialType.KAKAO)}"
                 android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/btn_kakao_login" />
@@ -47,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="12dp"
+                android:onClick="@{() -> signInFragment.login(SocialType.GOOGLE)}"
                 android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/btn_google_login" />

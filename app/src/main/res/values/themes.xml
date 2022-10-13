@@ -22,4 +22,9 @@
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:navigationBarColor">@color/white</item>
     </style>
+
+    <style name="HiddenTitleTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
 </resources>

@@ -19,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
+import com.sangmeebee.searchmovie.ui.my.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

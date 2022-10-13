@@ -5,6 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("de.mannodermaus.android-junit5")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
 
 }
 
@@ -36,6 +37,9 @@ android {
         buildConfigField("String",
             "KAKAO_NATIVE_APP_KEY",
             properties["kakao_native_app_key"].toString())
+        buildConfigField("String",
+            "GOOGLE_WEB_CLIENT_ID",
+            properties["google_web_client_id"].toString())
 
         //set manifest placeholder
         manifestPlaceholders["kakaoNativeAppKey"] = "kakao${properties["kakao_native_app_key"]}"
@@ -100,6 +104,12 @@ dependencies {
     implementation(PagingConfig.PAGING_RUNTIME)
 
     implementation(KakaoConfig.KAKAO_LOGIN)
+
+    GoogleConfig.run {
+        implementation(PLAY_SERVICE_AUTH)
+        implementation(platform(FIREBASE_BOM))
+        implementation(FIREBASE_AUTH)
+    }
 
     UnitTestConfig.run {
         testImplementation(JUNIT)
