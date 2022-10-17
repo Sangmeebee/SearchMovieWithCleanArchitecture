@@ -42,9 +42,18 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>(FragmentSigninBinding
     }
 
     private fun setUpObserveUiState() {
+        observeUser()
         observeError()
-        observeDoLogin()
-        observeIsLogin()
+        observeIsLoading()
+    }
+
+    private fun observeUser() = repeatOnStarted {
+        userViewModel.userUiState.map { it.user }.distinctUntilChanged()
+            .collectLatest { user ->
+                if (user != null) {
+                    findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMyFragment())
+                }
+            }
     }
 
     private fun observeError() = repeatOnStarted {
@@ -56,19 +65,10 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>(FragmentSigninBinding
         }
     }
 
-    private fun observeDoLogin() = repeatOnStarted {
+    private fun observeIsLoading() = repeatOnStarted {
         userViewModel.userUiState.map { it.isLoading }.distinctUntilChanged()
             .collectLatest {
                 binding.srlLoading.isRefreshing = it
-            }
-    }
-
-    private fun observeIsLogin() = repeatOnStarted {
-        userViewModel.userUiState.map { it.user }.distinctUntilChanged()
-            .collectLatest { user ->
-                if (user != null) {
-                    findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMyFragment())
-                }
             }
     }
 

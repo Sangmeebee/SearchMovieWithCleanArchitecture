@@ -1,5 +1,6 @@
 package com.sangmeebee.searchmovie.ui.my
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sangmeebee.searchmovie.model.UserUiState
@@ -26,6 +27,7 @@ class UserViewModel @Inject constructor(
     fun fetchUser(type: SocialType) = viewModelScope.launch {
         socialLoginFactory(type).getUserInfo()
             .onSuccess { user ->
+                Log.d("Sangmeebee", user.toString())
                 //TODO Room에 UserModel 정보 저장하는 로직 추가 , 저장 성공하면 myUiState의 user 업데이트
                 _userUiState.update { it.copy(user = user, isLoading = false) }
             }
@@ -48,7 +50,7 @@ class UserViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             // TODO Room에서 데이터 가져와서 로그인 여부 확인하는 로직으로 변경
-            val kakaoLoginUtil = socialLoginFactory(SocialType.KAKAO)
+            val kakaoLoginUtil = socialLoginFactory(SocialType.GOOGLE)
             if (kakaoLoginUtil.isLogin()) {
                 kakaoLoginUtil.getUserInfo().onSuccess { user ->
                     _userUiState.update { it.copy(user = user) }

@@ -47,12 +47,6 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
         observeIsLoading()
     }
 
-    private fun observeIsLoading() = repeatOnStarted {
-        userViewModel.userUiState.map { it.isLoading }.distinctUntilChanged().collectLatest {
-            binding.srlLoading.isRefreshing = it
-        }
-    }
-
     private fun observeUser() = repeatOnStarted {
         userViewModel.userUiState.map { it.user }.distinctUntilChanged().collectLatest { user ->
             if (user == null) {
@@ -67,6 +61,12 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
                 showToast(error.message)
                 userViewModel.showErrorMessage(null)
             }
+        }
+    }
+
+    private fun observeIsLoading() = repeatOnStarted {
+        userViewModel.userUiState.map { it.isLoading }.distinctUntilChanged().collectLatest {
+            binding.srlLoading.isRefreshing = it
         }
     }
 

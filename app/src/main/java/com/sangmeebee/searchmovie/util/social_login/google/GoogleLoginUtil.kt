@@ -1,7 +1,6 @@
 package com.sangmeebee.searchmovie.util.social_login.google
 
 import android.content.Context
-import android.util.Log
 import androidx.activity.result.ActivityResult
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -11,6 +10,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.sangmeebee.searchmovie.model.UserModel
 import com.sangmeebee.searchmovie.util.social_login.SocialLoginUtil
+import com.sangmeebee.searchmovie.util.social_login.SocialType
 import javax.inject.Inject
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
@@ -40,24 +40,9 @@ class GoogleLoginUtil @Inject constructor() : SocialLoginUtil {
             val idToken = credential.googleIdToken
             when {
                 idToken != null -> {
-                    // Got an ID token from Google. Use it to authenticate
-                    // with Firebase.
-                    Log.d("Sangmeebee", "Got ID token: $idToken")
                     val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
                     auth.signInWithCredential(firebaseCredential)
                     resume(idToken)
-//                                .addOnCompleteListener(this) { task ->
-//                                    if (task.isSuccessful) {
-//                                        // Sign in success, update UI with the signed-in user's information
-//                                        Log.d(TAG, "signInWithCredential:success")
-//                                        val user = auth.currentUser
-//                                        updateUI(user)
-//                                    } else {
-//                                        // If sign in fails, display a message to the user.
-//                                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-//                                        updateUI(null)
-//                                    }
-//                                }
                 }
                 else -> {
                     resumeWithException(IllegalStateException("No ID token!"))
@@ -86,8 +71,21 @@ class GoogleLoginUtil @Inject constructor() : SocialLoginUtil {
         return auth.currentUser != null
     }
 
-    override suspend fun getUserInfo(): Result<UserModel> {
-        Log.d("Sangmeebee", auth.currentUser.toString())
-        return Result.success(UserModel("12"))
+    override suspend fun getUserInfo(): Result<UserModel> = runCatching {
+        suspendCoroutine { continuation ->
+            if (auth.currentUser == null) {
+                continuation.resumeWithException(IllegalStateException("No current user"))
+            } else {
+                continuation.resume(
+                    UserModel(
+                        userId = auth.currentUser?.uid!!,
+                        nickname = auth.currentUser?.displayName,
+                        profileImageUrl = auth.currentUser?.photoUrl?.toString() ?: run { null },
+                        email = auth.currentUser?.email,
+                        loginType = SocialType.GOOGLE
+                    )
+                )
+            }
+        }
     }
 }
