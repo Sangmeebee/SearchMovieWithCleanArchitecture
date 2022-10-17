@@ -73,15 +73,16 @@ class GoogleLoginUtil @Inject constructor() : SocialLoginUtil {
 
     override suspend fun getUserInfo(): Result<UserModel> = runCatching {
         suspendCoroutine { continuation ->
-            if (auth.currentUser == null) {
+            val currentUser = auth.currentUser
+            if (currentUser == null) {
                 continuation.resumeWithException(IllegalStateException("No current user"))
             } else {
                 continuation.resume(
                     UserModel(
-                        userId = auth.currentUser?.uid!!,
-                        nickname = auth.currentUser?.displayName,
-                        profileImageUrl = auth.currentUser?.photoUrl?.toString() ?: run { null },
-                        email = auth.currentUser?.email,
+                        userId = "google${currentUser.uid}",
+                        nickname = currentUser.displayName,
+                        profileImageUrl = currentUser.photoUrl?.toString(),
+                        email = currentUser.email,
                         loginType = SocialType.GOOGLE
                     )
                 )

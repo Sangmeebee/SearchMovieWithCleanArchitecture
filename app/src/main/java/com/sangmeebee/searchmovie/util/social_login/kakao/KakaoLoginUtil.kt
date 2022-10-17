@@ -104,8 +104,8 @@ class KakaoLoginUtil @Inject constructor() : SocialLoginUtil {
                         nickname = user.kakaoAccount?.profile?.nickname,
                         profileImageUrl = user.kakaoAccount?.profile?.thumbnailImageUrl,
                         email = user.kakaoAccount?.email,
-                        gender = user.kakaoAccount?.gender,
-                        age = user.kakaoAccount?.ageRange,
+                        gender = user.kakaoAccount?.gender?.name,
+                        age = user.kakaoAccount?.ageRange?.name,
                         loginType = SocialType.KAKAO
                     ))
                 }
