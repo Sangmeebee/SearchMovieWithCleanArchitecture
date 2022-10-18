@@ -49,8 +49,8 @@ class UserViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            // TODO Room에서 데이터 가져와서 로그인 여부 확인하는 로직으로 변경
-            val kakaoLoginUtil = socialLoginFactory(SocialType.GOOGLE)
+            //TODO Room에서 데이터 가져와서 로그인 여부 확인하는 로직으로 변경
+            val kakaoLoginUtil = socialLoginFactory(SocialType.KAKAO)
             if (kakaoLoginUtil.isLogin()) {
                 kakaoLoginUtil.getUserInfo().onSuccess { user ->
                     _userUiState.update { it.copy(user = user) }

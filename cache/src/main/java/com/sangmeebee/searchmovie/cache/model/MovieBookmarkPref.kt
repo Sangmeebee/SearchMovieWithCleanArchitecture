@@ -18,6 +18,7 @@ internal data class MovieBookmarkPref(
     val contributor: String,
     @ColumnInfo(name = "user_rating")
     val userRating: Float,
+    val userOwnerId: String
 ) : CacheToDataMapper<MovieBookmarkEntity> {
     override fun toData(): MovieBookmarkEntity = MovieBookmarkEntity(
         title = title,

@@ -1,13 +1,15 @@
-package com.sangmeebee.searchmovie.model
+package com.sangmeebee.searchmovie.data.model
 
-import com.sangmeebee.searchmovie.util.social_login.SocialType
-
-data class UserModel(
+data class UserEntity(
     val userId: String,
     val nickname: String? = null,
     val profileImageUrl: String? = null,
     val email: String? = null,
     val gender: String? = null,
     val age: String? = null,
-    val loginType: SocialType,
+    val loginType: UserEntityLoginType,
 )
+
+enum class UserEntityLoginType {
+    KAKAO, GOOGLE, NAVER
+}
