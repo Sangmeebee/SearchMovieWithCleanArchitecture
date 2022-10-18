@@ -1,9 +1,9 @@
 package com.sangmeebee.searchmovie.data.model.mapper
 
-import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
-import com.sangmeebee.searchmovie.domain.model.MovieBookmark
+import com.sangmeebee.searchmovie.data.model.BookmarkedMovieEntity
+import com.sangmeebee.searchmovie.domain.model.BookmarkedMovie
 
-internal fun MovieBookmark.toData(): MovieBookmarkEntity = MovieBookmarkEntity(
+internal fun BookmarkedMovie.toData(): BookmarkedMovieEntity = BookmarkedMovieEntity(
     title = title,
     subtitle = subtitle,
     link = link,

@@ -1,13 +1,13 @@
 package com.sangmeebee.searchmovie.model.mapper
 
-import com.sangmeebee.searchmovie.domain.model.MovieBookmark
+import com.sangmeebee.searchmovie.domain.model.BookmarkedMovie
 import com.sangmeebee.searchmovie.domain.model.User
 import com.sangmeebee.searchmovie.domain.model.UserLoginType
 import com.sangmeebee.searchmovie.model.MovieModel
 import com.sangmeebee.searchmovie.model.UserModel
 import com.sangmeebee.searchmovie.util.social_login.SocialType
 
-internal fun MovieModel.toDomain() = MovieBookmark(
+internal fun MovieModel.toDomain() = BookmarkedMovie(
     title = title,
     subtitle = subtitle,
     link = link,

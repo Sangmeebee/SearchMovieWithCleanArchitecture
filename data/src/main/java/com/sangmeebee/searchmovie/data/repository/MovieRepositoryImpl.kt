@@ -8,7 +8,7 @@ import com.sangmeebee.searchmovie.data.model.MovieEntity
 import com.sangmeebee.searchmovie.data.model.mapper.toData
 import com.sangmeebee.searchmovie.data.model.mapper.toDomain
 import com.sangmeebee.searchmovie.domain.model.Movie
-import com.sangmeebee.searchmovie.domain.model.MovieBookmark
+import com.sangmeebee.searchmovie.domain.model.BookmarkedMovie
 import com.sangmeebee.searchmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,10 +25,10 @@ class MovieRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun bookmark(movie: MovieBookmark): Result<Unit> =
+    override suspend fun bookmark(movie: BookmarkedMovie): Result<Unit> =
         movieBookmarkLocalDataSource.bookmark(movie.toData())
 
-    override suspend fun getAllBookmarked(): Result<List<MovieBookmark>> =
+    override suspend fun getAllBookmarked(): Result<List<BookmarkedMovie>> =
         movieBookmarkLocalDataSource.getAllBookmarked().map { bookmarkedMovie ->
             bookmarkedMovie.toDomain()
         }

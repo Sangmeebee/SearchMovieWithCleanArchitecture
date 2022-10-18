@@ -1,6 +1,5 @@
 package com.sangmeebee.searchmovie.domain.usecase
 
-import com.sangmeebee.searchmovie.domain.model.MovieBookmark
 import com.sangmeebee.searchmovie.domain.repository.MovieRepository
 import javax.inject.Inject
 

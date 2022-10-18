@@ -5,7 +5,7 @@ import com.sangmeebee.searchmovie.cache.model.mapper.toData
 import com.sangmeebee.searchmovie.cache.model.mapper.toPref
 import com.sangmeebee.searchmovie.data.datasource.local.MovieBookmarkLocalDataSource
 import com.sangmeebee.searchmovie.data.di.IoDispatcher
-import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
+import com.sangmeebee.searchmovie.data.model.BookmarkedMovieEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -14,13 +14,13 @@ internal class MovieBookmarkLocalDataSourceImpl @Inject constructor(
     private val movieDao: MovieBookmarkDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : MovieBookmarkLocalDataSource {
-    override suspend fun bookmark(movie: MovieBookmarkEntity) = runCatching {
+    override suspend fun bookmark(movie: BookmarkedMovieEntity) = runCatching {
         withContext(ioDispatcher) {
             movieDao.insert(movie.toPref())
         }
     }
 
-    override suspend fun getAllBookmarked(): Result<List<MovieBookmarkEntity>> = runCatching {
+    override suspend fun getAllBookmarked(): Result<List<BookmarkedMovieEntity>> = runCatching {
         withContext(ioDispatcher) {
             movieDao.getMovies().toData()
         }

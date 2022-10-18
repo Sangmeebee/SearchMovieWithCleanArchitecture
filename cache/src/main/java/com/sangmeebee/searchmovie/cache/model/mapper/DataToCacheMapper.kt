@@ -1,9 +1,9 @@
 package com.sangmeebee.searchmovie.cache.model.mapper
 
-import com.sangmeebee.searchmovie.cache.model.MovieBookmarkPref
-import com.sangmeebee.searchmovie.data.model.MovieBookmarkEntity
+import com.sangmeebee.searchmovie.cache.model.BookmarkedMoviePref
+import com.sangmeebee.searchmovie.data.model.BookmarkedMovieEntity
 
-internal fun MovieBookmarkEntity.toPref() = MovieBookmarkPref(
+internal fun BookmarkedMovieEntity.toPref() = BookmarkedMoviePref(
     title = title,
     subtitle = subtitle,
     link = link,

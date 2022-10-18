@@ -1,7 +1,7 @@
 package com.sangmeebee.searchmovie.model.mapper
 
 import com.sangmeebee.searchmovie.domain.model.Movie
-import com.sangmeebee.searchmovie.domain.model.MovieBookmark
+import com.sangmeebee.searchmovie.domain.model.BookmarkedMovie
 import com.sangmeebee.searchmovie.domain.model.User
 import com.sangmeebee.searchmovie.domain.model.UserLoginType
 import com.sangmeebee.searchmovie.model.MovieModel
@@ -32,7 +32,7 @@ internal fun setMovieContributor(director: String, actor: String): String =
 internal fun setMovieRating(rating: String) = rating.toFloat() / 2
 
 
-internal fun MovieBookmark.toPresentation() = MovieModel(
+internal fun BookmarkedMovie.toPresentation() = MovieModel(
     title = title,
     subtitle = subtitle,
     link = link,
@@ -42,7 +42,7 @@ internal fun MovieBookmark.toPresentation() = MovieModel(
     isBookmarked = true
 )
 
-internal fun List<MovieBookmark>.toPresentation() = map { it.toPresentation() }
+internal fun List<BookmarkedMovie>.toPresentation() = map { it.toPresentation() }
 
 
 internal fun User.toPresentation() = UserModel(
