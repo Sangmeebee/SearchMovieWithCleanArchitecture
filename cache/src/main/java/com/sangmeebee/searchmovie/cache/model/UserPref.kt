@@ -10,8 +10,8 @@ import com.sangmeebee.searchmovie.data.model.UserEntityLoginType
 @Entity(tableName = "user")
 internal data class UserPref(
     @PrimaryKey
-    @ColumnInfo(name = "user_id")
-    val userId: String,
+    @ColumnInfo(name = "user_token")
+    val userToken: String,
     val nickname: String? = null,
     @ColumnInfo(name = "profile_image_url")
     val profileImageUrl: String? = null,
@@ -22,7 +22,7 @@ internal data class UserPref(
     val loginType: UserPrefLoginType,
 ) : CacheToDataMapper<UserEntity> {
     override fun toData(): UserEntity = UserEntity(
-        userId = userId,
+        userToken = userToken,
         nickname = nickname,
         profileImageUrl = profileImageUrl,
         email = email,

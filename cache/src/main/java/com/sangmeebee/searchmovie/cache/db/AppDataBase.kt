@@ -14,4 +14,5 @@ import com.sangmeebee.searchmovie.cache.model.UserPref
 @TypeConverters(Converters::class)
 internal abstract class AppDataBase : RoomDatabase() {
     abstract fun movieBookmarkDao(): MovieBookmarkDao
+    abstract fun userInfoDao(): UserInfoDao
 }

@@ -7,6 +7,6 @@ import javax.inject.Inject
 class BookmarkMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
 ) {
-    suspend operator fun invoke(movie: BookmarkedMovie) =
-        movieRepository.bookmark(movie)
+    suspend operator fun invoke(userToken: String, movie: BookmarkedMovie) =
+        movieRepository.bookmark(userToken, movie)
 }

@@ -1,5 +1,6 @@
 package com.sangmeebee.searchmovie.ui.search_movie
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -9,10 +10,7 @@ import com.sangmeebee.searchmovie.cache.util.BookmarkException
 import com.sangmeebee.searchmovie.cache.util.GetBookmarkException
 import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.domain.model.Movie
-import com.sangmeebee.searchmovie.domain.usecase.BookmarkMovieUseCase
-import com.sangmeebee.searchmovie.domain.usecase.GetAllBookmarkedMovieUseCase
-import com.sangmeebee.searchmovie.domain.usecase.GetMovieUseCase
-import com.sangmeebee.searchmovie.domain.usecase.UnbookmarkMovieUseCase
+import com.sangmeebee.searchmovie.domain.usecase.*
 import com.sangmeebee.searchmovie.model.MovieModel
 import com.sangmeebee.searchmovie.model.mapper.toDomain
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
@@ -26,6 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchMovieViewModel @Inject constructor(
+    private val getUserTokenUseCase: GetUserTokenUseCase,
     private val getMovieUseCase: GetMovieUseCase,
     private val getAllBookmarkedMovieUseCase: GetAllBookmarkedMovieUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
@@ -66,17 +65,28 @@ class SearchMovieViewModel @Inject constructor(
         return getMovieUseCase(query)
     }
 
-    fun bookmarkMovie(movie: MovieModel) = viewModelScope.launch {
+    fun fetchBookmarkWithCheckLogin(movie: MovieModel) = viewModelScope.launch {
+        getUserTokenUseCase().collectLatest { userToken ->
+            if (userToken.isEmpty()) {
+                //TODO 로그인 페이지로 이동
+                Log.d("Sangmeebee", "go to login screen")
+            } else {
+                fetchBookmark(userToken, movie)
+            }
+        }
+    }
+
+    private suspend fun fetchBookmark(userToken: String, movie: MovieModel) {
         var bookmarkMovie: MovieModel? = null
         if (bookmarkedMovies.any { it.link == movie.link }) {
-            unbookmarkMovieUseCase(movie.link)
+            unbookmarkMovieUseCase(userToken, movie.link)
                 .onSuccess {
                     bookmarkMovie = movie.copy(isBookmarked = false)
                     bookmarkedMovies.remove(bookmarkedMovies.find { it.link == movie.link })
                 }
                 .onFailure { _errorEvent.emit(UnBookmarkException()) }
         } else {
-            bookmarkMovieUseCase(movie.toDomain())
+            bookmarkMovieUseCase(userToken, movie.toDomain())
                 .onSuccess {
                     bookmarkMovie = movie.copy(isBookmarked = true)
                     bookmarkedMovies.add(bookmarkMovie!!)
@@ -89,10 +99,16 @@ class SearchMovieViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getAllBookmarkedMovieUseCase()
-                .onSuccess { bookmarkedMovies.addAll(it.toPresentation()) }
-                .onFailure { _errorEvent.emit(GetBookmarkException()) }
-            _bookmarkedMovieState.value = bookmarkedMovies.toList()
+            getUserTokenUseCase().collectLatest { userToken ->
+                if (userToken.isNotEmpty()) {
+                    getAllBookmarkedMovieUseCase(userToken)
+                        .onSuccess {
+                            bookmarkedMovies.addAll(it.toPresentation())
+                        }
+                        .onFailure { _errorEvent.emit(GetBookmarkException()) }
+                    _bookmarkedMovieState.value = bookmarkedMovies.toList()
+                }
+            }
         }
     }
 }

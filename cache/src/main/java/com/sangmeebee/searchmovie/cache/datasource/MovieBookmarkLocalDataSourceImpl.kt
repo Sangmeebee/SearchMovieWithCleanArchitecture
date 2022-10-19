@@ -14,21 +14,23 @@ internal class MovieBookmarkLocalDataSourceImpl @Inject constructor(
     private val movieDao: MovieBookmarkDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : MovieBookmarkLocalDataSource {
-    override suspend fun bookmark(movie: BookmarkedMovieEntity) = runCatching {
+    override suspend fun bookmark(userToken: String, movie: BookmarkedMovieEntity) = runCatching {
         withContext(ioDispatcher) {
-            movieDao.insert(movie.toPref())
+            movieDao.insertForUser(userToken, movie.toPref())
         }
     }
 
-    override suspend fun getAllBookmarked(): Result<List<BookmarkedMovieEntity>> = runCatching {
+    override suspend fun getAllBookmarked(userToken: String): Result<List<BookmarkedMovieEntity>> = runCatching {
         withContext(ioDispatcher) {
-            movieDao.getMovies().toData()
+            movieDao.getMovies(userToken).toData()
         }
+
+        return Result.success(emptyList())
     }
 
-    override suspend fun unbookmark(movieId: String) = runCatching {
+    override suspend fun unbookmark(userToken: String, movieId: String) = runCatching {
         withContext(ioDispatcher) {
-            movieDao.deleteMovieBookmark(movieId)
+            movieDao.deleteMovieBookmark(userToken, movieId)
         }
     }
 }

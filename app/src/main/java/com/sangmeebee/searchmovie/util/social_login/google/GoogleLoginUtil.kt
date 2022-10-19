@@ -79,7 +79,7 @@ class GoogleLoginUtil @Inject constructor() : SocialLoginUtil {
             } else {
                 continuation.resume(
                     UserModel(
-                        userId = "google${currentUser.uid}",
+                        userToken = "google${currentUser.uid}",
                         nickname = currentUser.displayName,
                         profileImageUrl = currentUser.photoUrl?.toString(),
                         email = currentUser.email,

@@ -9,7 +9,7 @@ object GradleConfig {
 }
 
 object KotlinConfig {
-    private const val kotlinVersion = "1.7.10"
+    private const val kotlinVersion = "1.7.20"
 
     const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     const val KOTLIN_GRADLE_PLUGIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -57,6 +57,17 @@ object RoomConfig {
     const val ROOM_COMPILER = "androidx.room:room-compiler:$roomVersion"
     const val ROOM_KTX = "androidx.room:room-ktx:$roomVersion"
     const val ROOM_PAGING = "androidx.room:room-paging:$roomVersion"
+}
+
+object DataStoreConfig {
+    private const val dataStoreVersion = "1.0.0"
+    const val DATASTORE_PROTO = "androidx.datastore:datastore:$dataStoreVersion"
+}
+
+object ProtobufConfig {
+    private const val protobufVersion = "3.21.7"
+    const val PROTOBUF_JAVALITE = "com.google.protobuf:protobuf-javalite:$protobufVersion"
+    const val PROTOBUF_PROTOC = "com.google.protobuf:protoc:$protobufVersion"
 }
 
 object NetworkConfig {

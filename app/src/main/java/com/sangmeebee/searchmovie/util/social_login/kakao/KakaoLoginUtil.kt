@@ -100,7 +100,7 @@ class KakaoLoginUtil @Inject constructor() : SocialLoginUtil {
                     continuation.resumeWithException(error)
                 } else if (user != null) {
                     continuation.resume(UserModel(
-                        userId = "kakao${user.id}",
+                        userToken = "kakao${user.id}",
                         nickname = user.kakaoAccount?.profile?.nickname,
                         profileImageUrl = user.kakaoAccount?.profile?.thumbnailImageUrl,
                         email = user.kakaoAccount?.email,

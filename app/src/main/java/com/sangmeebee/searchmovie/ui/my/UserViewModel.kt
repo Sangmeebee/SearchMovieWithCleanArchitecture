@@ -1,9 +1,11 @@
 package com.sangmeebee.searchmovie.ui.my
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sangmeebee.searchmovie.domain.usecase.*
 import com.sangmeebee.searchmovie.model.UserUiState
+import com.sangmeebee.searchmovie.model.mapper.toDomain
+import com.sangmeebee.searchmovie.model.mapper.toPresentation
 import com.sangmeebee.searchmovie.util.social_login.SocialLoginFactory
 import com.sangmeebee.searchmovie.util.social_login.SocialType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,12 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val socialLoginFactory: SocialLoginFactory,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val postUserInfoUseCase: PostUserInfoUseCase,
+    private val deleteUserInfoUseCase: DeleteUserInfoUseCase,
+    private val getInitUserTokenUseCase: GetInitUserTokenUseCase,
+    private val postUserTokenUseCase: PostUserTokenUseCase,
+    private val deleteUserTokenUseCase: DeleteUserTokenUseCase,
 ) : ViewModel() {
     // splash
     var isReady: Boolean = false
@@ -27,16 +35,27 @@ class UserViewModel @Inject constructor(
     fun fetchUser(type: SocialType) = viewModelScope.launch {
         socialLoginFactory(type).getUserInfo()
             .onSuccess { user ->
-                Log.d("Sangmeebee", user.toString())
-                //TODO Room에 UserModel 정보 저장하는 로직 추가 , 저장 성공하면 myUiState의 user 업데이트
+                getUserInfoUseCase(user.userToken)
+                    .onFailure {
+                        postUserInfoUseCase(user.toDomain())
+                    }
+                postUserTokenUseCase(user.userToken)
                 _userUiState.update { it.copy(user = user, isLoading = false) }
             }
-            .onFailure { throwable -> _userUiState.update { it.copy(error = throwable, isLoading = false) } }
+            .onFailure {
+                showErrorMessage(it)
+                showLoading(false)
+            }
     }
 
-    fun removeUser() {
-        //TODO Room에 저장되있는 User 정보 삭제 (userUiState.value.user)
-        _userUiState.update { it.copy(user = null) }
+    fun deleteUserToken() = viewModelScope.launch {
+        deleteUserTokenUseCase()
+            .onSuccess {
+                _userUiState.update { it.copy(user = null) }
+            }
+            .onFailure {
+                showErrorMessage(it)
+            }
     }
 
     fun showLoading(isLoading: Boolean) {
@@ -49,14 +68,23 @@ class UserViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            //TODO Room에서 데이터 가져와서 로그인 여부 확인하는 로직으로 변경
-            val kakaoLoginUtil = socialLoginFactory(SocialType.KAKAO)
-            if (kakaoLoginUtil.isLogin()) {
-                kakaoLoginUtil.getUserInfo().onSuccess { user ->
-                    _userUiState.update { it.copy(user = user) }
+            getInitUserTokenUseCase()
+                .onSuccess { userToken ->
+                    if (userToken.isNotEmpty()) {
+                        getUserInfoUseCase(userToken)
+                            .onSuccess { user ->
+                                _userUiState.update { it.copy(user = user.toPresentation()) }
+                            }
+                            .onFailure {
+                                showErrorMessage(it)
+                            }
+                    }
                 }
-            }
+                .onFailure {
+                    showErrorMessage(it)
+                }
             isReady = true
+
         }
     }
 }

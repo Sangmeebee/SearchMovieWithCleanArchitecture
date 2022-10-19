@@ -17,15 +17,17 @@ internal fun MovieModel.toDomain() = BookmarkedMovie(
 )
 
 internal fun UserModel.toDomain() = User(
-    userId = userId,
+    userToken = userToken,
     nickname = nickname,
     profileImageUrl = profileImageUrl,
     email = email,
     gender = gender,
     age = age,
-    loginType = when (loginType) {
-        SocialType.KAKAO -> UserLoginType.KAKAO
-        SocialType.GOOGLE -> UserLoginType.GOOGLE
-        SocialType.NAVER -> UserLoginType.NAVER
-    }
+    loginType = loginType.toDomain()
 )
+
+internal fun SocialType.toDomain() = when (this) {
+    SocialType.KAKAO -> UserLoginType.KAKAO
+    SocialType.GOOGLE -> UserLoginType.GOOGLE
+    SocialType.NAVER -> UserLoginType.NAVER
+}

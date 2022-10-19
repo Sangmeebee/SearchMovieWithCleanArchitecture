@@ -6,6 +6,6 @@ import javax.inject.Inject
 class UnbookmarkMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
 ) {
-    suspend operator fun invoke(movieId: String) =
-        movieRepository.unbookmark(movieId)
+    suspend operator fun invoke(userToken: String, movieId: String) =
+        movieRepository.unbookmark(userToken, movieId)
 }

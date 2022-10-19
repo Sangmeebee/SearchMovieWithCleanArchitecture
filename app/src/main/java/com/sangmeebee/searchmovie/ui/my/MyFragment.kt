@@ -74,7 +74,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
         userViewModel.showLoading(true)
         socialLoginFactory(type).logout(requireContext())
             .onSuccess {
-                userViewModel.removeUser()
+                userViewModel.deleteUserToken()
             }
             .onFailure(userViewModel::showErrorMessage)
         userViewModel.showLoading(false)

@@ -31,7 +31,7 @@ class SearchMovieFragment :
     private val searchMovieViewModel by activityViewModels<SearchMovieViewModel>()
     private val movieAdapter by lazy {
         SearchMovieAdapter(
-            bookmark = searchMovieViewModel::bookmarkMovie,
+            bookmark = searchMovieViewModel::fetchBookmarkWithCheckLogin,
             navigateToDetailFragment = ::navigateToDetailFragment
         )
     }

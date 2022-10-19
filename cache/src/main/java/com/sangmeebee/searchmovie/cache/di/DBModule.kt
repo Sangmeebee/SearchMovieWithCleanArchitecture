@@ -2,9 +2,7 @@ package com.sangmeebee.searchmovie.cache.di
 
 import android.content.Context
 import androidx.room.Room
-import com.sangmeebee.searchmovie.cache.db.AppDataBase
-import com.sangmeebee.searchmovie.cache.db.MIGRATION_1_2
-import com.sangmeebee.searchmovie.cache.db.MovieBookmarkDao
+import com.sangmeebee.searchmovie.cache.db.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,10 +18,14 @@ internal object DBModule {
     @Provides
     fun provideAppDataBase(@ApplicationContext context: Context): AppDataBase = Room
         .databaseBuilder(context, AppDataBase::class.java, "SearchMovie.db")
-        .addMigrations(MIGRATION_1_2)
+        .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
         .build()
 
     @Singleton
     @Provides
     fun provideMovieDao(database: AppDataBase): MovieBookmarkDao = database.movieBookmarkDao()
+
+    @Singleton
+    @Provides
+    fun provideUserInfoDao(database: AppDataBase): UserInfoDao = database.userInfoDao()
 }

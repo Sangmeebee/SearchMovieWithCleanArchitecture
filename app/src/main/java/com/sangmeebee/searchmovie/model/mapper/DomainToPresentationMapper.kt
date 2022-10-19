@@ -46,7 +46,7 @@ internal fun List<BookmarkedMovie>.toPresentation() = map { it.toPresentation() 
 
 
 internal fun User.toPresentation() = UserModel(
-    userId = userId,
+    userToken = userToken,
     nickname = nickname,
     profileImageUrl = profileImageUrl,
     email = email,

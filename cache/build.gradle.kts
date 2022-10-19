@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("com.google.protobuf") version "0.9.1"
 }
 
 android {
@@ -48,6 +49,9 @@ dependencies {
         implementation(ROOM_PAGING)
     }
 
+    implementation(DataStoreConfig.DATASTORE_PROTO)
+    implementation(ProtobufConfig.PROTOBUF_JAVALITE)
+
     implementation(ConverterConfig.GSON)
 
     HiltConfig.run {
@@ -63,5 +67,24 @@ dependencies {
         testImplementation(COROUTINE_TEST)
         testImplementation(MOCKK)
         testImplementation(MOCK_WEBSERVER)
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = ProtobufConfig.PROTOBUF_PROTOC
+    }
+
+    // Generates the java Protobuf-lite code for the Protobufs in this project. See
+    // https://github.com/google/protobuf-gradle-plugin#customizing-protobuf-compilation
+    // for more information.
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
     }
 }

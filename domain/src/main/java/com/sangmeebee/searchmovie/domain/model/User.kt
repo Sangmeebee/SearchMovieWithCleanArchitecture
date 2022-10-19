@@ -1,7 +1,7 @@
 package com.sangmeebee.searchmovie.domain.model
 
 data class User(
-    val userId: String,
+    val userToken: String,
     val nickname: String? = null,
     val profileImageUrl: String? = null,
     val email: String? = null,
