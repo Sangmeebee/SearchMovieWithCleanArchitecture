@@ -24,8 +24,6 @@ internal class MovieBookmarkLocalDataSourceImpl @Inject constructor(
         withContext(ioDispatcher) {
             movieDao.getMovies(userToken).toData()
         }
-
-        return Result.success(emptyList())
     }
 
     override suspend fun unbookmark(userToken: String, movieId: String) = runCatching {
