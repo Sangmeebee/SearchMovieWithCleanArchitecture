@@ -9,6 +9,7 @@ import androidx.paging.map
 import com.sangmeebee.searchmovie.cache.util.BookmarkException
 import com.sangmeebee.searchmovie.cache.util.GetBookmarkException
 import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
+import com.sangmeebee.searchmovie.domain.model.BookmarkedMovie
 import com.sangmeebee.searchmovie.domain.model.Movie
 import com.sangmeebee.searchmovie.domain.usecase.*
 import com.sangmeebee.searchmovie.model.MovieModel
@@ -52,7 +53,7 @@ class SearchMovieViewModel @Inject constructor(
     private val _bookmarkedMovieState = MutableStateFlow<List<MovieModel>>(emptyList())
     val bookmarkedMovieState: StateFlow<List<MovieModel>> = _bookmarkedMovieState.asStateFlow()
 
-    private val _bookmarkEvent = MutableEventFlow<MovieModel>()
+    private val _bookmarkEvent = MutableEventFlow<List<MovieModel>>()
     val bookmarkEvent = _bookmarkEvent.asEventFlow()
 
     private val bookmarkedMovies = mutableSetOf<MovieModel>()
@@ -61,9 +62,7 @@ class SearchMovieViewModel @Inject constructor(
         query.emit(newQuery)
     }
 
-    private fun fetchMovie(query: String): Flow<PagingData<Movie>> {
-        return getMovieUseCase(query)
-    }
+    private fun fetchMovie(query: String): Flow<PagingData<Movie>> = getMovieUseCase(query)
 
     fun fetchBookmarkWithCheckLogin(movie: MovieModel) = viewModelScope.launch {
         getUserTokenUseCase().collectLatest { userToken ->
@@ -94,7 +93,20 @@ class SearchMovieViewModel @Inject constructor(
                 .onFailure { _errorEvent.emit(BookmarkException()) }
         }
         _bookmarkedMovieState.value = bookmarkedMovies.toList()
-        bookmarkMovie?.let { _bookmarkEvent.emit(it) }
+        bookmarkMovie?.let { _bookmarkEvent.emit(listOf(it)) }
+    }
+
+    private suspend fun fetchBookmarkByLogout() {
+        _bookmarkEvent.emit(bookmarkedMovieState.value.map { it.copy(isBookmarked = false) })
+        _bookmarkedMovieState.value = emptyList()
+        bookmarkedMovies.clear()
+    }
+
+    private suspend fun fetchBookmarkByLogin(bookmarks: List<BookmarkedMovie>) {
+        val bookmarkedMoviesData = bookmarks.toPresentation()
+        _bookmarkEvent.emit(bookmarkedMoviesData)
+        bookmarkedMovies.addAll(bookmarkedMoviesData)
+        _bookmarkedMovieState.value = bookmarkedMovies.toList()
     }
 
     init {
@@ -102,11 +114,10 @@ class SearchMovieViewModel @Inject constructor(
             getUserTokenUseCase().collectLatest { userToken ->
                 if (userToken.isNotEmpty()) {
                     getAllBookmarkedMovieUseCase(userToken)
-                        .onSuccess {
-                            bookmarkedMovies.addAll(it.toPresentation())
-                        }
+                        .onSuccess { fetchBookmarkByLogin(it) }
                         .onFailure { _errorEvent.emit(GetBookmarkException()) }
-                    _bookmarkedMovieState.value = bookmarkedMovies.toList()
+                } else {
+                    fetchBookmarkByLogout()
                 }
             }
         }

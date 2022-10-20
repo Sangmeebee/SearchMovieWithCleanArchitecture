@@ -135,13 +135,17 @@ class SearchMovieFragment :
     }
 
     private fun observeBookmarkEvent() = repeatOnStarted {
-        searchMovieViewModel.bookmarkEvent.collectLatest { bookmarkedMovie ->
-            val index = movieAdapter.snapshot().indexOfFirst { it?.link == bookmarkedMovie.link }
-            if (index != -1) {
-                movieAdapter.snapshot()[index]?.let { movie ->
-                    movie.isBookmarked = bookmarkedMovie.isBookmarked
+        searchMovieViewModel.bookmarkEvent.collect { bookmarkedMovies ->
+            bookmarkedMovies.forEach { bookmarkedMovie ->
+                val index = movieAdapter.snapshot().indexOfFirst { movie ->
+                    movie?.link == bookmarkedMovie.link
                 }
-                movieAdapter.notifyItemChanged(index)
+                if (index != -1) {
+                    movieAdapter.snapshot()[index]?.let { movie ->
+                        movie.isBookmarked = bookmarkedMovie.isBookmarked
+                    }
+                    movieAdapter.notifyItemChanged(index)
+                }
             }
         }
     }
