@@ -6,7 +6,7 @@ import com.sangmeebee.searchmovie.cache.util.BookmarkException
 import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.domain.usecase.BookmarkMovieUseCase
 import com.sangmeebee.searchmovie.domain.usecase.GetBookmarkedMoviesUseCase
-import com.sangmeebee.searchmovie.domain.usecase.GetUserTokenUseCase
+import com.sangmeebee.searchmovie.domain.usecase.GetCachedUserTokenUseCase
 import com.sangmeebee.searchmovie.domain.usecase.UnbookmarkMovieUseCase
 import com.sangmeebee.searchmovie.model.BookmarkMovieUiState
 import com.sangmeebee.searchmovie.model.MovieModel
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkMovieViewModel @Inject constructor(
-    private val getUserTokenUseCase: GetUserTokenUseCase,
+    private val getCachedUserTokenUseCase: GetCachedUserTokenUseCase,
     private val getBookmarkedMoviesUseCase: GetBookmarkedMoviesUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
     private val unbookmarkMovieUseCase: UnbookmarkMovieUseCase,
@@ -32,18 +32,17 @@ class BookmarkMovieViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun fetchBookmark(movieModel: MovieModel, isBookmarked: Boolean) = viewModelScope.launch {
-        getUserTokenUseCase().collectLatest { userToken ->
-            if (userToken.isNotEmpty()) {
-                if (!isBookmarked) {
-                    bookmarkMovieUseCase(userToken, movieModel.toDomain())
-                        .onFailure { _uiState.update { it.copy(error = BookmarkException()) } }
-                } else {
-                    unbookmarkMovieUseCase(userToken, movieModel.link)
-                        .onFailure { _uiState.update { it.copy(error = UnBookmarkException()) } }
-                }
+        val userToken = getCachedUserTokenUseCase()
+        if (userToken != null) {
+            if (!isBookmarked) {
+                bookmarkMovieUseCase(userToken, movieModel.toDomain())
+                    .onFailure { _uiState.update { it.copy(error = BookmarkException()) } }
             } else {
-                // TODO GO TO Login Screen
+                unbookmarkMovieUseCase(userToken, movieModel.link)
+                    .onFailure { _uiState.update { it.copy(error = UnBookmarkException()) } }
             }
+        } else {
+            // TODO GO TO Login Screen
         }
     }
 

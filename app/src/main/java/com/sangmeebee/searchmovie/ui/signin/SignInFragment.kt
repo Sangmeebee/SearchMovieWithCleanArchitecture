@@ -1,8 +1,8 @@
-package com.sangmeebee.searchmovie.ui.my
+package com.sangmeebee.searchmovie.ui.signin
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.sangmeebee.searchmovie.databinding.FragmentSigninBinding
@@ -23,11 +23,11 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>(FragmentSigninBinding
     @Inject
     lateinit var socialLoginFactory: SocialLoginFactory
 
-    private val userViewModel by activityViewModels<UserViewModel>()
+    private val signInViewModel by viewModels<SignInViewModel>()
 
     override fun FragmentSigninBinding.setBinding() {
         lifecycleOwner = viewLifecycleOwner
-        viewModel = userViewModel
+        viewModel = signInViewModel
         signInFragment = this@SignInFragment
     }
 
@@ -48,37 +48,37 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>(FragmentSigninBinding
     }
 
     private fun observeUser() = repeatOnStarted {
-        userViewModel.userUiState.map { it.user }.distinctUntilChanged()
-            .collectLatest { user ->
-                if (user != null) {
+        signInViewModel.userUiState.map { it.isLogin }.distinctUntilChanged()
+            .collectLatest { isLogin ->
+                if (isLogin) {
                     findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMyFragment())
                 }
             }
     }
 
     private fun observeError() = repeatOnStarted {
-        userViewModel.userUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
+        signInViewModel.userUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
             error?.let {
                 showToast(error.message)
-                userViewModel.showErrorMessage(null)
+                signInViewModel.showErrorMessage(null)
             }
         }
     }
 
     private fun observeIsLoading() = repeatOnStarted {
-        userViewModel.userUiState.map { it.isLoading }.distinctUntilChanged()
+        signInViewModel.userUiState.map { it.isLoading }.distinctUntilChanged()
             .collectLatest {
                 binding.srlLoading.isRefreshing = it
             }
     }
 
     fun login(type: SocialType) = lifecycleScope.launch {
-        userViewModel.showLoading(true)
+        signInViewModel.showLoading(true)
         socialLoginFactory(type).login(requireContext())
-            .onSuccess { userViewModel.fetchUser(type) }
+            .onSuccess { signInViewModel.fetchUser(type) }
             .onFailure {
-                userViewModel.showErrorMessage(it)
-                userViewModel.showLoading(false)
+                signInViewModel.showErrorMessage(it)
+                signInViewModel.showLoading(false)
             }
     }
 }

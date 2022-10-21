@@ -19,14 +19,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
-import com.sangmeebee.searchmovie.ui.my.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val userViewModel by viewModels<UserViewModel>()
+    private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var navController: NavController
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         content.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    return if (userViewModel.isReady) {
+                    return if (mainViewModel.isReady) {
                         content.viewTreeObserver.removeOnPreDrawListener(this)
                         true
                     } else {

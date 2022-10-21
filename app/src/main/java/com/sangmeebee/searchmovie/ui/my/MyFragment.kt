@@ -2,7 +2,7 @@ package com.sangmeebee.searchmovie.ui.my
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.sangmeebee.searchmovie.databinding.FragmentMyBinding
@@ -20,14 +20,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
 
-    private val userViewModel by activityViewModels<UserViewModel>()
-
     @Inject
     lateinit var socialLoginFactory: SocialLoginFactory
 
+    private val myViewModel by viewModels<MyViewModel>()
+
     override fun FragmentMyBinding.setBinding() {
         lifecycleOwner = viewLifecycleOwner
-        viewModel = userViewModel
+        viewModel = myViewModel
         myFragment = this@MyFragment
     }
 
@@ -42,41 +42,41 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
     }
 
     private fun setUpObserveUiState() {
-        observeUser()
         observeError()
+        observeIsLogin()
         observeIsLoading()
     }
 
-    private fun observeUser() = repeatOnStarted {
-        userViewModel.userUiState.map { it.user }.distinctUntilChanged().collectLatest { user ->
-            if (user == null) {
+    private fun observeIsLogin() = repeatOnStarted {
+        myViewModel.userUiState.map { it.isLogin }.distinctUntilChanged().collectLatest { isLogin ->
+            if (!isLogin) {
                 findNavController().navigate(MyFragmentDirections.actionMyFragmentToSignInFragment())
             }
         }
     }
 
     private fun observeError() = repeatOnStarted {
-        userViewModel.userUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
+        myViewModel.userUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
             if (error != null) {
                 showToast(error.message)
-                userViewModel.showErrorMessage(null)
+                myViewModel.showErrorMessage(null)
             }
         }
     }
 
     private fun observeIsLoading() = repeatOnStarted {
-        userViewModel.userUiState.map { it.isLoading }.distinctUntilChanged().collectLatest {
+        myViewModel.userUiState.map { it.isLoading }.distinctUntilChanged().collectLatest {
             binding.srlLoading.isRefreshing = it
         }
     }
 
     fun logout(type: SocialType) = lifecycleScope.launch {
-        userViewModel.showLoading(true)
+        myViewModel.showLoading(true)
         socialLoginFactory(type).logout(requireContext())
             .onSuccess {
-                userViewModel.deleteUserToken()
+                myViewModel.deleteUserToken()
             }
-            .onFailure(userViewModel::showErrorMessage)
-        userViewModel.showLoading(false)
+            .onFailure(myViewModel::showErrorMessage)
+        myViewModel.showLoading(false)
     }
 }

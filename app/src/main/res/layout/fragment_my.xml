@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.sangmeebee.searchmovie.ui.my.UserViewModel" />
+            type="com.sangmeebee.searchmovie.ui.my.MyViewModel" />
 
         <variable
             name="myFragment"

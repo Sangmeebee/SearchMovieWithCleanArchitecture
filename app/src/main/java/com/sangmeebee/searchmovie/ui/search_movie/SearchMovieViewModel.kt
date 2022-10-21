@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchMovieViewModel @Inject constructor(
-    private val getUserTokenUseCase: GetUserTokenUseCase,
+    private val getCachedUserTokenUseCase: GetCachedUserTokenUseCase,
     private val getMovieUseCase: GetMovieUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
     private val unbookmarkMovieUseCase: UnbookmarkMovieUseCase,
@@ -61,23 +61,20 @@ class SearchMovieViewModel @Inject constructor(
 
     private fun fetchSearchMovie(query: String): Flow<PagingData<Movie>> = getMovieUseCase(query)
 
-
     fun fetchBookmark(movieModel: MovieModel, isBookmarked: Boolean) = viewModelScope.launch {
-        getUserTokenUseCase().collectLatest { userToken ->
-            if (userToken.isNotEmpty()) {
-                if (!isBookmarked) {
-                    bookmarkMovieUseCase(userToken, movieModel.toDomain())
-                        .onFailure { _uiState.update { it.copy(error = BookmarkException()) } }
-                } else {
-                    unbookmarkMovieUseCase(userToken, movieModel.link)
-                        .onFailure { _uiState.update { it.copy(error = UnBookmarkException()) } }
-                }
+        val userToken = getCachedUserTokenUseCase()
+        if (userToken != null) {
+            if (!isBookmarked) {
+                bookmarkMovieUseCase(userToken, movieModel.toDomain())
+                    .onFailure { _uiState.update { it.copy(error = BookmarkException()) } }
             } else {
-                // TODO GO TO Login Screen
+                unbookmarkMovieUseCase(userToken, movieModel.link)
+                    .onFailure { _uiState.update { it.copy(error = UnBookmarkException()) } }
             }
+        } else {
+            // TODO GO TO Login Screen
         }
     }
-
 
     init {
         viewModelScope.launch {

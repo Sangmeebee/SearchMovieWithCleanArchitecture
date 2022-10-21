@@ -8,18 +8,18 @@
 
         <variable
             name="viewModel"
-            type="com.sangmeebee.searchmovie.ui.my.UserViewModel" />
+            type="com.sangmeebee.searchmovie.ui.signin.SignInViewModel" />
 
         <variable
             name="signInFragment"
-            type="com.sangmeebee.searchmovie.ui.my.SignInFragment" />
+            type="com.sangmeebee.searchmovie.ui.signin.SignInFragment" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srl_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.my.SignInFragment">
+        tools:context=".ui.signin.SignInFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
