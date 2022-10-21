@@ -3,20 +3,21 @@ package com.sangmeebee.searchmovie.cache.datasource
 import androidx.datastore.core.DataStore
 import com.sangmeebee.searchmovie.cache.UserTokenPref
 import com.sangmeebee.searchmovie.data.datasource.local.UserTokenLocalDataSource
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserTokenLocalDataSourceImpl @Inject constructor(
     private val userTokenDataStore: DataStore<UserTokenPref>,
 ) : UserTokenLocalDataSource {
 
-    override val userTokenFlow: Flow<String>
-        get() = userTokenDataStore.data.map { it.token }
+    private var cachedUserInfo: String? = null
+
+    override fun getCacheUserToken(): String? = cachedUserInfo
 
     override suspend fun getUserToken(): Result<String> = runCatching {
-        userTokenDataStore.data.first().token
+        userTokenDataStore.data.first().token.apply {
+            cachedUserInfo = this.ifEmpty { null }
+        }
     }
 
     override suspend fun insertUserToken(token: String): Result<Unit> = runCatching {
@@ -25,6 +26,7 @@ class UserTokenLocalDataSourceImpl @Inject constructor(
                 .setToken(token)
                 .build()
         }
+        cachedUserInfo = token
     }
 
     override suspend fun deleteUserToken(): Result<Unit> = runCatching {
@@ -34,5 +36,6 @@ class UserTokenLocalDataSourceImpl @Inject constructor(
                 .setToken("")
                 .build()
         }
+        cachedUserInfo = null
     }
 }
