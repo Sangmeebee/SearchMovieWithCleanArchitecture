@@ -11,7 +11,7 @@
         android:label="@string/search_movie"
         tools:layout="@layout/fragment_search_movie">
         <argument
-            android:name="ShowAppBar"
+            android:name="ShowBottomNav"
             android:defaultValue="true" />
         <action
             android:id="@+id/action_searchMovieFragment_to_detailMovieFragment"

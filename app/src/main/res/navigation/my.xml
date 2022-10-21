@@ -11,7 +11,7 @@
         android:label="@string/sign_in"
         tools:layout="@layout/fragment_signin">
         <argument
-            android:name="ShowAppBar"
+            android:name="ShowBottomNav"
             android:defaultValue="true" />
         <action
             android:id="@+id/action_signInFragment_to_myFragment"
@@ -26,7 +26,7 @@
         android:label="@string/my"
         tools:layout="@layout/fragment_my">
         <argument
-            android:name="ShowAppBar"
+            android:name="ShowBottomNav"
             android:defaultValue="true" />
         <action
             android:id="@+id/action_myFragment_to_signInFragment"

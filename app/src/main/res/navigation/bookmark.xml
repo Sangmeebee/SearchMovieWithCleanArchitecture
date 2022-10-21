@@ -11,7 +11,7 @@
         android:label="@string/bookmark_movie"
         tools:layout="@layout/fragment_bookmark_movie">
         <argument
-            android:name="ShowAppBar"
+            android:name="ShowBottomNav"
             android:defaultValue="true" />
         <action
             android:id="@+id/action_bookmarkMovieFragment_to_detailMovieFragment"

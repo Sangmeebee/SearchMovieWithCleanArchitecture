@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setOnDestinationChangedListener(navController: NavController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            binding.bottomNav.isVisible = arguments?.getBoolean("ShowAppBar", false) == true
+            binding.bottomNav.isVisible = arguments?.getBoolean("ShowBottomNav", false) == true
         }
     }
 
