@@ -46,7 +46,7 @@ class BookmarkMovieViewModel @Inject constructor(
         }
     }
 
-    fun showErrorMessage(throwable: Throwable?) {
+    fun fetchError(throwable: Throwable?) {
         _uiState.update { it.copy(error = throwable) }
     }
 

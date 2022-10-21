@@ -32,7 +32,7 @@ class MyViewModel @Inject constructor(
                 _userUiState.update { it.copy(user = null, isLogin = false) }
             }
             .onFailure {
-                showErrorMessage(it)
+                fetchError(it)
             }
     }
 
@@ -40,7 +40,7 @@ class MyViewModel @Inject constructor(
         _userUiState.update { it.copy(isLoading = isLoading) }
     }
 
-    fun showErrorMessage(throwable: Throwable?) {
+    fun fetchError(throwable: Throwable?) {
         _userUiState.update { it.copy(error = throwable) }
     }
 
@@ -52,7 +52,7 @@ class MyViewModel @Inject constructor(
                     .onSuccess { user ->
                         _userUiState.update { it.copy(user = user.toPresentation()) }
                     }
-                    .onFailure { showErrorMessage(it) }
+                    .onFailure { fetchError(it) }
             }
         }
     }

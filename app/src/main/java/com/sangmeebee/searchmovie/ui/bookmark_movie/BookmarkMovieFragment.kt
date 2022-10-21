@@ -61,7 +61,7 @@ class BookmarkMovieFragment :
                     is BookmarkException -> showToast(resources.getString(R.string.search_movie_bookmark_error))
                     is UnBookmarkException -> showToast(resources.getString(R.string.search_movie_unbookmark_error))
                 }
-                bookmarkMovieViewModel.showErrorMessage(null)
+                bookmarkMovieViewModel.fetchError(null)
             }
         }
     }

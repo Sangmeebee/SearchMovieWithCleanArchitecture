@@ -59,7 +59,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
         myViewModel.userUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
             if (error != null) {
                 showToast(error.message)
-                myViewModel.showErrorMessage(null)
+                myViewModel.fetchError(null)
             }
         }
     }
@@ -76,7 +76,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
             .onSuccess {
                 myViewModel.deleteUserToken()
             }
-            .onFailure(myViewModel::showErrorMessage)
+            .onFailure(myViewModel::fetchError)
         myViewModel.showLoading(false)
     }
 }

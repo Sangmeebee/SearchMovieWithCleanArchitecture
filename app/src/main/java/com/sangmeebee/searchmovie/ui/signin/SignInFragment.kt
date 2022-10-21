@@ -60,7 +60,7 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>(FragmentSigninBinding
         signInViewModel.userUiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
             error?.let {
                 showToast(error.message)
-                signInViewModel.showErrorMessage(null)
+                signInViewModel.fetchError(null)
             }
         }
     }
@@ -77,7 +77,7 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>(FragmentSigninBinding
         socialLoginFactory(type).login(requireContext())
             .onSuccess { signInViewModel.fetchUser(type) }
             .onFailure {
-                signInViewModel.showErrorMessage(it)
+                signInViewModel.fetchError(it)
                 signInViewModel.showLoading(false)
             }
     }

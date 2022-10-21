@@ -41,11 +41,11 @@ class SignInViewModel @Inject constructor(
                         _userUiState.update { it.copy(isLogin = true) }
                     }
                     .onFailure {
-                        showErrorMessage(it)
+                        fetchError(it)
                     }
             }
             .onFailure {
-                showErrorMessage(it)
+                fetchError(it)
             }
         showLoading(false)
     }
@@ -55,7 +55,7 @@ class SignInViewModel @Inject constructor(
         _userUiState.update { it.copy(isLoading = isLoading) }
     }
 
-    fun showErrorMessage(throwable: Throwable?) {
+    fun fetchError(throwable: Throwable?) {
         _userUiState.update { it.copy(error = throwable) }
     }
 
