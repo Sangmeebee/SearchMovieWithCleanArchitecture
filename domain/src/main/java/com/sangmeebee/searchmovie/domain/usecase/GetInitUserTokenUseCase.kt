@@ -6,7 +6,16 @@ import javax.inject.Inject
 
 class GetInitUserTokenUseCase @Inject constructor(
     private val userRepository: UserRepository,
+    private val fetchInitBookmarkedMoviesUseCase: FetchInitBookmarkedMoviesUseCase,
 ) {
-    suspend operator fun invoke(): Result<String> =
+    suspend operator fun invoke() =
         userRepository.getUserToken()
+            .onSuccess { userToken ->
+                if (userToken.isNotEmpty()) {
+                    fetchInitBookmarkedMoviesUseCase(userToken)
+                } else {
+                    fetchInitBookmarkedMoviesUseCase(null)
+                }
+            }
+            .onFailure { fetchInitBookmarkedMoviesUseCase(null) }
 }

@@ -2,11 +2,11 @@ package com.sangmeebee.searchmovie.domain.usecase
 
 import com.sangmeebee.searchmovie.domain.model.BookmarkedMovie
 import com.sangmeebee.searchmovie.domain.repository.MovieRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllBookmarkedMovieUseCase @Inject constructor(
+class GetBookmarkedMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
 ) {
-    suspend operator fun invoke(userToken: String): Result<List<BookmarkedMovie>> =
-        movieRepository.getAllBookmarked(userToken)
+    operator fun invoke(): Flow<List<BookmarkedMovie>> = movieRepository.bookmarkedMovies
 }

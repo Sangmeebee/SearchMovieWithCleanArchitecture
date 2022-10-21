@@ -5,7 +5,11 @@ import javax.inject.Inject
 
 class DeleteUserTokenUseCase @Inject constructor(
     private val userRepository: UserRepository,
+    private val fetchInitBookmarkedMoviesUseCase: FetchInitBookmarkedMoviesUseCase,
 ) {
-    suspend operator fun invoke(): Result<Unit> =
-        userRepository.deleteUserToken()
+    suspend operator fun invoke(): Result<Unit> {
+        fetchInitBookmarkedMoviesUseCase(null)
+        return userRepository.deleteUserToken()
+    }
+
 }
