@@ -2,7 +2,7 @@ package com.sangmeebee.searchmovie.ui.search_movie
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -19,30 +19,24 @@ import com.sangmeebee.searchmovie.ui.base.BaseFragment
 import com.sangmeebee.searchmovie.util.SoftInputUtil
 import com.sangmeebee.searchmovie.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchMovieFragment :
     BaseFragment<FragmentSearchMovieBinding>(FragmentSearchMovieBinding::inflate) {
 
-    private val searchMovieViewModel by activityViewModels<SearchMovieViewModel>()
+    private val searchMovieViewModel by viewModels<SearchMovieViewModel>()
     private val movieAdapter by lazy {
         SearchMovieAdapter(
-            bookmark = searchMovieViewModel::fetchBookmarkWithCheckLogin,
+            bookmark = searchMovieViewModel::fetchBookmark,
             navigateToDetailFragment = ::navigateToDetailFragment
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        observeMovies()
-        observeErrorEvent()
-        observePagingAppend()
-        observePagingRefresh()
-        observeBookmarkEvent()
+        setUpObserveUiState()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,14 +72,23 @@ class SearchMovieFragment :
         }
     }
 
+    private fun setUpObserveUiState() {
+        observeError()
+        observeMovies()
+        observePagingAppend()
+        observePagingRefresh()
+    }
+
     private fun observeMovies() = repeatOnStarted {
-        searchMovieViewModel.movies.collectLatest {
-            movieAdapter.submitData(it)
+        searchMovieViewModel.uiState.map { it.movies }.distinctUntilChanged().collectLatest { movies ->
+            if (movies != null) {
+                movieAdapter.submitData(movies)
+            }
         }
     }
 
-    private fun observeErrorEvent() = repeatOnStarted {
-        searchMovieViewModel.errorEvent.collectLatest { throwable ->
+    private fun observeError() = repeatOnStarted {
+        searchMovieViewModel.uiState.map { it.error }.distinctUntilChanged().collectLatest { throwable ->
             when (throwable) {
                 is GetBookmarkException -> showToast(resources.getString(R.string.search_movie_get_bookmark_error))
                 is BookmarkException -> showToast(resources.getString(R.string.search_movie_bookmark_error))
@@ -131,22 +134,6 @@ class SearchMovieFragment :
             is EmptyQueryException -> showToast(resources.getString(R.string.search_movie_empty_query))
             is HttpConnectionException -> showToast(resources.getString(R.string.all_network_disconnect))
             else -> showToast(throwable.message)
-        }
-    }
-
-    private fun observeBookmarkEvent() = repeatOnStarted {
-        searchMovieViewModel.bookmarkEvent.collect { bookmarkedMovies ->
-            bookmarkedMovies.forEach { bookmarkedMovie ->
-                val index = movieAdapter.snapshot().indexOfFirst { movie ->
-                    movie?.link == bookmarkedMovie.link
-                }
-                if (index != -1) {
-                    movieAdapter.snapshot()[index]?.let { movie ->
-                        movie.isBookmarked = bookmarkedMovie.isBookmarked
-                    }
-                    movieAdapter.notifyItemChanged(index)
-                }
-            }
         }
     }
 

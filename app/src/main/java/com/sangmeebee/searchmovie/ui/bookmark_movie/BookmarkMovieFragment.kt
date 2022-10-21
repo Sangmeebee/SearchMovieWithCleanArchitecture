@@ -2,7 +2,7 @@ package com.sangmeebee.searchmovie.ui.bookmark_movie
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.cache.util.BookmarkException
@@ -11,17 +11,20 @@ import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.databinding.FragmentBookmarkMovieBinding
 import com.sangmeebee.searchmovie.ui.adapter.BookmarkMovieAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
-import com.sangmeebee.searchmovie.ui.search_movie.SearchMovieViewModel
 import com.sangmeebee.searchmovie.util.repeatOnStarted
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
+@AndroidEntryPoint
 class BookmarkMovieFragment :
     BaseFragment<FragmentBookmarkMovieBinding>(FragmentBookmarkMovieBinding::inflate) {
 
-    private val searchMovieViewModel by activityViewModels<SearchMovieViewModel>()
+    private val bookmarkMovieViewModel by viewModels<BookmarkMovieViewModel>()
     private val movieAdapter: BookmarkMovieAdapter by lazy {
         BookmarkMovieAdapter(
-            bookmark = searchMovieViewModel::fetchBookmarkWithCheckLogin,
+            bookmark = bookmarkMovieViewModel::fetchBookmark,
             navigateToDetailFragment = ::navigateToDetailFragment
         )
     }
@@ -29,8 +32,7 @@ class BookmarkMovieFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
-        observeErrorEvent()
-        observeBookmarkedMovieState()
+        setUpObserveUiState()
     }
 
     private fun setRecyclerView() {
@@ -40,9 +42,27 @@ class BookmarkMovieFragment :
         }
     }
 
-    private fun observeBookmarkedMovieState() = repeatOnStarted {
-        searchMovieViewModel.bookmarkedMovieState.collect {
-            movieAdapter.submitList(it)
+    private fun setUpObserveUiState() {
+        observeError()
+        observeMovies()
+    }
+
+    private fun observeMovies() = repeatOnStarted {
+        bookmarkMovieViewModel.uiState.map { it.bookmarkedMovies }.distinctUntilChanged().collectLatest { movies ->
+            movieAdapter.submitList(movies)
+        }
+    }
+
+    private fun observeError() = repeatOnStarted {
+        bookmarkMovieViewModel.uiState.map { it.error }.distinctUntilChanged().collectLatest { error ->
+            if (error != null) {
+                when (error) {
+                    is GetBookmarkException -> showToast(resources.getString(R.string.search_movie_get_bookmark_error))
+                    is BookmarkException -> showToast(resources.getString(R.string.search_movie_bookmark_error))
+                    is UnBookmarkException -> showToast(resources.getString(R.string.search_movie_unbookmark_error))
+                }
+                bookmarkMovieViewModel.showErrorMessage(null)
+            }
         }
     }
 
@@ -50,15 +70,5 @@ class BookmarkMovieFragment :
         val action =
             BookmarkMovieFragmentDirections.actionBookmarkMovieFragmentToDetailMovieFragment(link)
         findNavController().navigate(action)
-    }
-
-    private fun observeErrorEvent() = repeatOnStarted {
-        searchMovieViewModel.errorEvent.collectLatest { throwable ->
-            when (throwable) {
-                is GetBookmarkException -> showToast(resources.getString(R.string.search_movie_get_bookmark_error))
-                is BookmarkException -> showToast(resources.getString(R.string.search_movie_bookmark_error))
-                is UnBookmarkException -> showToast(resources.getString(R.string.search_movie_unbookmark_error))
-            }
-        }
     }
 }
