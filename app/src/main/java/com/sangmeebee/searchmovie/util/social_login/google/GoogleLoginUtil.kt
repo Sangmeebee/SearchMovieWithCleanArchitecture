@@ -42,7 +42,11 @@ class GoogleLoginUtil @Inject constructor() : SocialLoginUtil {
                 idToken != null -> {
                     val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
                     auth.signInWithCredential(firebaseCredential)
-                    resume(idToken)
+                        .addOnSuccessListener {
+                            resume(idToken)
+                        }.addOnFailureListener {
+                            resumeWithException(it)
+                        }
                 }
                 else -> {
                     resumeWithException(IllegalStateException("No ID token!"))
