@@ -4,10 +4,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/home">
 
-    <action
-        android:id="@+id/action_global_my"
-        app:destination="@id/my" />
-
     <include app:graph="@navigation/home" />
     <include app:graph="@navigation/bookmark" />
     <include app:graph="@navigation/my" />

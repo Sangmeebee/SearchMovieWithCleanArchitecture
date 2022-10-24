@@ -42,8 +42,12 @@ class BookmarkMovieViewModel @Inject constructor(
                     .onFailure { _uiState.update { it.copy(error = UnBookmarkException()) } }
             }
         } else {
-            // TODO GO TO Login Screen
+            _uiState.update { it.copy(IsNeedToLogin = true) }
         }
+    }
+
+    fun fetchIsNeedToLogin() {
+        _uiState.update { it.copy(IsNeedToLogin = false) }
     }
 
     fun fetchError(throwable: Throwable?) {

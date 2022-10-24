@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.cache.util.BookmarkException
 import com.sangmeebee.searchmovie.cache.util.GetBookmarkException
@@ -13,6 +14,7 @@ import com.sangmeebee.searchmovie.cache.util.UnBookmarkException
 import com.sangmeebee.searchmovie.databinding.FragmentSearchMovieBinding
 import com.sangmeebee.searchmovie.remote.util.EmptyQueryException
 import com.sangmeebee.searchmovie.remote.util.HttpConnectionException
+import com.sangmeebee.searchmovie.ui.MainActivity
 import com.sangmeebee.searchmovie.ui.adapter.MovieLoadStateAdapter
 import com.sangmeebee.searchmovie.ui.adapter.SearchMovieAdapter
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
@@ -77,6 +79,7 @@ class SearchMovieFragment :
         observeMovies()
         observePagingAppend()
         observePagingRefresh()
+        observeIsNeedToLogin()
     }
 
     private fun observeMovies() = repeatOnStarted {
@@ -89,10 +92,13 @@ class SearchMovieFragment :
 
     private fun observeError() = repeatOnStarted {
         searchMovieViewModel.uiState.map { it.error }.distinctUntilChanged().collectLatest { throwable ->
-            when (throwable) {
-                is GetBookmarkException -> showToast(resources.getString(R.string.search_movie_get_bookmark_error))
-                is BookmarkException -> showToast(resources.getString(R.string.search_movie_bookmark_error))
-                is UnBookmarkException -> showToast(resources.getString(R.string.search_movie_unbookmark_error))
+            if (throwable != null) {
+                when (throwable) {
+                    is GetBookmarkException -> showToast(resources.getString(R.string.search_movie_get_bookmark_error))
+                    is BookmarkException -> showToast(resources.getString(R.string.search_movie_bookmark_error))
+                    is UnBookmarkException -> showToast(resources.getString(R.string.search_movie_unbookmark_error))
+                }
+                searchMovieViewModel.fetchError(null)
             }
         }
     }
@@ -134,6 +140,15 @@ class SearchMovieFragment :
             is EmptyQueryException -> showToast(resources.getString(R.string.search_movie_empty_query))
             is HttpConnectionException -> showToast(resources.getString(R.string.all_network_disconnect))
             else -> showToast(throwable.message)
+        }
+    }
+
+    private fun observeIsNeedToLogin() = repeatOnStarted {
+        searchMovieViewModel.uiState.map { it.IsNeedToLogin }.distinctUntilChanged().collectLatest { isNeedToLogin ->
+            if (isNeedToLogin) {
+                (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottom_nav).selectedItemId = R.id.my
+                searchMovieViewModel.fetchIsNeedToLogin()
+            }
         }
     }
 
