@@ -40,10 +40,15 @@
 
 
 ## Developer
-> [8월 24일] 개발 시작
+> [8월 24일] 개발 시작 
 
-## NOTI
+
+
+#### NOTI
 샘플 앱을 실행시켜 보고 싶다면
-local.properties에 아래의 키값을 추가해보세요.
+```local.properties```에 아래의 키값을 추가해보세요.
+
+```
 kakao_native_app_key="4ce061213083674f36f4b0ee3befb1b0"
 google_web_client_id="423412606603-mn3p95a08raffobqu0nmq7iivb9g5ri5.apps.googleusercontent.com"
+```
