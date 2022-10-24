@@ -4,12 +4,12 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
 import com.sangmeebee.searchmovie.cache.model.mapper.CacheToDataMapper
 import com.sangmeebee.searchmovie.data.model.BookmarkedMovieEntity
 
 @Entity(
     tableName = "movie_bookmark",
+    primaryKeys = ["movie_id", "user_owner_token"],
     foreignKeys = [
         ForeignKey(
             entity = UserPref::class,
@@ -22,7 +22,6 @@ import com.sangmeebee.searchmovie.data.model.BookmarkedMovieEntity
 internal data class BookmarkedMoviePref(
     val title: String,
     val subtitle: String? = null,
-    @PrimaryKey
     @ColumnInfo(name = "movie_id")
     val link: String,
     @ColumnInfo(name = "image_url")
