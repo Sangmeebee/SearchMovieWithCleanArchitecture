@@ -33,7 +33,6 @@ android {
         }
 
         //add BuildConfig Field
-        buildConfigField("String", "KAKAO_API_KEY", properties["kakao_api_key"].toString())
         buildConfigField("String",
             "KAKAO_NATIVE_APP_KEY",
             properties["kakao_native_app_key"].toString())

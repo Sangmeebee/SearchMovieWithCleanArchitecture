@@ -7,5 +7,5 @@ data class MovieModel(
     val imageUrl: String?,
     val contributor: String,
     val userRating: Float,
-    var isBookmarked: Boolean = false,
+    val isBookmarked: Boolean = false,
 )
