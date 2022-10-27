@@ -31,13 +31,17 @@ class SearchMovieViewModel @Inject constructor(
 
     private val query = MutableEventFlow<String>()
 
-    // TODO UserTokenFlow를 transform 해야한다.
-    private val bookmarkedMovies: Flow<List<MovieModel>> = getBookmarkedMoviesUseCase("userToken").map { it.toPresentation() }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = emptyList()
-        )
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val bookmarkedMovies: Flow<List<MovieModel>> = getCachedUserTokenUseCase.userTokenFlow.flatMapLatest { userToken ->
+        if (userToken != null) {
+            getBookmarkedMoviesUseCase(userToken).map { it.toPresentation() }
+        } else {
+            flowOf(emptyList())
+        }
+    }.catch {
+        emit(emptyList())
+        fetchError(it)
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val searchMovies: Flow<PagingData<MovieModel>> =
@@ -49,7 +53,7 @@ class SearchMovieViewModel @Inject constructor(
             }
         }.cachedIn(viewModelScope)
 
-    private val movies: Flow<PagingData<MovieModel>> = searchMovies.combine(bookmarkedMovies) { pagingSearchMovie, bookmarkedMovies ->
+    val movies: Flow<PagingData<MovieModel>> = searchMovies.combine(bookmarkedMovies) { pagingSearchMovie, bookmarkedMovies ->
         pagingSearchMovie.map { searchMovie: MovieModel ->
             val isBookmarked = bookmarkedMovies.any { bookmarkedMovies ->
                 bookmarkedMovies.link == searchMovie.link
@@ -88,13 +92,5 @@ class SearchMovieViewModel @Inject constructor(
 
     fun fetchError(throwable: Throwable?) {
         _uiState.update { it.copy(error = throwable) }
-    }
-
-    init {
-        viewModelScope.launch {
-            movies.collectLatest { moviePagingData ->
-                _uiState.update { it.copy(movies = moviePagingData) }
-            }
-        }
     }
 }

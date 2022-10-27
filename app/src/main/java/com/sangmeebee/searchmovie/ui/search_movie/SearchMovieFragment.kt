@@ -83,10 +83,8 @@ class SearchMovieFragment :
     }
 
     private fun observeMovies() = repeatOnStarted {
-        searchMovieViewModel.uiState.map { it.movies }.distinctUntilChanged().collectLatest { movies ->
-            if (movies != null) {
-                movieAdapter.submitData(movies)
-            }
+        searchMovieViewModel.movies.distinctUntilChanged().collectLatest { movies ->
+            movieAdapter.submitData(movies)
         }
     }
 

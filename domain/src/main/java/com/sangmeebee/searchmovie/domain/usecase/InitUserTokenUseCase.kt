@@ -4,8 +4,8 @@ import com.sangmeebee.searchmovie.domain.repository.UserRepository
 import javax.inject.Inject
 
 
-class InitDataUseCase @Inject constructor(
+class InitUserTokenUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
-    suspend operator fun invoke() = userRepository.getUserToken()
+    suspend operator fun invoke() = userRepository.initUserToken()
 }

@@ -13,6 +13,7 @@ import com.sangmeebee.searchmovie.model.MovieModel
 import com.sangmeebee.searchmovie.model.mapper.toDomain
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,13 +26,17 @@ class BookmarkMovieViewModel @Inject constructor(
     private val unbookmarkMovieUseCase: UnbookmarkMovieUseCase,
 ) : ViewModel() {
 
-    // TODO UserTokenFlow를 transform 해야한다.
-    val bookmarkedMovieFlow: StateFlow<List<MovieModel>> = getBookmarkedMoviesUseCase("userToken").map { it.toPresentation() }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = emptyList()
-        )
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val bookmarkedMovies: Flow<List<MovieModel>> = getCachedUserTokenUseCase.userTokenFlow.flatMapLatest { userToken ->
+        if (userToken != null) {
+            getBookmarkedMoviesUseCase(userToken).map { it.toPresentation() }
+        } else {
+            flowOf(emptyList())
+        }
+    }.catch {
+        emit(emptyList())
+        fetchError(it)
+    }
 
     private val _uiState = MutableStateFlow(BookmarkMovieUiState())
     val uiState = _uiState.asStateFlow()
@@ -57,9 +62,5 @@ class BookmarkMovieViewModel @Inject constructor(
 
     fun fetchError(throwable: Throwable?) {
         _uiState.update { it.copy(error = throwable) }
-    }
-
-    fun fetchBookmarkedMovies(bookmarkedMovies: List<MovieModel>) {
-        _uiState.update { it.copy(bookmarkedMovies = bookmarkedMovies) }
     }
 }

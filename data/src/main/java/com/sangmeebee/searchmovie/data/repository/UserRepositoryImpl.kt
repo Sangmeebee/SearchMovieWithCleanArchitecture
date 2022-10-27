@@ -5,6 +5,7 @@ import com.sangmeebee.searchmovie.data.datasource.local.UserTokenLocalDataSource
 import com.sangmeebee.searchmovie.data.model.mapper.toData
 import com.sangmeebee.searchmovie.domain.model.User
 import com.sangmeebee.searchmovie.domain.repository.UserRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class UserRepositoryImpl @Inject constructor(
@@ -14,8 +15,11 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override fun getCacheUserToken(): String? = userTokenLocalDataSource.getCacheUserToken()
 
-    override suspend fun getUserToken(): Result<String> =
-        userTokenLocalDataSource.getUserToken()
+    override val userTokenFlow: Flow<String?>
+        get() = userTokenLocalDataSource.userTokenFlow
+
+    override suspend fun initUserToken(): Result<String> =
+        userTokenLocalDataSource.initUserToken()
 
     override suspend fun insertUserToken(token: String): Result<Unit> =
         userTokenLocalDataSource.insertUserToken(token)
