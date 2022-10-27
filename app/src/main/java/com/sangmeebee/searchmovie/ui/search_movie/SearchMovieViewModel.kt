@@ -31,7 +31,13 @@ class SearchMovieViewModel @Inject constructor(
 
     private val query = MutableEventFlow<String>()
 
-    private val bookmarkedMovies: Flow<List<MovieModel>> = getBookmarkedMoviesUseCase().map { it.toPresentation() }
+    // TODO UserTokenFlow를 transform 해야한다.
+    private val bookmarkedMovies: Flow<List<MovieModel>> = getBookmarkedMoviesUseCase("userToken").map { it.toPresentation() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = emptyList()
+        )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val searchMovies: Flow<PagingData<MovieModel>> =

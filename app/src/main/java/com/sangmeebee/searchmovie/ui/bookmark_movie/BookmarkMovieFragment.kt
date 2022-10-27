@@ -48,6 +48,7 @@ class BookmarkMovieFragment :
         observeError()
         observeMovies()
         observeIsNeedToLogin()
+        observeBookmarkedMovieFlow()
     }
 
     private fun observeMovies() = repeatOnStarted {
@@ -75,6 +76,12 @@ class BookmarkMovieFragment :
                 (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottom_nav).selectedItemId = R.id.my
                 bookmarkMovieViewModel.fetchIsNeedToLogin()
             }
+        }
+    }
+
+    private fun observeBookmarkedMovieFlow() = repeatOnStarted {
+        bookmarkMovieViewModel.bookmarkedMovieFlow.collectLatest {
+            bookmarkMovieViewModel.fetchBookmarkedMovies(it)
         }
     }
 

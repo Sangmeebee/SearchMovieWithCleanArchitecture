@@ -7,9 +7,8 @@ import com.sangmeebee.searchmovie.data.datasource.local.MovieBookmarkLocalDataSo
 import com.sangmeebee.searchmovie.data.di.IoDispatcher
 import com.sangmeebee.searchmovie.data.model.BookmarkedMovieEntity
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -18,15 +17,14 @@ internal class MovieBookmarkLocalDataSourceImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : MovieBookmarkLocalDataSource {
 
-    private val _bookmarkedMovies = MutableStateFlow<List<BookmarkedMovieEntity>>(emptyList())
-    override val bookmarkedMovies: StateFlow<List<BookmarkedMovieEntity>>
-        get() = _bookmarkedMovies.asStateFlow()
+    override fun getBookmarkedMovies(userToken: String): Flow<List<BookmarkedMovieEntity>> =
+        movieDao.getMovies(userToken).map { it.toData() }
+
 
     override suspend fun bookmark(userToken: String, movie: BookmarkedMovieEntity): Result<Unit> {
         return runCatching {
             withContext(ioDispatcher) {
                 movieDao.insertForUser(userToken, movie.toPref())
-                getBookmarkedMovies(userToken).onSuccess { _bookmarkedMovies.value = it }
             }
         }
     }
@@ -35,26 +33,7 @@ internal class MovieBookmarkLocalDataSourceImpl @Inject constructor(
         return runCatching {
             withContext(ioDispatcher) {
                 movieDao.deleteMovieBookmark(userToken, movieId)
-                getBookmarkedMovies(userToken).onSuccess { _bookmarkedMovies.value = it }
             }
-        }
-    }
-
-    override suspend fun fetchInitBookmarkedMovies(userToken: String?): Result<Unit> {
-        return runCatching {
-            withContext(ioDispatcher) {
-                if (userToken != null) {
-                    _bookmarkedMovies.value = movieDao.getMovies(userToken).toData()
-                } else {
-                    _bookmarkedMovies.value = emptyList()
-                }
-            }
-        }
-    }
-
-    private suspend fun getBookmarkedMovies(userToken: String): Result<List<BookmarkedMovieEntity>> = runCatching {
-        withContext(ioDispatcher) {
-            movieDao.getMovies(userToken).toData()
         }
     }
 }

@@ -13,20 +13,25 @@ import com.sangmeebee.searchmovie.model.MovieModel
 import com.sangmeebee.searchmovie.model.mapper.toDomain
 import com.sangmeebee.searchmovie.model.mapper.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkMovieViewModel @Inject constructor(
     private val getCachedUserTokenUseCase: GetCachedUserTokenUseCase,
-    private val getBookmarkedMoviesUseCase: GetBookmarkedMoviesUseCase,
+    getBookmarkedMoviesUseCase: GetBookmarkedMoviesUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
     private val unbookmarkMovieUseCase: UnbookmarkMovieUseCase,
 ) : ViewModel() {
+
+    // TODO UserTokenFlow를 transform 해야한다.
+    val bookmarkedMovieFlow: StateFlow<List<MovieModel>> = getBookmarkedMoviesUseCase("userToken").map { it.toPresentation() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = emptyList()
+        )
 
     private val _uiState = MutableStateFlow(BookmarkMovieUiState())
     val uiState = _uiState.asStateFlow()
@@ -54,13 +59,7 @@ class BookmarkMovieViewModel @Inject constructor(
         _uiState.update { it.copy(error = throwable) }
     }
 
-    init {
-        viewModelScope.launch {
-            getBookmarkedMoviesUseCase().collectLatest { bookmarkedMovies ->
-                _uiState.update { uiState ->
-                    uiState.copy(bookmarkedMovies = bookmarkedMovies.toPresentation())
-                }
-            }
-        }
+    fun fetchBookmarkedMovies(bookmarkedMovies: List<MovieModel>) {
+        _uiState.update { it.copy(bookmarkedMovies = bookmarkedMovies) }
     }
 }

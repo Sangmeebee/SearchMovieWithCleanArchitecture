@@ -8,5 +8,5 @@ import javax.inject.Inject
 class GetBookmarkedMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
 ) {
-    operator fun invoke(): Flow<List<BookmarkedMovie>> = movieRepository.bookmarkedMovies
+    operator fun invoke(userToken: String): Flow<List<BookmarkedMovie>> = movieRepository.getBookmarkedMovies(userToken)
 }

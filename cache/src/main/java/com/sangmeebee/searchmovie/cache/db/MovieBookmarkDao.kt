@@ -1,8 +1,11 @@
 package com.sangmeebee.searchmovie.cache.db
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.sangmeebee.searchmovie.cache.model.BookmarkedMoviePref
-import com.sangmeebee.searchmovie.cache.model.UserWithBookmarkedMoviesPref
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal interface MovieBookmarkDao {
@@ -14,12 +17,8 @@ internal interface MovieBookmarkDao {
         insert(movie.copy(userOwnerToken = userToken))
     }
 
-    @Transaction
-    @Query("SELECT * FROM user WHERE user_token = :userToken")
-    suspend fun getUserWithBookmarkedMovies(userToken: String): UserWithBookmarkedMoviesPref
-
-    suspend fun getMovies(userToken: String): List<BookmarkedMoviePref> =
-        getUserWithBookmarkedMovies(userToken).bookmarkedMovies
+    @Query("SELECT * FROM movie_bookmark WHERE user_owner_token = :userToken")
+    fun getMovies(userToken: String): Flow<List<BookmarkedMoviePref>>
 
     @Query("DELETE FROM movie_bookmark WHERE movie_id = :movieId AND user_owner_token = :userToken")
     suspend fun deleteMovieBookmark(userToken: String, movieId: String)

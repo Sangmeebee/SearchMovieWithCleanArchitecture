@@ -25,15 +25,12 @@ internal class MovieRepositoryImpl @Inject constructor(
             }
         }
 
-    override val bookmarkedMovies: Flow<List<BookmarkedMovie>>
-        get() = movieBookmarkLocalDataSource.bookmarkedMovies.map { it.toDomain() }
+    override fun getBookmarkedMovies(userToken: String): Flow<List<BookmarkedMovie>> =
+        movieBookmarkLocalDataSource.getBookmarkedMovies(userToken).map { it.toDomain() }
 
     override suspend fun bookmark(userToken: String, movie: BookmarkedMovie): Result<Unit> =
         movieBookmarkLocalDataSource.bookmark(userToken, movie.toData())
 
     override suspend fun unbookmark(userToken: String, movieId: String): Result<Unit> =
         movieBookmarkLocalDataSource.unbookmark(userToken, movieId)
-
-    override suspend fun fetchInitBookmarkedMovies(userToken: String?): Result<Unit> =
-        movieBookmarkLocalDataSource.fetchInitBookmarkedMovies(userToken)
 }
