@@ -28,12 +28,6 @@
         <argument
             android:name="ShowBottomNav"
             android:defaultValue="true" />
-        <action
-            android:id="@+id/action_myFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:popUpTo="@id/myFragment"
-            app:popUpToInclusive="true" />
-
     </fragment>
 
 </navigation>

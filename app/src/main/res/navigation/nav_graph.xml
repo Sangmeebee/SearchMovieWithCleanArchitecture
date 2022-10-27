@@ -4,6 +4,12 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/home">
 
+    <action
+        android:id="@+id/action_init"
+        app:destination="@id/nav_graph"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true"/>
+
     <include app:graph="@navigation/home" />
     <include app:graph="@navigation/bookmark" />
     <include app:graph="@navigation/my" />

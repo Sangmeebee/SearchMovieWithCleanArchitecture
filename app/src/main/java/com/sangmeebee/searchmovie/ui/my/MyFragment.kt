@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.FragmentMyBinding
 import com.sangmeebee.searchmovie.ui.base.BaseFragment
 import com.sangmeebee.searchmovie.util.repeatOnStarted
@@ -50,7 +51,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::inflate) {
     private fun observeIsLogin() = repeatOnStarted {
         myViewModel.userUiState.map { it.isLogin }.distinctUntilChanged().collectLatest { isLogin ->
             if (!isLogin) {
-                findNavController().navigate(MyFragmentDirections.actionMyFragmentToSignInFragment())
+                findNavController().navigate(R.id.action_init)
             }
         }
     }
