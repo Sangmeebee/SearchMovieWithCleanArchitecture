@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.sangmeebee.searchmovie.R
 import com.sangmeebee.searchmovie.databinding.ActivityMainBinding
@@ -61,13 +60,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomNavigation() {
         binding.bottomNav.setupWithNavController(navController)
-
-        binding.bottomNav.setOnItemSelectedListener { item ->
-            // In order to get the expected behavior, you have to call default Navigation method manually
-            NavigationUI.onNavDestinationSelected(item, navController)
-
-            return@setOnItemSelectedListener true
-        }
     }
 
     private fun setOnBackPressedDispatcher() =
